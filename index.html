@@ -173,7 +173,21 @@
             background: var(--accent-light);
             transform: translateY(-1px);
         }
+/* تحسين iframe للموبايل */
+.iframe-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
 
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
         .iframe-container {
             flex: 1;
             width: 100%;
@@ -319,6 +333,23 @@
         return false;
     }
 </script>
-
+<script>
+    // إصلاح مشكلة iframe على iOS
+    function resizeIframe() {
+        const iframe = document.getElementById('contentFrame');
+        if (iframe && iframe.contentWindow) {
+            const height = iframe.contentWindow.document.body.scrollHeight;
+            iframe.style.height = height + 'px';
+        }
+    }
+    
+    window.addEventListener('load', function() {
+        const iframe = document.getElementById('contentFrame');
+        if (iframe) {
+            iframe.addEventListener('load', resizeIframe);
+            setTimeout(resizeIframe, 500);
+        }
+    });
+</script>
 </body>
 </html>
