@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RubikCare — Healthcare Operating System | Egypt's First Integrated Health Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0F2C3D;
+    --primary-light: #1C5A7A;
+    --primary-dark: #0A1F2C;
+    --accent: #B88B4A;
+    --accent-light: #D4A85C;
+    --success: #2E7D5E;
+    --bg: #F8FAFE;
+    --card-bg: #FFFFFF;
+    --text-primary: #1A2C3E;
+    --text-secondary: #546E7A;
+    --text-muted: #8A9BA8;
+    --border: #E9EDF2;
+    --shadow: 0 4px 20px rgba(0,0,0,0.04);
+    --shadow-lg: 0 20px 40px rgba(0,0,0,0.08);
+    --radius: 24px;
+    --radius-sm: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+
+  /* Typography */
+  .serif { font-family: 'Cormorant Garamond', serif; }
+  .gold { color: var(--accent); }
+
+  /* Buttons */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary);
+    color: white;
+    padding: 14px 32px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .btn-primary:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(28,90,122,0.2); }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--primary);
+    padding: 13px 31px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s;
+    border: 1.5px solid var(--border);
+    text-decoration: none;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  /* Navbar */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 20px 0;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  nav.scrolled { padding: 12px 0; box-shadow: var(--shadow); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-cube {
+    width: 36px; height: 36px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+    transform: rotate(-8deg);
+  }
+  .logo-cube span { border-radius: 4px; }
+  .logo-cube span:nth-child(1) { background: var(--primary); }
+  .logo-cube span:nth-child(2) { background: var(--accent); }
+  .logo-cube span:nth-child(3) { background: var(--primary-light); }
+  .logo-cube span:nth-child(4) { background: var(--accent-light); }
+  .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
+  .logo-text em { color: var(--accent); font-style: normal; }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { text-decoration: none; color: var(--text-secondary); font-weight: 500; font-size: 14px; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--primary); }
+
+  /* Hero Slider */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 0 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-slider {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1s ease;
+    background-size: cover;
+    background-position: center;
+  }
+  .slide.active { opacity: 1; }
+  .slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(10,31,44,0.88) 0%, rgba(28,90,122,0.82) 100%);
+  }
+  .slide-1 { background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800"><rect width="100%" height="100%" fill="%230F2C3D"/><circle cx="800" cy="200" r="300" fill="%231C5A7A" opacity="0.2"/><circle cx="200" cy="600" r="400" fill="%23B88B4A" opacity="0.1"/></svg>'); }
+  .slide-2 { background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800"><rect width="100%" height="100%" fill="%231C5A7A"/><path d="M0,400 Q300,200 600,400 T1200,400" stroke="%23B88B4A" stroke-width="2" fill="none" opacity="0.3"/><circle cx="500" cy="400" r="150" fill="%230F2C3D" opacity="0.2"/></svg>'); }
+  .slide-3 { background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800"><rect width="100%" height="100%" fill="%230A1F2C"/><rect x="100" y="300" width="200" height="200" fill="%231C5A7A" opacity="0.3" transform="rotate(45 200 400)"/><rect x="700" y="500" width="150" height="150" fill="%23B88B4A" opacity="0.2" transform="rotate(30 775 575)"/></svg>'); }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    color: white;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    padding: 6px 16px;
+    border-radius: 40px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 6vw, 68px);
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .hero h1 span { color: var(--accent-light); }
+  .hero p {
+    font-size: 18px;
+    opacity: 0.9;
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+  .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+  .slider-dots {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 2;
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .dot.active { background: var(--accent); width: 24px; border-radius: 10px; }
+
+  /* Sections */
+  .section { padding: 80px 0; border-bottom: 1px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+  .section-header { text-align: center; margin-bottom: 48px; }
+  .section-tag {
+    display: inline-block;
+    background: var(--border);
+    padding: 4px 16px;
+    border-radius: 40px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 4vw, 44px);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+  .section-desc {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* Values Grid */
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+  .value-card {
+    background: var(--card-bg);
+    padding: 32px 24px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  .value-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: var(--shadow-lg); }
+  .value-icon { font-size: 40px; margin-bottom: 16px; }
+  .value-title { font-weight: 700; font-size: 18px; margin-bottom: 8px; }
+  .value-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+  /* Services Grid */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 48px;
+  }
+  .service-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 32px;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .service-card:hover { transform: translateY(-6px); border-color: var(--accent); box-shadow: var(--shadow-lg); }
+  .service-icon { font-size: 48px; margin-bottom: 20px; }
+  .service-title { font-size: 22px; font-weight: 700; margin-bottom: 12px; color: var(--primary); }
+  .service-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px; }
+  .service-link {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Roadmap Preview */
+  .roadmap-preview {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    border-radius: var(--radius);
+    padding: 48px;
+    color: white;
+    margin-top: 48px;
+  }
+  .roadmap-preview h3 { font-family: 'Cormorant Garamond', serif; font-size: 28px; margin-bottom: 16px; }
+  .roadmap-preview p { opacity: 0.8; margin-bottom: 24px; max-width: 600px; }
+
+  /* Footer */
+  .footer {
+    background: var(--primary-dark);
+    padding: 60px 0 30px;
+    color: rgba(255,255,255,0.6);
+  }
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+  .footer-logo .logo-text { color: white; margin-bottom: 16px; display: block; }
+  .footer-logo p { font-size: 13px; line-height: 1.6; max-width: 280px; }
+  .footer-col h4 { color: white; font-size: 14px; font-weight: 600; margin-bottom: 20px; letter-spacing: 1px; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 12px; }
+  .footer-col ul li a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+  .footer-col ul li a:hover { color: var(--accent-light); }
+  .footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 12px;
+  }
+
+  @media (max-width: 900px) {
+    .container { padding: 0 20px; }
+    .nav-links { display: none; }
+    .values-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .services-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .values-grid { grid-template-columns: 1fr; }
+    .hero-buttons { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero Slider with Changing Content -->
+<section class="hero">
+  <div class="hero-slider">
+    <div class="slide slide-1 active"></div>
+    <div class="slide slide-2"></div>
+    <div class="slide slide-3"></div>
+  </div>
+  <div class="container hero-content" id="heroContent">
+    <div class="hero-badge" id="slideBadge">Patient Support Programs</div>
+    <h1 id="slideTitle">Transform Pharma Investment<br><span>Into Measurable Patient Outcomes</span></h1>
+    <p id="slideDesc">Fully compliant, data-driven PSP management that connects pharma companies with physicians, pharmacists, and patients — improving adherence and generating real-world evidence.</p>
+    <div class="hero-buttons">
+      <a href="#services" class="btn-primary">Explore Solutions →</a>
+      <a href="roadmap.html" class="btn-outline" style="background: transparent; border-color: rgba(255,255,255,0.3); color: white;">View Roadmap</a>
+    </div>
+  </div>
+  <div class="slider-dots">
+    <div class="dot active" data-slide="0"></div>
+    <div class="dot" data-slide="1"></div>
+    <div class="dot" data-slide="2"></div>
+  </div>
+</section>
+
+<!-- Vision & Mission -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Our Vision & Mission</div>
+      <h2 class="section-title">Building the Middle East's<br>First Healthcare Operating System</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; max-width: 900px; margin: 0 auto;">
+      <div style="text-align: center; padding: 32px; background: var(--card-bg); border-radius: var(--radius-sm); border: 1px solid var(--border);">
+        <div style="font-size: 48px; margin-bottom: 16px;">🎯</div>
+        <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 16px;">Vision</h3>
+        <p style="color: var(--text-secondary); line-height: 1.7;">A connected healthcare ecosystem where every patient journey is seamless, every clinical decision is data-driven, and every health outcome is optimized — from access to impact.</p>
+      </div>
+      <div style="text-align: center; padding: 32px; background: var(--card-bg); border-radius: var(--radius-sm); border: 1px solid var(--border);">
+        <div style="font-size: 48px; margin-bottom: 16px;">🚀</div>
+        <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 16px;">Mission</h3>
+        <p style="color: var(--text-secondary); line-height: 1.7;">To build the Middle East's first integrated healthcare operating system — connecting patients, physicians, pharmacists, and pharma companies through a unified digital platform that transforms patient support into a strategic asset.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Core Values -->
+<div class="section" id="values">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Our DNA</div>
+      <h2 class="section-title">The Principles That Guide Us</h2>
+      <div class="section-desc">Five core values embedded in every layer of RubikCare</div>
+    </div>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">👤</div>
+        <div class="value-title">Patient First</div>
+        <div class="value-desc">Every service starts with patient needs — not commercial interests. Patients never pay for the platform.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">⚖️</div>
+        <div class="value-title">Ethical by Design</div>
+        <div class="value-desc">Compliance is our foundation. Built for IFPMA, EDA, and global standards — not an afterthought.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">📊</div>
+        <div class="value-title">Data for Good</div>
+        <div class="value-desc">Real-world evidence to improve care, not exploit privacy. Anonymized insights for better outcomes.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🔗</div>
+        <div class="value-title">Connected Ecosystem</div>
+        <div class="value-desc">Breaking silos between patients, physicians, pharmacists, and pharma companies.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">📈</div>
+        <div class="value-title">Outcomes-Oriented</div>
+        <div class="value-desc">We measure what matters: adherence, satisfaction, and clinical impact — not just activity.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Business Lines -->
+<div class="section" id="services">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag">Our Solutions</div>
+      <h2 class="section-title">Integrated Business Lines</h2>
+      <div class="section-desc">Each product is designed to work together — but powerful enough to stand alone</div>
+    </div>
+    <div class="services-grid">
+      <a href="psp-pharma-partners.html" class="service-card">
+        <div class="service-icon">💊</div>
+        <div class="service-title">Patient Support Programs</div>
+        <div class="service-desc">End-to-end PSP management for pharma companies — from financial access to adherence tracking, fully compliant with IFPMA and EDA standards.</div>
+        <span class="service-link">Learn more →</span>
+      </a>
+      <a href="clinic-os.html" class="service-card">
+        <div class="service-icon">🏥</div>
+        <div class="service-title">Clinic Operating System</div>
+        <div class="service-desc">Complete practice management for physicians — appointments, EMR, e-prescriptions, and integrated patient support programs.</div>
+        <span class="service-link">Learn more →</span>
+      </a>
+      <a href="pharmacy-network.html" class="service-card">
+        <div class="service-icon">💊</div>
+        <div class="service-title">Pharmacy Network</div>
+        <div class="service-desc">Digital prescription fulfillment, delivery coordination, and B2B ordering — connecting pharmacies to patients and pharma companies.</div>
+        <span class="service-link">Learn more →</span>
+      </a>
+      <a href="cme-platform.html" class="service-card">
+        <div class="service-icon">🎓</div>
+        <div class="service-title">CME Education Platform</div>
+        <div class="service-desc">Certified continuing medical education with syndicate-accredited credits — earned through patient engagement in PSP programs.</div>
+        <span class="service-link">Learn more →</span>
+      </a>
+      <a href="crm-rep-management.html" class="service-card">
+        <div class="service-icon">📊</div>
+        <div class="service-title">Medical Rep CRM</div>
+        <div class="service-desc">Advanced CRM with double-score matrix — reps rated by both managers and physicians. Appointment scheduling, analytics, and performance tracking.</div>
+        <span class="service-link">Learn more →</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Roadmap Preview -->
+<div class="section">
+  <div class="container">
+    <div class="roadmap-preview">
+      <h3>📅 5-Phase Roadmap</h3>
+      <p>From PSP launch to full healthcare ecosystem — each phase funds the next. No external capital required after initial seed.</p>
+      <div style="display: flex; gap: 24px; flex-wrap: wrap; margin: 24px 0;">
+        <div><strong style="color: var(--accent-light);">Phase 1</strong><br>PSP + Pharmacy</div>
+        <div><strong style="color: var(--accent-light);">Phase 2</strong><br>Network Growth</div>
+        <div><strong style="color: var(--accent-light);">Phase 3</strong><br>Clinic OS + CME</div>
+        <div><strong style="color: var(--accent-light);">Phase 4</strong><br>Marketplace</div>
+        <div><strong style="color: var(--accent-light);">Phase 5</strong><br>Full Ecosystem</div>
+      </div>
+      <a href="roadmap.html" class="btn-primary" style="background: var(--accent); color: var(--primary-dark);">Explore Full Roadmap →</a>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer" id="contact">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <div class="logo-text" style="color: white;">Rubik<em style="color: var(--accent-light);">Care</em></div>
+        <p>Building Egypt's Healthcare Operating System — connecting the entire healthcare ecosystem through a unified digital platform.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="psp-pharma-partners.html">Patient Support Programs</a></li>
+          <li><a href="clinic-os.html">Clinic OS</a></li>
+          <li><a href="pharmacy-network.html">Pharmacy Network</a></li>
+          <li><a href="cme-platform.html">CME Platform</a></li>
+          <li><a href="crm-rep-management.html">Medical Rep CRM</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="roadmap.html">Roadmap</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Compliance Framework</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">pharma@rubikcare.com</a></li>
+          <li><a href="#">Investor Relations</a></li>
+          <li><a href="#">Partner Program</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 RubikCare — Confidential. For internal and investor use only. All rights reserved.</p>
+      <p style="margin-top: 8px; font-size: 11px;">Built with care in Egypt 🇪🇬</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Navbar scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  });
+
+  // Hero Slider with Changing Content
+  const slides = [
+    {
+      badge: "Patient Support Programs",
+      title: "Transform Pharma Investment<br><span>Into Measurable Patient Outcomes</span>",
+      desc: "Fully compliant, data-driven PSP management that connects pharma companies with physicians, pharmacists, and patients — improving adherence and generating real-world evidence."
+    },
+    {
+      badge: "Clinic Operating System",
+      title: "Complete Practice Management<br><span>For Modern Physicians</span>",
+      desc: "Streamline your clinic with appointments, EMR, e-prescriptions, and integrated patient support programs — all in one unified platform."
+    },
+    {
+      badge: "Connected Ecosystem",
+      title: "One Platform.<br><span>Every Stakeholder.</span>",
+      desc: "Breaking healthcare silos — RubikCare connects patients, physicians, pharmacists, and pharma companies in a single, integrated digital ecosystem."
+    }
+  ];
+
+  let currentSlide = 0;
+  const slideElements = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+  const heroBadge = document.getElementById('slideBadge');
+  const heroTitle = document.getElementById('slideTitle');
+  const heroDesc = document.getElementById('slideDesc');
+
+  function showSlide(index) {
+    // Update background slides
+    slideElements.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+    });
+    // Update dots
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === index);
+    });
+    // Update text content
+    heroBadge.textContent = slides[index].badge;
+    heroTitle.innerHTML = slides[index].title;
+    heroDesc.textContent = slides[index].desc;
+    currentSlide = index;
+  }
+
+  function nextSlide() {
+    showSlide((currentSlide + 1) % slides.length);
+  }
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => showSlide(index));
+  });
+
+  // Auto-rotate every 5 seconds
+  setInterval(nextSlide, 5000);
+</script>
+</body>
+</html>

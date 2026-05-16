@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RubikCare CRM | Medical Rep Management Platform | Double Score Matrix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0F2C3D;
+    --primary-light: #1C5A7A;
+    --primary-dark: #0A1F2C;
+    --accent: #B88B4A;
+    --accent-light: #D4A85C;
+    --success: #2E7D5E;
+    --bg: #F8FAFE;
+    --card-bg: #FFFFFF;
+    --text-primary: #1A2C3E;
+    --text-secondary: #546E7A;
+    --text-muted: #8A9BA8;
+    --border: #E9EDF2;
+    --shadow: 0 4px 20px rgba(0,0,0,0.04);
+    --shadow-lg: 0 20px 40px rgba(0,0,0,0.08);
+    --radius: 24px;
+    --radius-sm: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.5;
+  }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+
+  /* Typography */
+  .serif { font-family: 'Cormorant Garamond', serif; }
+  .gold { color: var(--accent); }
+
+  /* Buttons */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary);
+    color: white;
+    padding: 14px 32px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s;
+    text-decoration: none;
+  }
+  .btn-primary:hover { background: var(--primary-light); transform: translateY(-2px); }
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--primary);
+    padding: 13px 31px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s;
+    border: 1.5px solid var(--border);
+    text-decoration: none;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Navbar */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 20px 0;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  nav.scrolled { padding: 12px 0; box-shadow: var(--shadow); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-cube {
+    width: 36px; height: 36px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+    transform: rotate(-8deg);
+  }
+  .logo-cube span { border-radius: 4px; }
+  .logo-cube span:nth-child(1) { background: var(--primary); }
+  .logo-cube span:nth-child(2) { background: var(--accent); }
+  .logo-cube span:nth-child(3) { background: var(--primary-light); }
+  .logo-cube span:nth-child(4) { background: var(--accent-light); }
+  .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
+  .logo-text em { color: var(--accent); font-style: normal; }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { text-decoration: none; color: var(--text-secondary); font-weight: 500; font-size: 14px; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--primary); }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    padding: 140px 0 80px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    margin-top: 76px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,139,74,0.15), transparent);
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 700px; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,215,120,0.2);
+    padding: 6px 16px;
+    border-radius: 40px;
+    font-size: 12px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 5vw, 56px);
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .hero h1 span { color: var(--accent-light); }
+  .hero p { font-size: 18px; opacity: 0.9; margin-bottom: 32px; max-width: 600px; }
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+  }
+  .hero-stat h3 { font-size: 28px; color: var(--accent-light); }
+  .hero-stat p { font-size: 12px; opacity: 0.7; margin-bottom: 0; }
+
+  /* Sections */
+  .section { padding: 60px 0; border-bottom: 1px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+  .section-header { margin-bottom: 40px; }
+  .section-tag {
+    display: inline-block;
+    background: var(--border);
+    padding: 4px 16px;
+    border-radius: 40px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 4vw, 44px);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+  .section-desc {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 700px;
+  }
+
+  /* Cards Grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin: 40px 0;
+  }
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius-sm);
+    padding: 28px;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: var(--shadow-lg); }
+  .card-icon { font-size: 40px; margin-bottom: 16px; }
+  .card-title { font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--primary); }
+  .card-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* Double Score Matrix */
+  .matrix-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin: 40px 0;
+  }
+  .matrix-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-sm);
+    padding: 32px;
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .matrix-icon { font-size: 48px; margin-bottom: 16px; }
+  .matrix-title { font-size: 24px; font-weight: 700; margin-bottom: 16px; }
+  .matrix-score { font-size: 48px; font-weight: 800; color: var(--primary); margin: 16px 0; }
+  .matrix-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* Comparison Table */
+  .comparison-table {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    margin: 40px 0;
+  }
+  .comparison-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .comparison-table th {
+    background: var(--primary);
+    color: white;
+    padding: 16px 20px;
+    text-align: center;
+    font-weight: 600;
+  }
+  .comparison-table td {
+    padding: 14px 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .comparison-table td:first-child { text-align: left; font-weight: 600; }
+  .check-yes { color: var(--success); font-weight: 700; }
+  .check-no { color: #C44536; }
+  .check-partial { color: var(--accent); }
+
+  /* Pricing Grid */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 40px 0;
+  }
+  .pricing-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-sm);
+    padding: 32px;
+    border: 1px solid var(--border);
+    text-align: center;
+    transition: all 0.3s;
+  }
+  .pricing-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+  .pricing-card.featured { border: 2px solid var(--accent); position: relative; }
+  .pricing-card.featured::before {
+    content: 'Most Popular';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: white;
+    padding: 4px 16px;
+    border-radius: 40px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .pricing-name { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
+  .pricing-price { font-size: 32px; font-weight: 800; color: var(--primary); margin-bottom: 16px; }
+  .pricing-price span { font-size: 14px; font-weight: 400; color: var(--text-muted); }
+  .pricing-features { list-style: none; margin: 20px 0; text-align: left; }
+  .pricing-features li { padding: 8px 0; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+  .pricing-features li::before { content: '✓'; color: var(--success); font-weight: 700; }
+
+  /* Source Box */
+  .source-box {
+    background: #F8FAFE;
+    border-radius: 20px;
+    padding: 24px;
+    margin: 40px 0;
+    border-left: 4px solid var(--accent);
+  }
+  .source-title { font-weight: 700; margin-bottom: 12px; color: var(--accent); }
+
+  /* Footer */
+  .footer {
+    background: var(--primary-dark);
+    padding: 60px 0 30px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 40px;
+  }
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 40px;
+  }
+  .footer-brand-name { font-size: 1.3rem; font-weight: 700; color: white; }
+  .footer-brand-name em { color: var(--accent-light); font-style: normal; }
+  .footer-tagline { font-size: .82rem; color: rgba(255,255,255,.4); margin-top: 10px; max-width: 280px; }
+  .footer-col-title { font-size: .65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-bottom: 16px; }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 12px; }
+  .footer-links li a { font-size: .85rem; color: rgba(255,255,255,.4); text-decoration: none; transition: color .2s; }
+  .footer-links li a:hover { color: rgba(255,255,255,.8); }
+  .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; }
+
+  @media (max-width: 900px) {
+    .container { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero-stats { gap: 24px; flex-wrap: wrap; }
+    .matrix-container { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+  }
+  @media (max-width: 600px) {
+    .footer-inner { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="container nav-inner">
+    <div class="logo">
+      <div class="logo-cube"><span></span><span></span><span></span><span></span></div>
+      <div class="logo-text">Rubik<em>Care</em></div>
+    </div>
+     <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="roadmap.html">Roadmap</a>
+      <a href="psp-pharma-partners.html">PSP for Pharma</a>
+      <a href="clinic-os.html">Clinic OS</a>
+      <a href="pharmacy-network.html">Pharmacy</a>
+      <a href="cme-platform.html">CME</a>
+      <a href="crm-rep-management.html">CRM</a>
+      <a href="Product-Specification.html">Product Specification</a>
+    </div>
+
+    <a href="index.html" class="btn-outline" style="border-color: rgba(255,255,255,0.2); color: white;">Back to Home</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container hero-content">
+    <div class="hero-badge">LAUNCHING IN PHASE 3 · COMING 2026</div>
+    <h1>The Medical Rep CRM<br><span>That Pharma Sales Teams Actually Love</span></h1>
+    <p>Not just another CRM. A complete platform for managing pharmaceutical sales reps with double-score matrix, smart scheduling, and performance analytics — integrated with PSP and CME.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><h3>50+</h3><p>Pharma Companies in Egypt</p></div>
+      <div class="hero-stat"><h3>5,000+</h3><p>Medical Reps Nationwide</p></div>
+      <div class="hero-stat"><h3>100K+</h3><p>Monthly Physician Visits</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <!-- Back Navigation -->
+  <div style="margin-top: 32px;">
+    <a href="index.html" style="display: inline-flex; align-items: center; gap: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px;">← Back to Home</a>
+  </div>
+
+  <!-- Section 1: The Problem -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">⚠️ THE PROBLEM</div>
+      <h2 class="section-title">Traditional Pharma Sales Management Is Broken</h2>
+      <div class="section-desc">Pharma companies invest millions in sales forces but lack tools to measure true rep effectiveness. The result: wasted visits, poor physician relationships, and missed opportunities.</div>
+    </div>
+    <div class="cards-grid">
+      <div class="card"><div class="card-icon">📊</div><div class="card-title">No Quality Measurement</div><div class="card-desc">Current systems track visits count, not visit quality. A rep can meet 10 doctors daily but add zero value.</div></div>
+      <div class="card"><div class="card-icon">⏰</div><div class="card-title">Disrupted Physician Time</div><div class="card-desc">Reps visit during busy clinic hours. Doctors are interrupted, reducing satisfaction and engagement.</div></div>
+      <div class="card"><div class="card-icon">📈</div><div class="card-title">No ROI Visibility</div><div class="card-desc">Pharma companies can't measure which rep, which visit, or which approach generates actual prescriptions.</div></div>
+      <div class="card"><div class="card-icon">🔄</div><div class="card-title">One-Way Evaluation</div><div class="card-desc">Reps evaluated only by managers. No feedback from physicians — the actual customers.</div></div>
+    </div>
+  </div>
+
+  <!-- Section 2: The Solution - Double Score Matrix -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">🏆 THE SOLUTION</div>
+      <h2 class="section-title">Double Score Matrix — The World's First Dual-Evaluation Rep CRM</h2>
+      <div class="section-desc">RubikCare introduces a revolutionary approach: reps evaluated by both their company AND the physicians they visit. Finally, quality matters as much as quantity.</div>
+    </div>
+    <div class="matrix-container">
+      <div class="matrix-card">
+        <div class="matrix-icon">🏢</div>
+        <div class="matrix-title">Company Score</div>
+        <div class="matrix-score">50%</div>
+        <div class="matrix-desc">KPIs set by pharma management:<br>• Visit targets achieved<br>• PSP enrollment numbers<br>• Prescription lift from territory<br>• Compliance with call plans</div>
+      </div>
+      <div class="matrix-card">
+        <div class="matrix-icon">👨‍⚕️</div>
+        <div class="matrix-title">Physician Score</div>
+        <div class="matrix-score">50%</div>
+        <div class="matrix-desc">Ratings from doctors:<br>• Punctuality & professionalism<br>• Value of information shared<br>• Respect for time<br>• Relevance of content</div>
+      </div>
+    </div>
+    <div class="source-box" style="background: #EFF7F0; border-left-color: var(--success);">
+      <div class="source-title">💡 Why This Matters</div>
+      <p style="font-size: 14px;">A rep with 100 visits but low physician ratings gets a lower overall score than a rep with 60 visits but excellent ratings. This incentivizes quality over quantity — transforming pharma-physician relationships.</p>
+    </div>
+  </div>
+
+  <!-- Section 3: Key Features -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">⚙️ KEY FEATURES</div>
+      <h2 class="section-title">Everything Pharma Sales Teams Need</h2>
+    </div>
+    <div class="cards-grid">
+      <div class="card"><div class="card-icon">📅</div><div class="card-title">Smart Appointment Scheduling</div><div class="card-desc">Reps book visits through the platform. Doctors set available hours. No more interruptions during clinic hours.</div></div>
+      <div class="card"><div class="card-icon">⭐</div><div class="card-title">One-Click Physician Rating</div><div class="card-desc">After each visit, doctors rate the rep with a single tap. Takes 5 seconds — high response rates.</div></div>
+      <div class="card"><div class="card-icon">🎯</div><div class="card-title">Rep Scoring & Tiering</div><div class="card-desc">Gold, Silver, Bronze tiers based on combined scores. Top-rated reps get priority scheduling with high-value physicians.</div></div>
+      <div class="card"><div class="card-icon">📊</div><div class="card-title">Advanced Analytics</div><div class="card-desc">ROI per visit, prescription lift tracking, territory performance maps, and predictive insights.</div></div>
+      <div class="card"><div class="card-icon">🎓</div><div class="card-title">CME for Reps</div><div class="card-desc">Training courses on products, selling skills, and clinical knowledge. Earn points and certifications.</div></div>
+      <div class="card"><div class="card-icon">💊</div><div class="card-title">PSP Integration</div><div class="card-desc">Reps manage PSP enrollments, track physician participation, and monitor patient adherence — all in one dashboard.</div></div>
+      <div class="card"><div class="card-icon">🎁</div><div class="card-title">Rubika Points System</div><div class="card-desc">Reps earn points for visits, positive ratings, and PSP enrollments. Redeem for rewards or training.</div></div>
+      <div class="card"><div class="card-icon">🔒</div><div class="card-title">Physician Filters</div><div class="card-desc">Doctors can set minimum rating thresholds. Only Gold-tier reps can book visits with top specialists.</div></div>
+    </div>
+  </div>
+
+  <!-- Section 4: Competitive Landscape -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">🏆 COMPETITIVE LANDSCAPE</div>
+      <h2 class="section-title">How RubikCare Compares</h2>
+    </div>
+    <div class="comparison-table">
+       <table>
+        <thead>
+          <tr><th>Feature</th><th>RubikCare</th><th>Veeva</th><th>Salesforce Health Cloud</th><th>Local CRMs</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Rep CRM</td><td class="check-yes">✓</td><td class="check-yes">✓</td><td class="check-yes">✓</td><td class="check-no">✗</td></tr>
+          <tr><td>Double Score Matrix</td><td class="check-yes">✓ Unique</td><td class="check-no">✗</td><td class="check-no">✗</td><td class="check-no">✗</td></tr>
+          <tr><td>Appointment Scheduling (by doctor)</td><td class="check-yes">✓ Unique</td><td class="check-no">✗</td><td class="check-no">✗</td><td class="check-no">✗</td></tr>
+          <tr><td>Physician Ratings of Reps</td><td class="check-yes">✓</td><td class="check-no">✗</td><td class="check-no">✗</td><td class="check-no">✗</td></tr>
+          <tr><td>CME for Reps</td><td class="check-yes">✓</td><td class="check-no">✗</td><td class="check-no">✗</td><td class="check-no">✗</td></tr>
+          <tr><td>PSP Integration</td><td class="check-yes">✓</td><td class="check-no">✗</td><td class="check-no">✗</td><td class="check-no">✗</td></tr>
+          <tr><td>Freemium Model</td><td class="check-yes">✓</td><td class="check-no">✗</td><td class="check-no">✗</td><td class="check-no">✗</td></tr>
+          <tr><td>Egypt-Specific</td><td class="check-yes">✓</td><td class="check-partial">⚠️</td><td class="check-partial">⚠️</td><td class="check-yes">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section 5: Integration with Ecosystem -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">🔗 ECOSYSTEM INTEGRATION</div>
+      <h2 class="section-title">Connected to the RubikCare Platform</h2>
+    </div>
+    <div class="cards-grid">
+      <div class="card"><div class="card-icon">💊</div><div class="card-title">PSP Integration</div><div class="card-desc">Reps manage patient support programs, track physician participation, and monitor program KPIs — all from their dashboard.</div></div>
+      <div class="card"><div class="card-icon">🏥</div><div class="card-title">Clinic OS Integration</div><div class="card-desc">Physician profiles from Clinic OS feed into rep scheduling. See specialties, patient volume, and prescribing patterns.</div></div>
+      <div class="card"><div class="card-icon">🎓</div><div class="card-title">CME Integration</div><div class="card-desc">Reps earn CME points for training. Doctors see rep certifications before accepting visits.</div></div>
+      <div class="card"><div class="card-icon">🏪</div><div class="card-title">Pharmacy Integration</div><div class="card-desc">Track which pharmacies are dispensing your products. Reps can coordinate with pharmacy teams.</div></div>
+    </div>
+  </div>
+
+  <!-- Section 6: Pricing Model -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">💰 PRICING</div>
+      <h2 class="section-title">Freemium for Individuals. Enterprise for Pharma Companies.</h2>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-name">Free</div>
+        <div class="pricing-price">EGP 0 <span>/month</span></div>
+        <ul class="pricing-features">
+          <li>20 scheduled visits/month</li>
+          <li>Basic rep profile</li>
+          <li>Physician ratings (receive)</li>
+          <li>Basic analytics</li>
+        </ul>
+      </div>
+      <div class="pricing-card featured">
+        <div class="pricing-name">Pro</div>
+        <div class="pricing-price">EGP 100 <span>/month</span></div>
+        <ul class="pricing-features">
+          <li>Unlimited visits</li>
+          <li>Advanced analytics (ROI per visit)</li>
+          <li>Priority scheduling</li>
+          <li>CME training access</li>
+          <li>PSP management tools</li>
+        </ul>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-name">Enterprise</div>
+        <div class="pricing-price">Custom</div>
+        <ul class="pricing-features">
+          <li>All Pro features</li>
+          <li>Company-wide dashboard</li>
+          <li>Territory performance maps</li>
+          <li>API access</li>
+          <li>Dedicated account manager</li>
+          <li>Bulk rep onboarding</li>
+        </ul>
+      </div>
+    </div>
+    <div class="source-box" style="background: #EFF7F0; border-left-color: var(--success);">
+      <div class="source-title">📈 Projected Revenue (Year 3)</div>
+      <p style="font-size: 14px;">• Pro Individual: 1,000 reps × EGP 100 × 12 = 1.2M EGP/year<br>• Enterprise: 20 pharma companies × EGP 7,500 × 12 = 1.8M EGP/year<br>• CME for Reps: 2,000 reps × EGP 200/year = 0.4M EGP/year<br><strong>Total: ~3.4M EGP/year</strong></p>
+    </div>
+  </div>
+
+  <!-- Section 7: Timeline -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">📅 TIMELINE</div>
+      <h2 class="section-title">When CRM Launches</h2>
+    </div>
+    <div class="cards-grid">
+      <div class="card"><div class="card-icon">⏳</div><div class="card-title">Phase 1 (Now)</div><div class="card-desc">PSP + Pharmacy — building physician base. Basic rep tracking (lite).</div></div>
+      <div class="card"><div class="card-icon">📈</div><div class="card-title">Phase 2 (Months 12-24)</div><div class="card-desc">Network Growth — expand to 1,500+ doctors. Enhanced rep features.</div></div>
+      <div class="card"><div class="card-icon">🚀</div><div class="card-title">Phase 3 (Months 18-30)</div><div class="card-desc"><strong>CRM Full Launch</strong> — Double Score Matrix, scheduling, advanced analytics, CME for reps.</div></div>
+    </div>
+    <div class="source-box" style="background: #F8FAFE;">
+      <div class="source-title">🎯 Launch Condition</div>
+      <p style="font-size: 14px; color: var(--text-secondary);">CRM launches in Phase 3, after we have 4,000+ active physicians, 10+ pharma partners, and stable PSP operations. This ensures immediate adoption and network effects.</p>
+    </div>
+  </div>
+
+  <!-- Section 8: CTA -->
+  <div class="section">
+    <div class="source-box" style="background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: white; border-left: none; text-align: center;">
+      <div class="source-title" style="color: var(--accent-light);">🚀 Coming in Phase 3</div>
+      <p style="font-size: 16px; margin: 16px 0;">Be the first to know when the Medical Rep CRM launches.</p>
+      <a href="roadmap.html" class="btn-primary" style="background: var(--accent); color: var(--primary-dark);">View Full Roadmap →</a>
+      <p style="font-size: 12px; margin-top: 20px; opacity: 0.7;">For early access inquiries: crm@rubikcare.com</p>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand-name">Rubik<em>Care</em></div>
+        <p class="footer-tagline">Building Egypt's Healthcare Operating System — connecting patients, physicians, pharmacists, and pharma companies through a unified digital platform.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Solutions</div>
+        <ul class="footer-links">
+          <li><a href="psp-pharma-partners.html">PSP for Pharma</a></li>
+          <li><a href="clinic-os.html">Clinic OS</a></li>
+          <li><a href="pharmacy-network.html">Pharmacy Network</a></li>
+          <li><a href="cme-platform.html">CME Platform</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="roadmap.html">Roadmap</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 RubikCare — Confidential. For internal and investor use only.</p>
+      <p style="margin-top: 8px; font-size: 11px;">Built with care in Egypt 🇪🇬</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  });
+</script>
+</body>
+</html>

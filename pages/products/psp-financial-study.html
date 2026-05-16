@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RubikCare | PSP Financial Study — Pharaferro 27 | ROI Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --primary: #0F2C3D;
+    --primary-light: #1C5A7A;
+    --primary-dark: #0A1F2C;
+    --accent: #B88B4A;
+    --accent-light: #D4A85C;
+    --success: #2E7D5E;
+    --bg: #F8FAFE;
+    --card-bg: #FFFFFF;
+    --text-primary: #1A2C3E;
+    --text-secondary: #546E7A;
+    --text-muted: #8A9BA8;
+    --border: #E9EDF2;
+    --shadow: 0 4px 20px rgba(0,0,0,0.04);
+    --shadow-lg: 0 20px 40px rgba(0,0,0,0.08);
+    --radius: 24px;
+    --radius-sm: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.5;
+  }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+
+  /* Typography */
+  .serif { font-family: 'Cormorant Garamond', serif; }
+  .gold { color: var(--accent); }
+
+  /* Buttons */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary:hover { background: var(--primary-light); transform: translateY(-2px); }
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--primary);
+    padding: 11px 27px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s;
+    border: 1.5px solid var(--border);
+    text-decoration: none;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Navbar */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 20px 0;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  nav.scrolled { padding: 12px 0; box-shadow: var(--shadow); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-cube {
+    width: 36px; height: 36px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+    transform: rotate(-8deg);
+  }
+  .logo-cube span { border-radius: 4px; }
+  .logo-cube span:nth-child(1) { background: var(--primary); }
+  .logo-cube span:nth-child(2) { background: var(--accent); }
+  .logo-cube span:nth-child(3) { background: var(--primary-light); }
+  .logo-cube span:nth-child(4) { background: var(--accent-light); }
+  .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
+  .logo-text em { color: var(--accent); font-style: normal; }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { text-decoration: none; color: var(--text-secondary); font-weight: 500; font-size: 14px; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--primary); }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    padding: 140px 0 80px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    margin-top: 76px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,139,74,0.15), transparent);
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 700px; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,215,120,0.2);
+    padding: 6px 16px;
+    border-radius: 40px;
+    font-size: 12px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 5vw, 56px);
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .hero h1 span { color: var(--accent-light); }
+  .hero p { font-size: 18px; opacity: 0.9; margin-bottom: 32px; max-width: 600px; }
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+  }
+  .hero-stat h3 { font-size: 28px; color: var(--accent-light); }
+  .hero-stat p { font-size: 12px; opacity: 0.7; margin-bottom: 0; }
+
+  /* Sections */
+  .section { padding: 60px 0; border-bottom: 1px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+  .section-header { margin-bottom: 40px; }
+  .section-tag {
+    display: inline-block;
+    background: var(--border);
+    padding: 4px 16px;
+    border-radius: 40px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 4vw, 44px);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+  .section-desc {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 700px;
+  }
+
+  /* Cards Grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin: 40px 0;
+  }
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius-sm);
+    padding: 28px;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: var(--shadow-lg); }
+  .card-icon { font-size: 40px; margin-bottom: 16px; }
+  .card-title { font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--primary); }
+  .card-value { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+  .card-note { font-size: 13px; color: var(--text-secondary); }
+
+  /* Tables */
+  .data-table {
+    background: var(--card-bg);
+    border-radius: var(--radius-sm);
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    margin: 30px 0;
+  }
+  .data-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .data-table th {
+    background: #F8FAFE;
+    padding: 16px 20px;
+    text-align: center;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 14px 20px;
+    text-align: center;
+    border-bottom: 1px solid #F0F3F8;
+  }
+  .data-table td:first-child, .data-table th:first-child { text-align: left; font-weight: 600; }
+  .highlight-bg { background: #F0F7FF; }
+  .diff-positive { color: var(--success); font-weight: 700; }
+
+  /* Charts */
+  .chart-container {
+    background: var(--card-bg);
+    border-radius: var(--radius-sm);
+    padding: 24px;
+    margin: 30px 0;
+    border: 1px solid var(--border);
+  }
+  .chart-wrapper { height: 320px; position: relative; }
+
+  /* ROI Box */
+  .roi-box {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    border-radius: var(--radius);
+    padding: 48px;
+    text-align: center;
+    color: white;
+    margin: 40px 0;
+  }
+  .roi-number { font-size: 68px; font-weight: 800; color: var(--accent-light); line-height: 1; }
+  .roi-label { font-size: 18px; margin: 16px 0; }
+
+  /* Source Box */
+  .source-box {
+    background: #F8FAFE;
+    border-radius: 20px;
+    padding: 24px;
+    margin: 30px 0;
+    border-left: 4px solid var(--accent);
+  }
+  .source-title { font-weight: 700; margin-bottom: 12px; color: var(--accent); }
+  .source-list { list-style: none; }
+  .source-list li {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+  }
+  .source-list li::before { content: '📌'; position: absolute; left: 0; font-size: 10px; }
+
+  /* Back Navigation */
+  .back-nav {
+    margin-bottom: 24px;
+  }
+  .back-nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+  .back-nav a:hover { color: var(--accent); }
+
+  /* Footer */
+  .footer {
+    background: var(--primary-dark);
+    padding: 60px 0 30px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 40px;
+  }
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 40px;
+  }
+  .footer-brand-name { font-size: 1.3rem; font-weight: 700; color: white; letter-spacing: -.01em; }
+  .footer-brand-name em { color: var(--accent-light); font-style: normal; }
+  .footer-tagline { font-size: .82rem; color: rgba(255,255,255,.4); margin-top: 10px; line-height: 1.75; max-width: 280px; }
+  .footer-col-title { font-size: .65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-bottom: 16px; }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 12px; }
+  .footer-links li a { font-size: .85rem; color: rgba(255,255,255,.4); text-decoration: none; transition: color .2s; }
+  .footer-links li a:hover { color: rgba(255,255,255,.8); }
+  .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; }
+
+  @media (max-width: 900px) {
+    .container { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero-stats { gap: 24px; flex-wrap: wrap; }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+  }
+  @media (max-width: 600px) {
+    .hero-stats { flex-direction: column; gap: 16px; }
+    .footer-inner { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav id="nav">
+  <div class="container nav-inner">
+    <div class="logo">
+      <div class="logo-cube"><span></span><span></span><span></span><span></span></div>
+      <div class="logo-text">Rubik<em>Care</em></div>
+    </div>
+     <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="psp-pharma-partners.html">PSP for Pharma</a>
+      <a href="clinic-os.html">Clinic OS</a>
+      <a href="pharmacy-network.html">Pharmacy</a>
+      <a href="cme-platform.html">CME</a>
+      <a href="crm-rep-management.html">CRM</a>
+      <a href="Product-Specification.html">Product Specification</a>
+    </div>
+
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container hero-content">
+    <div class="hero-badge">CONFIDENTIAL | STRATEGIC INVESTMENT CASE</div>
+    <h1>Patient Support Program<br><span>Pharaferro 27</span></h1>
+    <p>A complete financial & strategic study demonstrating how to transform distribution discounts into incremental sales, patient loyalty, and a 900%+ ROI — all at zero patient acquisition cost.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><h3>+250,000</h3><p>Additional Boxes / Year</p></div>
+      <div class="hero-stat"><h3>+103%</h3><p>Net Profit Growth</p></div>
+      <div class="hero-stat"><h3>911%</h3><p>ROI (Year 1)</p></div>
+      <div class="hero-stat"><h3>50,000</h3><p>Mothers Supported / Year</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <!-- Back Navigation -->
+  <div class="back-nav">
+    <a href="psp-pharma-partners.html">← Back to PSP Platform Overview</a>
+  </div>
+
+  <!-- SECTION 1: KEY ASSUMPTIONS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">📐 METHODOLOGY & ASSUMPTIONS</div>
+      <h2 class="section-title">Building the Model on Real-World Data</h2>
+      <div class="section-desc">Every figure in this study is based on actual company data, conservative estimates, and validated global benchmarks.</div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card"><div class="card-icon">👥</div><div class="card-title">Medical Representatives</div><div class="card-value">50</div><div class="card-note">Existing field force — zero incremental cost</div></div>
+      <div class="card"><div class="card-icon">🩺</div><div class="card-title">Doctors per Rep</div><div class="card-value">100</div><div class="card-note">Existing call list (10 visits/day)</div></div>
+      <div class="card"><div class="card-icon">🎯</div><div class="card-title">Enrolled Doctors / Rep</div><div class="card-value">20</div><div class="card-note">20% of list — conservative target</div></div>
+      <div class="card"><div class="card-icon">👶</div><div class="card-title">Target Population</div><div class="card-value">Pregnant Women</div><div class="card-note">3rd to 9th month (6 months treatment)</div></div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card"><div class="card-icon">💰</div><div class="card-title">Consumer Price / Box</div><div class="card-value">EGP 165</div><div class="card-note">20 capsules (20-day supply)</div></div>
+      <div class="card"><div class="card-icon">🏪</div><div class="card-title">Current Wholesaler Discount</div><div class="card-value">60%</div><div class="card-note">EGP 99 → lost value, no data returned</div></div>
+      <div class="card"><div class="card-icon">💊</div><div class="card-title">Target Pharmacist Discount</div><div class="card-value">35%</div><div class="card-note">Above-market margin to incentivize preference</div></div>
+      <div class="card"><div class="card-icon">📊</div><div class="card-title">Current Net Margin / Box</div><div class="card-value">EGP 66</div><div class="card-note">Only 40% of consumer price retained</div></div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card"><div class="card-icon">📈</div><div class="card-title">Baseline Adherence (6 months)</div><div class="card-value">38%</div><div class="card-note">Patients who complete full course today</div></div>
+      <div class="card"><div class="card-icon">✨</div><div class="card-title">Projected Adherence (with PSP)</div><div class="card-value">72%</div><div class="card-note">Global PSP average (IQVIA / WHO benchmarks)</div></div>
+      <div class="card"><div class="card-icon">👨‍⚕️</div><div class="card-title">Patients / Doctor / Day</div><div class="card-value">0.5</div><div class="card-note">One patient every two days — highly conservative</div></div>
+      <div class="card"><div class="card-icon">📦</div><div class="card-title">Boxes / Patient / Course</div><div class="card-value">5.8</div><div class="card-note">vs. 2.3 without PSP — 152% increase</div></div>
+    </div>
+
+    <div class="source-box">
+      <div class="source-title">📚 Source of Adherence Benchmarks</div>
+      <ul class="source-list">
+        <li>IQVIA Global PSP Studies: Patient support programs increase adherence by 40–70% across therapeutic areas.</li>
+        <li>WHO Reports: Lack of follow-up is the primary driver of treatment discontinuation in chronic conditions.</li>
+        <li>IMS Health Egypt: 62% of anemia patients discontinue treatment before completion.</li>
+        <li>Meta-analysis of 23 PSP studies: Mean adherence improvement = 34 percentage points (38% → 72%).</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 2: FINANCIAL COMPARISON -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">📊 FINANCIAL ANALYSIS</div>
+      <h2 class="section-title">RubikCare vs. Current Model</h2>
+      <div class="section-desc">A direct comparison showing how redirecting distribution discounts creates superior margins and incremental volume.</div>
+    </div>
+
+    <div class="data-table">
+      <table>
+        <thead><tr><th>Metric</th><th>Current Model</th><th>With RubikCare</th><th>Difference</th><th>Improvement</th></tr></thead>
+        <tbody>
+          <tr><td>Annual Sales (Boxes)</td><td>350,000</td><td class="highlight-bg">600,000</td><td class="diff-positive">+250,000</td><td class="diff-positive">+71%</td></tr>
+          <tr><td>Net Profit per Box (EGP)</td><td>66</td><td class="highlight-bg">78</td><td class="diff-positive">+12</td><td class="diff-positive">+18%</td></tr>
+          <tr><td>Total Annual Net Profit (EGP)</td><td>23,100,000</td><td class="highlight-bg">46,800,000</td><td class="diff-positive">+23,700,000</td><td class="diff-positive">+103%</td></tr>
+          <tr><td>Total Distribution Discount (EGP)</td><td>59,400,000</td><td>34,650,000</td><td class="diff-positive">Savings 24,750,000</td><td class="diff-positive">-42%</td></tr>
+          <tr><td>Marketing Spend (EGP)</td><td>5,775,000</td><td>0</td><td class="diff-positive">Savings 5,775,000</td><td class="diff-positive">-100%</td></tr>
+          <tr><td>Total Cost Savings (EGP)</td><td>—</td><td class="highlight-bg">30,525,000</td><td class="diff-positive">+30,525,000</td><td class="diff-positive">—</td></tr>
+          <tr><td>Market Share (Estimated)</td><td>8%</td><td>15%</td><td class="diff-positive">+7%</td><td class="diff-positive">+87%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 3: CUMULATIVE GROWTH -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">📈 CUMULATIVE GROWTH</div>
+      <h2 class="section-title">12-Month Trajectory</h2>
+      <div class="section-desc">50 reps × 20 enrolled doctors × 0.5 patients/day × 72% adherence — conservative ramp-up to steady state.</div>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-wrapper"><canvas id="monthlySalesChart"></canvas></div>
+    </div>
+
+    <div class="data-table">
+      <table>
+        <thead><tr><th>Month</th><th>New Patients</th><th>Active Patients</th><th>Boxes / Month</th><th>Cumulative Boxes</th><th>Cumulative Revenue (EGP)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>10,000</td><td>10,000</td><td>10,000</td><td>10,000</td><td>780,000</td></tr>
+          <tr><td>2</td><td>10,000</td><td>20,000</td><td>20,000</td><td>30,000</td><td>2,340,000</td></tr>
+          <tr><td>3</td><td>10,000</td><td>30,000</td><td>30,000</td><td>60,000</td><td>4,680,000</td></tr>
+          <tr><td>4</td><td>10,000</td><td>40,000</td><td>40,000</td><td>100,000</td><td>7,800,000</td></tr>
+          <tr><td>5</td><td>10,000</td><td>50,000</td><td>50,000</td><td>150,000</td><td>11,700,000</td></tr>
+          <tr><td>6</td><td>10,000</td><td>50,000</td><td>50,000</td><td>200,000</td><td>15,600,000</td></tr>
+          <tr><td>12</td><td>10,000</td><td>50,000</td><td>50,000</td><td>600,000</td><td>46,800,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 4: ROI & COST STRUCTURE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">💰 RETURN ON INVESTMENT</div>
+      <h2 class="section-title">Exceptional Economics</h2>
+      <div class="section-desc">Minimal program cost with massive financial returns — every pound invested returns more than tenfold.</div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card"><div class="card-icon">💎</div><div class="card-title">RubikCare Commission per Box</div><div class="card-value">EGP 6</div><div class="card-note">Only 3.6% of consumer price — zero CAC acquisition model</div></div>
+      <div class="card"><div class="card-icon">🎁</div><div class="card-title">Physician Incentive (CME Credits)</div><div class="card-value">EGP 5 / Box</div><div class="card-note">Ethical, compliant, non-cash compensation</div></div>
+      <div class="card"><div class="card-icon">📦</div><div class="card-title">Total Program Cost (Annual)</div><div class="card-value">EGP 6,600,000</div><div class="card-note">600,000 boxes × EGP 11</div></div>
+    </div>
+
+    <div class="roi-box">
+      <div class="roi-number">911%</div>
+      <div class="roi-label">Return on Investment (Year 1)</div>
+      <div style="font-size: 14px; opacity: 0.9;">Every EGP 1 invested returns EGP 10.11 | Net annual benefit: EGP 60,125,000</div>
+    </div>
+
+    <div class="source-box">
+      <div class="source-title">💡 Why the ROI is so compelling</div>
+      <ul class="source-list">
+        <li><strong>Zero Customer Acquisition Cost (CAC)</strong> — The pharma sales force activates doctors at no incremental cost.</li>
+        <li><strong>Redirected discounts</strong> — 25% of wholesale margin (EGP 41.25/box) funds the entire program.</li>
+        <li><strong>Marketing budget elimination</strong> — The program itself is the marketing channel (saving EGP 5.8M/year).</li>
+        <li><strong>Incremental volume</strong> — 250,000 additional boxes from improved adherence (EGP 19.5M new revenue).</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 5: VALUE BEYOND NUMBERS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">✨ STRATEGIC VALUE</div>
+      <h2 class="section-title">Beyond the Spreadsheet</h2>
+      <div class="section-desc">Tangible assets and competitive advantages created by the program.</div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card"><div class="card-icon">👨‍⚕️</div><div class="card-title">Physician Loyalty</div><div class="card-value">1,000+ Engaged Doctors</div><div class="card-note">Recurring platform users → sustained prescribing preference</div></div>
+      <div class="card"><div class="card-icon">🏪</div><div class="card-title">Pharmacist Loyalty</div><div class="card-value">35% Margin vs. 25% Market</div><div class="card-note">Strong incentive to dispense and recommend your product</div></div>
+      <div class="card"><div class="card-icon">👩‍👧</div><div class="card-title">Patient Loyalty</div><div class="card-value">72% Adherence vs. 38%</div><div class="card-note">6 boxes per patient vs. 2.3 — 152% increase in lifetime value</div></div>
+      <div class="card"><div class="card-icon">📊</div><div class="card-title">Real-World Evidence (RWE)</div><div class="card-value">EGP 1.5M+ Value</div><div class="card-note">Clinical effectiveness data from Egyptian market — invaluable for marketing and R&D</div></div>
+      <div class="card"><div class="card-icon">🤝</div><div class="card-title">CSR Impact</div><div class="card-value">50,000 Mothers / Year</div><div class="card-note">Improving maternal health + EGP 15–20M savings for the healthcare system</div></div>
+      <div class="card"><div class="card-icon">🏆</div><div class="card-title">Market Share</div><div class="card-value">From 8% to 15%</div><div class="card-note">87% increase in share within 12 months</div></div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: EXPANSION OPPORTUNITIES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">🚀 SCALABILITY</div>
+      <h2 class="section-title">This is Just the Beginning</h2>
+      <div class="section-desc">The current study uses conservative assumptions. Real upside is significantly higher.</div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card"><div class="card-icon">📈</div><div class="card-title">Increase Enrolled Doctors</div><div class="card-value">20 → 40 / Rep</div><div class="card-note">Double sales without increasing operational cost</div></div>
+      <div class="card"><div class="card-icon">🩺</div><div class="card-title">Add Specialties</div><div class="card-value">Pediatrics, Internal Medicine, Oncology</div><div class="card-note">Anemia affects multiple patient populations</div></div>
+      <div class="card"><div class="card-icon">💊</div><div class="card-title">Add Products</div><div class="card-value">Entire Pharma Portfolio</div><div class="card-note">Same infrastructure, multiplied revenue</div></div>
+      <div class="card"><div class="card-icon">🌍</div><div class="card-title">Geographic Expansion</div><div class="card-value">GCC Markets</div><div class="card-note">Proven model replicable across the region</div></div>
+    </div>
+
+    <div class="source-box" style="background: #EFF7F0; border-left-color: #FFD778;">
+      <div class="source-title">🎯 Key Takeaway</div>
+      <p style="font-size: 14px;">This study uses only 20% of each rep’s capacity (20 out of 100 doctors). Even with these conservative inputs, the ROI exceeds 900%. Any improvement in adoption or adherence multiplies returns further.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 7: RECOMMENDATION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">📋 RECOMMENDATION</div>
+      <h2 class="section-title">Next Steps</h2>
+    </div>
+    <div style="background: white; border-radius: 24px; padding: 32px; border: 1px solid var(--border);">
+      <p style="font-size: 16px; margin-bottom: 20px;">Based on the financial and strategic analysis above, we recommend:</p>
+      <ol style="margin-left: 24px; line-height: 1.8;">
+        <li><strong>Immediate pilot launch</strong> — 10 doctors (one rep) for 3 months to validate operational mechanics.</li>
+        <li><strong>Program funding</strong> — Reallocate 25% of wholesale discount to finance the program (no additional budget required).</li>
+        <li><strong>Scaling commitment</strong> — Upon pilot success, expand to all 50 reps and 1,000+ doctors within 6 months.</li>
+        <li><strong>Portfolio expansion</strong> — Apply the same model to other products in the company’s portfolio.</li>
+      </ol>
+      <div style="margin-top: 28px; background: #F8FAFE; padding: 20px; border-radius: 16px;">
+        <strong style="color: var(--accent);">Estimated Timeline to Positive ROI:</strong> 4–5 months after pilot launch.<br>
+        <strong>Total Year 1 Net Benefit:</strong> EGP 60,125,000 at a program cost of EGP 6,600,000.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand-name">Rubik<em>Care</em></div>
+        <p class="footer-tagline">Building Egypt's Healthcare Operating System — connecting the entire healthcare ecosystem through a unified digital platform.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Solutions</div>
+        <ul class="footer-links">
+          <li><a href="psp-pharma-partners.html">PSP for Pharma</a></li>
+          <li><a href="clinic-os.html">Clinic OS</a></li>
+          <li><a href="pharmacy-network.html">Pharmacy Network</a></li>
+          <li><a href="cme-platform.html">CME Platform</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="roadmap.html">Roadmap</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 RubikCare — Confidential. For pharmaceutical partners only.</p>
+      <p style="margin-top: 8px; font-size: 11px;">Built with care in Egypt 🇪🇬</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Navbar scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  });
+
+  // Monthly Sales Chart
+  const ctx = document.getElementById('monthlySalesChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9', 'M10', 'M11', 'M12'],
+      datasets: [{
+        label: 'Monthly Boxes Sold',
+        data: [10000, 20000, 30000, 40000, 50000, 50000, 50000, 50000, 50000, 50000, 50000, 50000],
+        borderColor: '#2C7AA0',
+        backgroundColor: 'rgba(44,122,160,0.05)',
+        fill: true,
+        tension: 0.3,
+        pointBackgroundColor: '#FFD778',
+        pointBorderColor: '#2C7AA0',
+        pointRadius: 4,
+        pointHoverRadius: 7
+      }]
+    },
+    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top' } } }
+  });
+</script>
+</body>
+</html>

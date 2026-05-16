@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPIs — Performance Indicators | Market Intelligence Framework</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #0F2C3D;
+            --primary-light: #1C5A7A;
+            --primary-dark: #0A1F2C;
+            --accent: #B88B4A;
+            --accent-light: #D4A85C;
+            --success: #2E7D5E;
+            --danger: #C0392B;
+            --warning: #E67E22;
+            --bg: #F8FAFE;
+            --card-bg: #FFFFFF;
+            --text-primary: #1A2C3E;
+            --text-secondary: #546E7A;
+            --text-muted: #8A9BA8;
+            --border: #E9EDF2;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+            --radius: 12px;
+            --radius-lg: 20px;
+            --zone-a: #2E7D5E;
+            --zone-b: #B88B4A;
+            --zone-c: #C0392B;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navbar */
+        nav {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 16px 0;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .logo-cube {
+            width: 32px;
+            height: 32px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px;
+            transform: rotate(-6deg);
+        }
+        .logo-cube span { border-radius: 4px; }
+        .logo-cube span:nth-child(1) { background: var(--primary); }
+        .logo-cube span:nth-child(2) { background: var(--accent); }
+        .logo-cube span:nth-child(3) { background: var(--primary-light); }
+        .logo-cube span:nth-child(4) { background: var(--accent-light); }
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .logo-text em { color: var(--accent); font-style: normal; }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 12px;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            padding: 60px 0 40px;
+            color: white;
+            margin-bottom: 40px;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,215,120,0.15);
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 10px;
+            margin-bottom: 16px;
+        }
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .hero h1 span { color: var(--accent-light); }
+        .hero p {
+            font-size: 14px;
+            opacity: 0.85;
+            max-width: 700px;
+        }
+
+        /* Sections */
+        .section {
+            padding: 48px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .section:last-child { border-bottom: none; }
+        .section-header {
+            margin-bottom: 28px;
+        }
+        .section-tag {
+            display: inline-block;
+            background: var(--border);
+            padding: 3px 12px;
+            border-radius: 40px;
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .section-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            padding: 20px;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+        }
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .card-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-title-icon {
+            font-size: 20px;
+        }
+        .chart-container {
+            height: 220px;
+            position: relative;
+        }
+        .chart-caption {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        /* KPI Grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .kpi-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 16px;
+            text-align: center;
+        }
+        .kpi-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .kpi-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .kpi-value.zone-a { color: var(--zone-a); }
+        .kpi-value.zone-b { color: var(--zone-b); }
+        .kpi-value.zone-c { color: var(--zone-c); }
+        .kpi-change {
+            font-size: 10px;
+            margin-top: 4px;
+        }
+        .kpi-change.positive { color: var(--zone-a); }
+        .kpi-change.negative { color: var(--zone-c); }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin: 24px 0;
+            font-size: 12px;
+        }
+        .comparison-table th {
+            background: var(--primary);
+            color: white;
+            padding: 12px;
+            text-align: center;
+        }
+        .comparison-table td {
+            padding: 10px 12px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .comparison-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+            background: var(--bg);
+        }
+        .zone-a-cell { background: rgba(46,125,94,0.05); }
+        .zone-b-cell { background: rgba(184,139,74,0.03); }
+        .zone-c-cell { background: rgba(192,57,43,0.03); }
+        .badge-a {
+            background: var(--zone-a);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+        }
+        .badge-b {
+            background: var(--zone-b);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+        }
+        .badge-c {
+            background: var(--zone-c);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin: 16px 0;
+        }
+        .progress-label {
+            font-size: 11px;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .progress-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            width: 0%;
+        }
+        .progress-fill.a { background: var(--zone-a); }
+        .progress-fill.b { background: var(--zone-b); }
+        .progress-fill.c { background: var(--zone-c); }
+
+        /* Internal Links */
+        .internal-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 24px 0;
+            padding: 16px;
+            background: var(--bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+        .internal-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            color: var(--primary-light);
+            padding: 6px 14px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+        .internal-link:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Quote */
+        .quote-box {
+            background: linear-gradient(135deg, rgba(46,125,94,0.05), rgba(184,139,74,0.03));
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            margin: 32px 0;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        .quote-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-style: italic;
+            color: var(--primary);
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-dark);
+            padding: 40px 0 24px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 48px;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .footer-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            color: white;
+        }
+        .footer-brand span { color: var(--accent-light); }
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            list-style: none;
+        }
+        .footer-links a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 11px;
+        }
+        .footer-links a:hover { color: var(--accent-light); }
+        .footer-copy {
+            text-align: center;
+            font-size: 10px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        @media (max-width: 700px) {
+            .container { padding: 0 16px; }
+            .nav-links { display: none; }
+            .hero h1 { font-size: 28px; }
+            .section-title { font-size: 24px; }
+            .kpi-grid { grid-template-columns: 1fr; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<section class="hero">
+    <div class="container">
+        <div class="hero-badge">KEY PERFORMANCE INDICATORS</div>
+        <h1>Performance <span>Measurement</span></h1>
+        <p>How every element in the periodic table translates into measurable outcomes — and how these metrics tell the story of progress from chaos to control.</p>
+    </div>
+</section>
+
+<div class="container">
+
+    <!-- Internal Navigation Links -->
+    <div class="internal-links">
+        <a href="closed-loops.html" class="internal-link">🔄 Closed Loops</a>
+        <a href="d-block-final.html" class="internal-link">🔷 d-Block Guide</a>
+        <a href="zone-a.html" class="internal-link">✅ Zone A</a>
+        <a href="zone-b.html" class="internal-link">⚡ Zone B</a>
+        <a href="zone-c.html" class="internal-link">⚠️ Zone C</a>
+        <a href="f-block.html" class="internal-link">💀 f-Block</a>
+    </div>
+
+    <!-- Introduction -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">THE CORE PRINCIPLE</div>
+            <h2 class="section-title">Without Measurement, There Is No Control</h2>
+            <div class="section-desc">KPIs are the backbone of the entire system. Every element in the periodic table — from strategy to patient — can be converted into a measurable indicator. When these indicators connect, they tell a complete story. The principle is simple: the more digitalization, the more accurate the metrics. The further you move away from the d‑Block, the more metrics disappear or become misleading.</div>
+        </div>
+    </div>
+
+    <!-- Dashboard Charts Row 1 -->
+    <div class="dashboard-grid">
+        <!-- Chart 1: Radar Chart - Adherence Across Zones -->
+        <div class="dashboard-card">
+            <div class="card-title"><span class="card-title-icon">📡</span> Treatment Adherence by Zone</div>
+            <div class="chart-container">
+                <canvas id="radarChart"></canvas>
+            </div>
+            <div class="chart-caption">Patient adherence rates across Zone A, B, and C — Zone A achieves global benchmark (72%+)</div>
+        </div>
+
+        <!-- Chart 2: Gauge - Digital Maturity Index -->
+        <div class="dashboard-card">
+            <div class="card-title"><span class="card-title-icon">🎯</span> Digital Maturity Index</div>
+            <div class="chart-container">
+                <canvas id="gaugeChart"></canvas>
+            </div>
+            <div class="chart-caption">Overall digital maturity score (0-100) — Zone A target: 90+</div>
+        </div>
+
+        <!-- Chart 3: Bar Chart - PSP Adherence Improvement -->
+        <div class="dashboard-card">
+            <div class="card-title"><span class="card-title-icon">📈</span> PSP Adherence Improvement</div>
+            <div class="chart-container">
+                <canvas id="barChart"></canvas>
+            </div>
+            <div class="chart-caption">Structured PSP programs increase adherence by 34 percentage points (38% → 72%)</div>
+        </div>
+    </div>
+
+    <!-- Key Metrics Row -->
+    <div class="section">
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label">PATIENT ADHERENCE (ZONE A)</div>
+                <div class="kpi-value zone-a">72%</div>
+                <div class="kpi-change positive">↑ +34% vs baseline</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">PATIENT ADHERENCE (ZONE B)</div>
+                <div class="kpi-value zone-b">50-65%</div>
+                <div class="kpi-change positive">↑ +12-27% vs baseline</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">PATIENT ADHERENCE (ZONE C)</div>
+                <div class="kpi-value zone-c">&lt;30%</div>
+                <div class="kpi-change negative">↓ Below baseline</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Comparison Table -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">THE KPI MATRIX</div>
+            <h2 class="section-title">Same Pathway — Different Outcomes by Zone</h2>
+            <div class="section-desc">The same market pathway (Wellness, OTC, RX, PSP, Institutional) produces radically different results depending on which zone it operates in.</div>
+        </div>
+
+        <table class="comparison-table">
+            <thead>
+                <tr><th>Pathway</th><th>Zone A (Fully Digital)</th><th>Zone B (Mixed)</th><th>Zone C (Collapse)</th></tr>
+            </thead>
+            <tbody>
+                <tr><td style="font-weight:700;">Wellness</td><td class="zone-a-cell">Health awareness ≥80%<br>Adherence to supplements: 75%+<br>Early disease detection: High</td><td class="zone-b-cell">Health awareness 50-60%<br>Adherence: 40-55%<br>Detection: Moderate</td><td class="zone-c-cell">Health awareness &lt;20%<br>Adherence: &lt;20%<br>Detection: Late / None</td></tr>
+                <tr><td style="font-weight:700;">OTC / E‑Commerce</td><td class="zone-a-cell">B2B adoption: 95%+<br>Cash back utilization: 80%+<br>Recovery rate: ≥95%</td><td class="zone-b-cell">B2B adoption: 40-60%<br>Cash back: 30-50%<br>Recovery: 70%</td><td class="zone-c-cell">B2B adoption: &lt;10%<br>Cash back: None / manual<br>Recovery: &lt;40%</td></tr>
+                <tr><td style="font-weight:700;">General RX</td><td class="zone-a-cell">Diagnosis accuracy: ≥98%<br>eRX penetration: 95%+<br>Rx demand forecast: 90%+</td><td class="zone-b-cell">Diagnosis: 75-85%<br>eRX: 30-50%<br>Forecast: 50-70%</td><td class="zone-c-cell">Misdiagnosis: 40%+<br>eRX: 0%<br>Forecast: Guessing</td></tr>
+                <tr><td style="font-weight:700;">Specialist RX</td><td class="zone-a-cell">Treatment adherence: ≥85%<br>CME participation: 70%+<br>RWE collection: Complete</td><td class="zone-b-cell">Adherence: 55-70%<br>CME: 30-50% (physical)<br>RWE: Partial</td><td class="zone-c-cell">Adherence: &lt;40%<br>Drop‑out rate: 60%+<br>RWE: None / falsified</td></tr>
+                <tr><td style="font-weight:700;">Institutional</td><td class="zone-a-cell">Safe discharge: 95%<br>LOS optimization: -30%<br>Compliance: 98%</td><td class="zone-b-cell">Safe discharge: 80%<br>LOS: 1.5× baseline<br>Compliance: 70%</td><td class="zone-c-cell">Mortality: ↑↑<br>LOS: 2-3× baseline<br>Compliance: &lt;30%</td></tr>
+                <tr><td style="font-weight:700;">PSP (Patient Support)</td><td class="zone-a-cell">Adherence: ≥85%<br>Program completion: 80%+<br>RWE: Full, real-time</td><td class="zone-b-cell">Adherence: 50-65%<br>Completion: 40-60%<br>RWE: Partial, delayed</td><td class="zone-c-cell">Adherence: &lt;30%<br>Drop‑out: 80%+<br>RWE: None / fake</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- PSP Deep Dive with Progress Bars -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">PSP DEEP DIVE</div>
+            <h2 class="section-title">The Impact of Structured Patient Support Programs</h2>
+            <div class="section-desc">Based on global PSP studies and real‑world evidence, structured digital programs consistently outperform manual or absent programs by significant margins.</div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <div class="card-title"><span class="card-title-icon">💊</span> Adherence Rate Improvement</div>
+                <div class="progress-container">
+                    <div class="progress-label"><span>Without PSP (Baseline)</span><span>38%</span></div>
+                    <div class="progress-bar"><div class="progress-fill c" style="width: 38%;"></div></div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-label"><span>Zone B — Manual / Partial PSP</span><span>50-65%</span></div>
+                    <div class="progress-bar"><div class="progress-fill b" style="width: 60%;"></div></div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-label"><span>Zone A — Digital PSP</span><span>72-85%</span></div>
+                    <div class="progress-bar"><div class="progress-fill a" style="width: 78%;"></div></div>
+                </div>
+                <div class="chart-caption" style="margin-top: 16px;">Structured digital PSP increases adherence by 34-47 percentage points — 2x to 3x improvement</div>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-title"><span class="card-title-icon">📊</span> Real‑World Evidence (RWE) Quality</div>
+                <div class="progress-container">
+                    <div class="progress-label"><span>Zone C — RWE Quality</span><span>0% (None / Fake)</span></div>
+                    <div class="progress-bar"><div class="progress-fill c" style="width: 0%;"></div></div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-label"><span>Zone B — RWE Quality</span><span>30-50%</span></div>
+                    <div class="progress-bar"><div class="progress-fill b" style="width: 40%;"></div></div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-label"><span>Zone A — RWE Quality</span><span>95-100%</span></div>
+                    <div class="progress-bar"><div class="progress-fill a" style="width: 98%;"></div></div>
+                </div>
+                <div class="chart-caption" style="margin-top: 16px;">RWE from Zone A is audit‑ready, anonymized, and immediately actionable</div>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-title"><span class="card-title-icon">💰</span> ROI per PSP Program</div>
+                <div class="progress-container">
+                    <div class="progress-label"><span>Zone C — ROI</span><span>Negative (loss)</span></div>
+                    <div class="progress-bar"><div class="progress-fill c" style="width: 10%;"></div></div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-label"><span>Zone B — ROI</span><span>Break‑even to 2x</span></div>
+                    <div class="progress-bar"><div class="progress-fill b" style="width: 50%;"></div></div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-label"><span>Zone A — ROI</span><span>5x to 10x+</span></div>
+                    <div class="progress-bar"><div class="progress-fill a" style="width: 90%;"></div></div>
+                </div>
+                <div class="chart-caption" style="margin-top: 16px;">Documented case study: 911% ROI in Year 1 for a structured PSP program in Zone A</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cumulative KPI Hierarchy -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">CUMULATIVE METRICS</div>
+            <h2 class="section-title">How KPIs Accumulate — From Element to Ecosystem</h2>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <div class="card-title"><span class="card-title-icon">🔷</span> Level 1: Element KPIs</div>
+                <div class="chart-caption" style="text-align: left;">Every d‑Block element produces its own report:</div>
+                <ul style="margin-top: 12px; font-size: 12px; color: var(--text-secondary); padding-left: 20px;">
+                    <li>CRM → "Accepted visit rate"</li>
+                    <li>B2B → "Digital order penetration"</li>
+                    <li>eRX → "e‑prescription adoption"</li>
+                    <li>PSP → "Adherence score"</li>
+                </ul>
+            </div>
+            <div class="dashboard-card">
+                <div class="card-title"><span class="card-title-icon">🔄</span> Level 2: Pathway KPIs</div>
+                <div class="chart-caption" style="text-align: left;">Element indicators aggregate into pathway health scores:</div>
+                <ul style="margin-top: 12px; font-size: 12px; color: var(--text-secondary); padding-left: 20px;">
+                    <li>PSP Health = Enrollment + Dispensing + Adherence + RWE</li>
+                    <li>OTC Health = B2B + Cash Back + Forecast accuracy</li>
+                </ul>
+            </div>
+            <div class="dashboard-card">
+                <div class="card-title"><span class="card-title-icon">🏢</span> Level 3: System KPIs</div>
+                <div class="chart-caption" style="text-align: left;">All pathway scores combine into enterprise‑wide metrics:</div>
+                <ul style="margin-top: 12px; font-size: 12px; color: var(--text-secondary); padding-left: 20px;">
+                    <li>Digital Maturity Index (0-100)</li>
+                    <li>Overall Compliance Score</li>
+                    <li>Market Intelligence Quotient</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stakeholder KPIs -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">STAKEHOLDER KPIs</div>
+            <h2 class="section-title">What Matters to Each Stakeholder</h2>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <div class="card-title"><span class="card-title-icon">🏢</span> Pharma Company</div>
+                <ul style="font-size: 12px; color: var(--text-secondary); padding-left: 20px;">
+                    <li>Market share & sales growth</li>
+                    <li>Net margin per product</li>
+                    <li>Forecast accuracy (MAPE)</li>
+                    <li>RWE completeness</li>
+                    <li>Customer acquisition cost (CAC)</li>
+                    <li>Rep effectiveness (Double Score)</li>
+                </ul>
+            </div>
+            <div class="dashboard-card">
+                <div class="card-title"><span class="card-title-icon">👨‍⚕️</span> Physician</div>
+                <ul style="font-size: 12px; color: var(--text-secondary); padding-left: 20px;">
+                    <li>CME points earned</li>
+                    <li>Visit quality score (from reps)</li>
+                    <li>Diagnosis accuracy</li>
+                    <li>Patient recovery rates</li>
+                    <li>Clinic efficiency (wait times, throughput)</li>
+                </ul>
+            </div>
+            <div class="dashboard-card">
+                <div class="card-title"><span class="card-title-icon">💊</span> Pharmacist</div>
+                <ul style="font-size: 12px; color: var(--text-secondary); padding-left: 20px;">
+                    <li>Loyalty points & cash back earned</li>
+                    <li>Order fulfillment rate</li>
+                    <li>Product variety score</li>
+                    <li>Dispensing accuracy</li>
+                    <li>Customer satisfaction (NPS)</li>
+                </ul>
+            </div>
+            <div class="dashboard-card">
+                <div class="card-title"><span class="card-title-icon">👤</span> Patient</div>
+                <ul style="font-size: 12px; color: var(--text-secondary); padding-left: 20px;">
+                    <li>Treatment adherence rate</li>
+                    <li>Medication availability</li>
+                    <li>Out‑of‑pocket cost reduction</li>
+                    <li>Health outcome improvement</li>
+                    <li>Quality of life score</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Principle Quote -->
+    <div class="quote-box">
+        <p class="quote-text">"What cannot be measured, cannot be improved. What cannot be improved, degrades. KPIs are not an 'administrative luxury' — they are the immune system of the market."</p>
+    </div>
+
+    <!-- Related Resources -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">RELATED RESOURCES</div>
+            <h2 class="section-title">Continue Exploring</h2>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;">
+            <a href="closed-loops.html" class="internal-link" style="background: var(--primary); color: white; border: none;">🔄 Closed Loops</a>
+            <a href="d-block-final.html" class="internal-link">🔷 d-Block Guide</a>
+            <a href="zone-a.html" class="internal-link">✅ Zone A →</a>
+            <a href="zone-b.html" class="internal-link">⚡ Zone B →</a>
+            <a href="zone-c.html" class="internal-link">⚠️ Zone C →</a>
+            <a href="../periodic-table/rubik-periodic-table-final.html" class="internal-link">⚛️ Periodic Table</a>
+        </div>
+    </div>
+
+</div>
+<script>
+    // Chart 1: Radar Chart
+    const radarCtx = document.getElementById('radarChart').getContext('2d');
+    new Chart(radarCtx, {
+        type: 'radar',
+        data: {
+            labels: ['Adherence', 'Diagnosis Accuracy', 'Data Quality', 'Compliance', 'Patient Satisfaction', 'ROI'],
+            datasets: [
+                { label: 'Zone A', data: [85, 98, 95, 98, 90, 85], backgroundColor: 'rgba(46,125,94,0.2)', borderColor: '#2E7D5E', borderWidth: 2, pointBackgroundColor: '#2E7D5E' },
+                { label: 'Zone B', data: [55, 75, 50, 65, 60, 40], backgroundColor: 'rgba(184,139,74,0.2)', borderColor: '#B88B4A', borderWidth: 2, pointBackgroundColor: '#B88B4A' },
+                { label: 'Zone C', data: [25, 30, 10, 20, 20, 5], backgroundColor: 'rgba(192,57,43,0.2)', borderColor: '#C0392B', borderWidth: 2, pointBackgroundColor: '#C0392B' }
+            ]
+        },
+        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top' } } }
+    });
+
+    // Chart 2: Gauge Chart (doughnut)
+    const gaugeCtx = document.getElementById('gaugeChart').getContext('2d');
+    new Chart(gaugeCtx, {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [72, 28],
+                backgroundColor: ['#2E7D5E', '#E9EDF2'],
+                borderWidth: 0,
+                circumference: 180,
+                rotation: 270
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: true, cutout: '70%', plugins: { tooltip: { callbacks: { label: () => 'Digital Maturity: 72%' } } } }
+    });
+
+    // Chart 3: Bar Chart
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Without PSP (Baseline)', 'Zone B (Manual PSP)', 'Zone A (Digital PSP)'],
+            datasets: [{ label: 'Patient Adherence (%)', data: [38, 60, 78], backgroundColor: ['#C0392B', '#B88B4A', '#2E7D5E'], borderRadius: 6 }]
+        },
+        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top' } } }
+    });
+</script>
+
+</body>
+</html>
