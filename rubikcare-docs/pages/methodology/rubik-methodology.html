@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rubik Methodology — The Complete Guide to Pharmaceutical Market Control</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --primary: #0F2C3D;
+            --primary-light: #1C5A7A;
+            --primary-dark: #0A1F2C;
+            --accent: #B88B4A;
+            --accent-light: #D4A85C;
+            --success: #2E7D5E;
+            --bg: #F8FAFE;
+            --card-bg: #FFFFFF;
+            --text-primary: #1A2C3E;
+            --text-secondary: #546E7A;
+            --text-muted: #8A9BA8;
+            --border: #E9EDF2;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 48px rgba(0,0,0,0.12);
+            --radius-sm: 12px;
+            --radius: 20px;
+            --radius-lg: 28px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', 'Tajawal', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+
+        .serif { font-family: 'Cormorant Garamond', serif; }
+        .gold { color: var(--accent); }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        .btn-primary:hover { background: var(--primary-light); transform: translateY(-2px); }
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--primary);
+            padding: 11px 27px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            border: 1.5px solid var(--border);
+            text-decoration: none;
+        }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        nav.scrolled { padding: 12px 0; box-shadow: var(--shadow-sm); }
+        .nav-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-cube {
+            width: 36px; height: 36px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px;
+            transform: rotate(-6deg);
+        }
+        .logo-cube span { border-radius: 4px; }
+        .logo-cube span:nth-child(1) { background: var(--primary); }
+        .logo-cube span:nth-child(2) { background: var(--accent); }
+        .logo-cube span:nth-child(3) { background: var(--primary-light); }
+        .logo-cube span:nth-child(4) { background: var(--accent-light); }
+        .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
+        .logo-text em { color: var(--accent); font-style: normal; }
+        .nav-links { display: flex; gap: 28px; flex-wrap: wrap; }
+        .nav-links a { text-decoration: none; color: var(--text-secondary); font-weight: 500; font-size: 13px; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--primary); }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            padding: 120px 0 80px;
+            color: white;
+            margin-top: 76px;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,215,120,0.2);
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 11px;
+            margin-bottom: 20px;
+        }
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(38px, 5vw, 52px);
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+        .hero h1 span { color: var(--accent-light); }
+        .hero p { font-size: 16px; opacity: 0.9; max-width: 600px; margin-bottom: 32px; }
+
+        .section { padding: 60px 0; border-bottom: 1px solid var(--border); }
+        .section:last-child { border-bottom: none; }
+        .section-header { margin-bottom: 40px; }
+        .section-tag {
+            display: inline-block;
+            background: var(--border);
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(30px, 4vw, 42px);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .section-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 700px;
+        }
+
+        .info-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 32px;
+            margin: 28px 0;
+            border-left: 4px solid var(--accent);
+        }
+        .info-box h4 { margin-top: 0; margin-bottom: 8px; font-size: 16px; }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin: 28px 0;
+        }
+        @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+        .layer-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 24px;
+            margin: 16px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .layer-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            border-radius: 4px 0 0 4px;
+        }
+        .layer-card.hf::before { background: #1B5A7A; }
+        .layer-card.de::before { background: #C0392B; }
+        .layer-card.is::before { background: #6C3483; }
+        .layer-card.cf::before { background: #1E8449; }
+        .layer-card.do::before { background: #2471A3; }
+        .layer-card.gi::before { background: #B88B4A; }
+        .layer-card.pi::before { background: #D4A85C; }
+        .layer-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; color: var(--primary); }
+        .layer-count { font-size: 0.7rem; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 10px; }
+        .layer-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; }
+
+        .element-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+        }
+        .element-chip {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text-secondary);
+        }
+
+        .quote-box {
+            background: linear-gradient(135deg, rgba(15,44,61,0.02), rgba(184,139,74,0.03));
+            border-radius: var(--radius-lg);
+            padding: 32px 36px;
+            margin: 32px 0;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        .quote-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--primary);
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            background: var(--primary-dark);
+            padding: 48px 0 32px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 40px;
+        }
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        .footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; color: white; }
+        .footer-brand span { color: var(--accent-light); }
+        .footer-links { display: flex; gap: 24px; flex-wrap: wrap; list-style: none; }
+        .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 12px; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent-light); }
+        .footer-copy { font-size: 11px; margin-top: 24px; text-align: center; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); }
+
+        @media (max-width: 900px) {
+            .container { padding: 0 20px; }
+            .nav-links { display: none; }
+            .two-col { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<section class="hero">
+    <div class="container">
+        <div class="hero-badge">RUBIK METHODOLOGY · COMPLETE GUIDE</div>
+        <h1>The Operating System of<br><span>Pharmaceutical Market Control</span></h1>
+        <p>A comprehensive reference document covering the philosophy, usage methods, diagnostic tools, and governance mechanisms of the periodic system.</p>
+    </div>
+</section>
+
+<div class="container">
+
+    <!-- Chapter 1: Why a Periodic System -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">CHAPTER 1</div>
+            <h2 class="section-title">Why a Periodic System for the Pharmaceutical Market?</h2>
+        </div>
+        <p>The pharmaceutical market is not a collection of isolated functions. It is a <strong>living system of interacting forces</strong> — human, commercial, digital, and behavioral — that behave according to predictable patterns. Yet for decades, the industry has managed these forces through fragmented tools.</p>
+
+        <div class="info-box">
+            <h4>The Core Insight</h4>
+            <p>Just as Mendeleev's periodic table revealed that chemical elements are not random but organized by atomic structure and reactive properties, <strong>Rubikalogics 54</strong> reveals that market control elements are organized by their function, interaction potential, and position in the value chain.</p>
+        </div>
+
+        <h3>The Three Fatal Flaws of Traditional Management</h3>
+        <p><strong>1. Fragmentation:</strong> Sales, marketing, distribution, and medical affairs operate in silos with no unifying framework.<br>
+        <strong>2. Measurement without Control:</strong> Companies measure everything but control nothing — because measurement without a system is just observation.<br>
+        <strong>3. Analog Bias:</strong> Despite digital tools, the mental models remain analog — paper-based thinking applied to digital infrastructure.</p>
+
+        <div class="quote-box">
+            <p class="quote-text">"The market, like a Rubik's Cube, appears chaotic only to those who don't understand its underlying structure. Once you see the pattern, every move becomes intentional."</p>
+            <p style="font-size: 12px;">— Shady El-Zaher, Rubik Methodology</p>
+        </div>
+    </div>
+
+    <!-- Chapter 2: Core Architecture -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">CHAPTER 2</div>
+            <h2 class="section-title">Core Architecture of the Periodic System</h2>
+        </div>
+        <p>The system consists of <strong>54 positive control elements</strong> (6 faces × 9 squares — referencing the Rubik's Cube), distributed across 8 columns representing value flow stages, and 8 rows representing integrated work paths with varying degrees of digital maturity.</p>
+
+        <h3>The 8 Columns — Value Flow Stages</h3>
+        <div class="two-col">
+            <div>
+                <p><strong>I — Strategy & Planning:</strong> "Why do we do this?" (s-block)</p>
+                <p><strong>II — Resource Structure & Force:</strong> "Who will execute?" (s-block)</p>
+                <p><strong>III — Push & Distribution Tools:</strong> "How do we reach the market?" (s-block / p-block)</p>
+                <p><strong>IV-VII — Platforms, Content, Tools, Incentives:</strong> "What is the technical and influence infrastructure?" (<strong>d-block</strong> — the heart of the system)</p>
+            </div>
+            <div>
+                <p><strong>VIII — Data & Control:</strong> "How do we measure and improve?" (p-block)</p>
+                <p><strong>IX — Final Recipient:</strong> "Where does the value go?" (Noble gases)</p>
+            </div>
+        </div>
+
+        <h3>The 8 Rows — Integrated Work Paths</h3>
+        <div class="two-col">
+            <div>
+                <p><strong>1 — Wellness:</strong> Health & Prevention (Zone A — Full Digital)</p>
+                <p><strong>2 — PSP:</strong> Patient Support (Zone A — Full Digital)</p>
+                <p><strong>3 — OTC:</strong> E-commerce (Zone B — Partial Digital)</p>
+                <p><strong>4 — General RX:</strong> General Prescription (Zone B — Mixed)</p>
+            </div>
+            <div>
+                <p><strong>5 — Specialist RX:</strong> Specialist Prescription (Zone B — Tapering Digital)</p>
+                <p><strong>6 — Institutional:</strong> Hospitals & Institutions (Zone B — Mostly Traditional)</p>
+                <p><strong>7 — Collapse:</strong> (Zone C — Void / U-Shape)</p>
+                <p><strong>8 — Swamp:</strong> (Zone C — Complete Collapse)</p>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h4>The Sovereign Layer — Market Governance</h4>
+            <p>Above the table — like hydrogen and helium in the chemical periodic table — stand three sovereign elements that do not belong to any row but <strong>govern the existence and interaction of all elements</strong>.</p>
+            <p><strong>RA — Regulatory Authority:</strong> The entry gateway — no element can exist without registration.<br>
+            <strong>GL — Governance Guidelines:</strong> Rules of interaction — marketing ethics, data privacy, clinical practice quality.<br>
+            <strong>DP — Data Protection:</strong> The patient guardian — not just a passive recipient but protected by the system.</p>
+        </div>
+    </div>
+
+    <!-- Chapter 3: The Blocks -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">CHAPTER 3</div>
+            <h2 class="section-title">The Blocks — Chemical Families of the Market</h2>
+        </div>
+        <p>Each element belongs to a <strong>block</strong> that determines its chemical engagement with other elements. The block reflects the "valence" — the number and type of bonds the element can form.</p>
+
+        <div class="layer-card hf"><div class="layer-title">🔵 Strategy (s-block — Alkali Metals)</div><div class="layer-count">Rear engagement — plans and pushes, does not execute directly</div><div class="layer-desc">Examples: Incentive design, KPI, pricing strategy</div><div class="element-list"><span class="element-chip">ST · Strategy</span><span class="element-chip">KP · KPI</span><span class="element-chip">IC · Incentives</span><span class="element-chip">HI · Hierarchy</span></div></div>
+        <div class="layer-card hf"><div class="layer-title">🔴 Push Force (s-block — Alkaline Earth Metals)</div><div class="layer-count">Front engagement — pushes directly to the market</div><div class="layer-desc">Examples: Sales rep, medical rep, key account manager</div><div class="element-list"><span class="element-chip">MR · Med Rep</span><span class="element-chip">RS · Sales Rep</span><span class="element-chip">KA · KAM</span><span class="element-chip">SR · Specialist Rep</span></div></div>
+        <div class="layer-card is"><div class="layer-title">🟣 d-Block (Digital — Transition Metals)</div><div class="layer-count">Double/multiple engagement — receives, sends, and analyzes</div><div class="layer-desc">Examples: CRM, B2B, PSP Platform, CME</div><div class="element-list"><span class="element-chip">CR · Dual CRM</span><span class="element-chip">B2 · B2B</span><span class="element-chip">PP · PSP</span><span class="element-chip">CM · CME</span></div></div>
+        <div class="layer-card de"><div class="layer-title">🟢 Conversion (p-block — Non-metals)</div><div class="layer-count">Persuasive engagement — influences decisions, doesn't sell directly</div><div class="layer-desc">Examples: Scientific content, digital training, conferences</div><div class="element-list"><span class="element-chip">CT · Content</span><span class="element-chip">TD · Training</span><span class="element-chip">CME · CME</span></div></div>
+        <div class="layer-card cf"><div class="layer-title">🟡 Incentive (p-block — Halogens)</div><div class="layer-count">Motivational engagement — drives behavior with incentives</div><div class="layer-desc">Examples: Cash back, loyalty points, PSP discount</div><div class="element-list"><span class="element-chip">CB · Cash Back</span><span class="element-chip">LP · Loyalty</span><span class="element-chip">DK · PSP Discount</span></div></div>
+        <div class="layer-card do"><div class="layer-title">🔷 Data & Control (d-block — Noble Gases)</div><div class="layer-count">Measurement engagement — collects, analyzes, and adjusts</div><div class="layer-desc">Examples: Analytics, Forecast, compliance reports</div><div class="element-list"><span class="element-chip">AN · Analytics</span><span class="element-chip">FC · Forecast</span><span class="element-chip">RW · RWE</span></div></div>
+        <div class="layer-card gi"><div class="layer-title">🟠 Recipient (Noble Gases)</div><div class="layer-count">Receptive engagement — receives but does not push</div><div class="layer-desc">Examples: Patient, health consumer</div><div class="element-list"><span class="element-chip">WS · Wellness</span><span class="element-chip">RP · RX Patient</span><span class="element-chip">CP · Chronic</span><span class="element-chip">SP · PSP Patient</span></div></div>
+        <div class="layer-card pi"><div class="layer-title">⚠️ f-Block (Distortion — Lanthanides/Actinides)</div><div class="layer-count">Disruptive engagement — corrupts natural flow</div><div class="layer-desc">Examples: Misdiagnosis, arbitrage, false visits</div><div class="element-list"><span class="element-chip">WS · Arbitrage</span><span class="element-chip">FV · False Visits</span><span class="element-chip">MD · Misdiagnosis</span><span class="element-chip">HD · Hidden Discount</span></div></div>
+    </div>
+
+    <!-- Chapter 4: Usage Methods -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">CHAPTER 4</div>
+            <h2 class="section-title">How to Use the Periodic System</h2>
+        </div>
+        <p>This framework is not an "intellectual museum" — it is an <strong>operational tool</strong> that can be used in five different ways depending on the objective.</p>
+
+        <h3>1. Diagnostic Tool</h3>
+        <p>The company stands before the table and asks: <strong>Where are we now?</strong> Which row? Which column? Which elements do we actually have? Which are missing? Which elements exist but work partially (Zone B)? Which distortion elements are active in our market (f-block)?</p>
+
+        <h3>2. Digital Transformation Strategy Development</h3>
+        <p>After diagnosis, the company asks: <strong>How do we advance?</strong> From Zone B to Zone A? From a traditional row to a digital row? Which d-block elements should we build first? What is the logical order of construction?</p>
+
+        <h3>3. Governance Tool</h3>
+        <p>Used by regulatory bodies or boards of directors to ask: <strong>Are we in the compliance zone or have we drifted away?</strong> How close or far are we from the sovereign layer? Are f-block elements appearing in our operations?</p>
+
+        <h3>4. Continuous Self-Monitoring Tool</h3>
+        <p>Like a nuclear power plant for peaceful purposes — it needs <strong>continuous monitoring</strong> to prevent "meltdown." The table is used periodically (quarterly or semi-annually) to measure: Are we improving or regressing? Are new distortion elements appearing? Has our d-block shrunk?</p>
+
+        <h3>5. Education and Training Tool</h3>
+        <p>The table is used in training programs for sales, marketing, and market access managers. It builds a <strong>shared language</strong> across all departments — everyone understands "where we stand" and "what it means to advance."</p>
+    </div>
+
+    <!-- Chapter 5: The Three Fundamental Laws -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">CHAPTER 5</div>
+            <h2 class="section-title">The Three Fundamental Laws of Market Physics</h2>
+        </div>
+
+        <div class="info-box">
+            <h4>Law 1: Conservation of Market Value</h4>
+            <p><em>"Market value is neither created nor destroyed — it transforms between elements."</em> The discount taken by a wholesaler appears as a cost to the manufacturer. The loyalty earned by a pharmacist appears as reduced acquisition cost.</p>
+        </div>
+
+        <div class="info-box">
+            <h4>Law 2: Behavioral Attraction</h4>
+            <p><em>"The attraction force between two market elements is proportional to the value exchanged and inversely proportional to the resistance to change."</em> This law explains why some strategies succeed while identical ones fail — the resistance factor is context-specific and must be measured.</p>
+        </div>
+
+        <div class="info-box">
+            <h4>Law 3: Market Entropy (Distortion)</h4>
+            <p><em>"In the absence of intelligent control, distortion elements increase spontaneously."</em> Without a control platform, a distributor becomes an arbitrageur. Without transparency, a discount becomes a hidden margin.</p>
+        </div>
+    </div>
+
+    <!-- Chapter 6: Application Lifecycle -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">CHAPTER 6</div>
+            <h2 class="section-title">Application Lifecycle — From Diagnosis to Continuity</h2>
+        </div>
+        <p>The model is not a "one-time use" tool — it is a <strong>continuous operating system</strong> like a nuclear power plant for peaceful purposes: it needs building, operation, monitoring, and continuous maintenance to prevent explosion.</p>
+
+        <div class="two-col">
+            <div>
+                <p><strong>1. Diagnosis:</strong> Determine current position on the table — which row, which column, which Zone, which elements are active and which are absent.</p>
+                <p><strong>2. Improvement Strategy:</strong> Based on diagnosed gaps, design a roadmap to advance from Zone B to Zone A.</p>
+                <p><strong>3. Phased Development:</strong> Implement the roadmap in stages — starting with Quick Wins, then deeper-impact elements.</p>
+            </div>
+            <div>
+                <p><strong>4. Final Vision:</strong> Reach Zone A — full digitalization, complete compliance, optimal results.</p>
+                <p><strong>5. Maintenance and Continuity:</strong> Periodic monitoring — do we remain in Zone A? Do f-block elements appear?</p>
+                <p><strong>6. Self-Monitoring:</strong> The table becomes a "dashboard" monitored by senior management periodically — like monitoring a nuclear reactor.</p>
+            </div>
+        </div>
+
+        <div class="quote-box">
+            <p class="quote-text">"The periodic table is not a map — it is a compass. It doesn't tell you where to go, it tells you where you stand. And from your position, you see for yourself where you should head."</p>
+            <p style="font-size: 12px;">— Rubik Methodology</p>
+        </div>
+    </div>
+
+   <!-- Related Resources -->
+<div class="section">
+    <div class="section-header">
+        <div class="section-tag">RELATED RESOURCES</div>
+        <h2 class="section-title">Continue Exploring</h2>
+    </div>
+    <div class="two-col">
+        <div>
+            <p><strong><a href="../periodic-table/rubik-periodic-table-final.html">⚛️ Interactive Periodic Table</a></strong><br>Explore the full 54-element table with filtering, highlighting, and detailed information panels.</p>
+            <p><strong><a href="closed-loops.html">🔄 Closed Loops</a></strong><br>How interactions between elements become sustainable cycles — starting from the company, passing through all stakeholders, and returning loaded with value and data.</p>
+            <p><strong><a href="zone-a.html">✅ Zone A — Complete Digital Integration</a></strong><br>The ideal state where digitalization is complete, compliance is achieved, and outcomes are optimal.</p>
+            <p><strong><a href="d-block-final.html">🔷 d-Block — Digital Transition Elements</a></strong><br>The heart of the periodic table — 21 digital platforms and tools that serve as intermediaries between all market stakeholders, generating data, enabling control, and producing measurable outcomes.</p>
+        </div>
+<p><strong><a href="kpis.html">📊 KPIs — Performance Indicators</a></strong><br>How every element translates into measurable outcomes — from chaos to control.</p>
+        <div>
+            <p><strong><a href="zone-b.html">⚡ Zone B — Mixed Digital Adoption</a></strong><br>The middle zone where digital and traditional coexist, outcomes are moderate, and opportunities are missed.</p>
+            <p><strong><a href="zone-c.html">⚠️ Zone C — Collapse & Swamp</a></strong><br>The bottom zone where d-block is absent, void appears, and distortion elements become active.</p>
+            <p><strong><a href="f-block.html">💀 f-Block — Distortion Elements</a></strong><br>The destructive forces that activate in the absence of d-block — filling the void with harm.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 20) nav.classList.add('scrolled');
+        else nav.classList.remove('scrolled');
+    });
+</script>
+</body>
+</html>

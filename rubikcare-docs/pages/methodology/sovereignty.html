@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sovereignty Layer — Market Governance | Market Intelligence Framework</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0F2C3D;
+            --primary-light: #1C5A7A;
+            --primary-dark: #0A1F2C;
+            --accent: #B88B4A;
+            --accent-light: #D4A85C;
+            --success: #2E7D5E;
+            --danger: #C0392B;
+            --bg: #F8FAFE;
+            --card-bg: #FFFFFF;
+            --text-primary: #1A2C3E;
+            --text-secondary: #546E7A;
+            --text-muted: #8A9BA8;
+            --border: #E9EDF2;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+            --radius: 12px;
+            --radius-lg: 20px;
+            --sovereign: #4A2C6E;
+            --sovereign-light: rgba(74,44,110,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navbar */
+        nav {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 16px 0;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .logo-cube {
+            width: 32px;
+            height: 32px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px;
+            transform: rotate(-6deg);
+        }
+        .logo-cube span { border-radius: 4px; }
+        .logo-cube span:nth-child(1) { background: var(--primary); }
+        .logo-cube span:nth-child(2) { background: var(--accent); }
+        .logo-cube span:nth-child(3) { background: var(--primary-light); }
+        .logo-cube span:nth-child(4) { background: var(--accent-light); }
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .logo-text em { color: var(--accent); font-style: normal; }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 12px;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--sovereign), var(--primary-dark));
+            padding: 60px 0 40px;
+            color: white;
+            margin-bottom: 40px;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 10px;
+            margin-bottom: 16px;
+        }
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .hero h1 span { color: var(--accent-light); }
+        .hero p {
+            font-size: 14px;
+            opacity: 0.85;
+            max-width: 700px;
+        }
+
+        /* Sections */
+        .section {
+            padding: 48px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .section:last-child { border-bottom: none; }
+        .section-header {
+            margin-bottom: 28px;
+        }
+        .section-tag {
+            display: inline-block;
+            background: var(--border);
+            padding: 3px 12px;
+            border-radius: 40px;
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--sovereign);
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .section-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin: 24px 0;
+            border-left: 4px solid var(--sovereign);
+        }
+        .info-box h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        /* Elements Grid */
+        .elements-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin: 32px 0;
+        }
+        .sovereign-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: all 0.2s;
+            border-top: 4px solid var(--sovereign);
+        }
+        .sovereign-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .sovereign-card.gl-card { border-top-color: var(--accent); }
+        .sovereign-card.dp-card { border-top-color: var(--primary-light); }
+        .card-header {
+            padding: 20px;
+            text-align: center;
+        }
+        .card-symbol {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--sovereign);
+        }
+        .gl-card .card-symbol { color: var(--accent); }
+        .dp-card .card-symbol { color: var(--primary-light); }
+        .card-title {
+            font-weight: 700;
+            font-size: 18px;
+            margin: 8px 0 4px;
+        }
+        .card-subtitle {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        .card-body {
+            padding: 0 20px 20px;
+        }
+        .card-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        .card-position {
+            background: var(--bg);
+            border-radius: var(--radius);
+            padding: 8px 12px;
+            margin-top: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--sovereign);
+        }
+
+        /* Vertical Distance Table */
+        .distance-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin: 24px 0;
+            font-size: 12px;
+        }
+        .distance-table th {
+            background: var(--primary);
+            color: white;
+            padding: 12px;
+            text-align: center;
+        }
+        .distance-table td {
+            padding: 10px 12px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .distance-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+            background: var(--bg);
+        }
+        .zone-a-badge { color: var(--success); font-weight: 700; }
+        .zone-b-badge { color: var(--accent); font-weight: 700; }
+        .zone-c-badge { color: var(--danger); font-weight: 700; }
+
+        /* Internal Links */
+        .internal-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 24px 0;
+            padding: 16px;
+            background: var(--bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+        .internal-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            color: var(--primary-light);
+            padding: 6px 14px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+        .internal-link:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Quote */
+        .quote-box {
+            background: linear-gradient(135deg, var(--sovereign-light), rgba(15,44,61,0.02));
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            margin: 32px 0;
+            text-align: center;
+            border: 1px solid rgba(74,44,110,0.15);
+        }
+        .quote-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-style: italic;
+            color: var(--primary);
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-dark);
+            padding: 40px 0 24px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 48px;
+        }
+        .footer-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .footer-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            color: white;
+        }
+        .footer-brand span { color: var(--accent-light); }
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            list-style: none;
+        }
+        .footer-links a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 11px;
+        }
+        .footer-links a:hover { color: var(--accent-light); }
+        .footer-copy {
+            text-align: center;
+            font-size: 10px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        @media (max-width: 700px) {
+            .container { padding: 0 16px; }
+            .nav-links { display: none; }
+            .hero h1 { font-size: 28px; }
+            .section-title { font-size: 24px; }
+            .elements-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<section class="hero">
+    <div class="container">
+        <div class="hero-badge">SOVEREIGNTY LAYER · MARKET GOVERNANCE</div>
+        <h1>The <span>Sovereign</span> Layer</h1>
+        <p>The regulatory bodies and governing laws that control the market — like hydrogen and helium in the chemical periodic table: outside the system, yet governing every element within it.</p>
+    </div>
+</section>
+
+<div class="container">
+
+    <!-- Internal Navigation Links -->
+    <div class="internal-links">
+        <a href="closed-loops.html" class="internal-link">🔄 Closed Loops</a>
+        <a href="d-block-final.html" class="internal-link">🔷 d-Block Guide</a>
+        <a href="zone-a.html" class="internal-link">✅ Zone A</a>
+        <a href="zone-b.html" class="internal-link">⚡ Zone B</a>
+        <a href="zone-c.html" class="internal-link">⚠️ Zone C</a>
+        <a href="kpis.html" class="internal-link">📊 KPIs</a>
+    </div>
+
+    <!-- Introduction -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">DEFINITION</div>
+            <h2 class="section-title">What is the Sovereign Layer?</h2>
+            <div class="section-desc">Above the periodic table — just like hydrogen and helium in the chemical periodic table — stand three sovereign elements that do not belong to any row or column, yet they govern the existence and interaction of all other elements.</div>
+        </div>
+
+        <div class="info-box">
+            <h4>The Chemical Analogy</h4>
+            <p>In the chemical periodic table, hydrogen and helium stand alone at the top — not belonging to any traditional group — because they <strong>govern the rules of existence for all other elements</strong>. Hydrogen is the foundation of everything (the first element, representing 75% of the universe's matter). Helium is the most stable (noble gas, non-reactive). In our table: RA is "the foundation" (no market without licensing). DP is "the stable guardian" (protects without interfering).</p>
+        </div>
+    </div>
+
+    <!-- The Three Sovereign Elements -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">THE ELEMENTS</div>
+            <h2 class="section-title">The Three Sovereign Elements</h2>
+        </div>
+
+        <div class="elements-grid">
+            <div class="sovereign-card">
+                <div class="card-header">
+                    <div class="card-symbol">RA</div>
+                    <div class="card-title">Regulatory Authority</div>
+                    <div class="card-subtitle">هيئة تسجيل وترخيص الأدوية</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-desc"><strong>The Entry Gateway.</strong> No element in the periodic table can exist without registration. Represents the Ministry of Health, the Drug Authority, or any regulatory body that grants the license to market a pharmaceutical product.</div>
+                    <div class="card-position">📍 Position: Above Column I — Controls the inputs</div>
+                </div>
+            </div>
+            <div class="sovereign-card gl-card">
+                <div class="card-header">
+                    <div class="card-symbol">GL</div>
+                    <div class="card-title">Governance Guidelines</div>
+                    <div class="card-subtitle">إرشادات الحوكمة</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-desc"><strong>The Rules of Interaction.</strong> Represents: pharmaceutical marketing ethics, patient data privacy, clinical practice quality standards, IFPMA, EFPIA, and EDA guidelines.</div>
+                    <div class="card-position">📍 Position: Above the interaction zone — above the d‑Block — governs how elements interact</div>
+                </div>
+            </div>
+            <div class="sovereign-card dp-card">
+                <div class="card-header">
+                    <div class="card-symbol">DP</div>
+                    <div class="card-title">Data Protection</div>
+                    <div class="card-subtitle">حماية بيانات المرضى</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-desc"><strong>The Patient Guardian.</strong> Represents data protection laws, patient privacy, and health consumer rights. Compliant with Egyptian Data Protection Law (Law No. 151 of 2020) and international standards.</div>
+                    <div class="card-position">📍 Position: Above Column IX — protects the final recipient of value</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The GL Bridge -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">THE BRIDGE</div>
+            <h2 class="section-title">GL — The Bridge Between RA and DP</h2>
+        </div>
+
+        <div class="info-box">
+            <h4>Three Sub‑Elements of GL</h4>
+            <p><strong>Marketing Ethics —</strong> Governs the relationship between pharma companies and physicians. Ensures that all promotional activities are compliant, documented, and transparent.<br>
+            <strong>Data Privacy —</strong> Controls the flow of information between all stakeholders. Patient consent is collected at every stage. Data is anonymized for reporting.<br>
+            <strong>Clinical Quality —</strong> Governs the relationship between physicians and patients. Ensures that clinical practices meet established standards and that patient safety is prioritized.</p>
+        </div>
+    </div>
+
+    <!-- Vertical Distance -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">VERTICAL MEANING</div>
+            <h2 class="section-title">Vertical Distance = Distance from Governance</h2>
+            <div class="section-desc">The further down you move in the periodic table, the further you move away from the sovereign layer. This distance is not theoretical — it has real consequences.</div>
+        </div>
+
+        <table class="distance-table">
+            <thead>
+                <tr><th>Location</th><th>Distance from Sovereignty</th><th>Compliance Status</th><th>Risks</th></tr>
+            </thead>
+            <tbody>
+                <tr><td style="font-weight:700;">Zone A</td><td>Only one row away — very close</td><td>Full compliance — every interaction documented</td><td>Nearly zero</td>
+                <tr><td style="font-weight:700;">Zone B (Upper)</td><td>2-3 rows away — relatively close</td><td>Good compliance — some gaps</td><td>Limited</td>
+                <tr><td style="font-weight:700;">Zone B (Lower)</td><td>4-5 rows away — moderate distance</td><td>Partial compliance — clear gaps</td><td>Moderate</td>
+                <tr><td style="font-weight:700;">Zone C</td><td>6-7 rows away — very far</td><td>Outside compliance — organized corruption</td><td>Catastrophic — deaths, counterfeit drugs</td>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- What Happens When the Sovereign Layer Collapses -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">COLLAPSE</div>
+            <h2 class="section-title">What Happens When the Sovereign Layer Collapses?</h2>
+        </div>
+
+        <div class="info-box">
+            <h4>Absence of RA (Regulatory Authority)</h4>
+            <p>Unlicensed drugs enter the market. Counterfeit drugs appear. No quality control. Patients consume products of unknown origin.</p>
+        </div>
+        <div class="info-box">
+            <h4>Absence of GL (Governance Guidelines)</h4>
+            <p>Pharmaceutical companies compete without rules. Bribes to physicians. Unethical incentives. Patient data is sold. No marketing standards.</p>
+        </div>
+        <div class="info-box">
+            <h4>Absence of DP (Data Protection)</h4>
+            <p>Patient data is exploited commercially. No privacy. Medical records are non‑existent or unprotected. The patient becomes just a "sales number".</p>
+        </div>
+
+        <div class="quote-box">
+            <p class="quote-text">"The sovereign layer is what separates a 'market' from a 'jungle'. Without it, the entire periodic table collapses — not just into Zone C, but into something worse: where there is no table at all."</p>
+        </div>
+    </div>
+
+    <!-- Related Resources -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">RELATED RESOURCES</div>
+            <h2 class="section-title">Continue Exploring</h2>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;">
+            <a href="closed-loops.html" class="internal-link" style="background: var(--primary); color: white; border: none;">🔄 Closed Loops</a>
+            <a href="d-block-final.html" class="internal-link">🔷 d-Block Guide</a>
+            <a href="zone-a.html" class="internal-link">✅ Zone A →</a>
+            <a href="zone-b.html" class="internal-link">⚡ Zone B →</a>
+            <a href="zone-c.html" class="internal-link">⚠️ Zone C →</a>
+            <a href="../periodic-table/rubik-periodic-table-final.html" class="internal-link">⚛️ Periodic Table</a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

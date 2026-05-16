@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RubikCare — Methodology Visual Guide | RIMS · Layers · Periodic Table</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --primary: #0F2C3D;
+            --primary-light: #1C5A7A;
+            --primary-dark: #0A1F2C;
+            --accent: #B88B4A;
+            --accent-light: #D4A85C;
+            --success: #2E7D5E;
+            --bg: #F8FAFE;
+            --card-bg: #FFFFFF;
+            --text-primary: #1A2C3E;
+            --text-secondary: #546E7A;
+            --text-muted: #8A9BA8;
+            --border: #E9EDF2;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 48px rgba(0,0,0,0.12);
+            --radius-sm: 12px;
+            --radius: 20px;
+            --radius-lg: 28px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', 'Tajawal', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+
+        /* Typography */
+        .serif { font-family: 'Cormorant Garamond', serif; }
+        .gold { color: var(--accent); }
+
+        /* Buttons */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        .btn-primary:hover { background: var(--primary-light); transform: translateY(-2px); }
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--primary);
+            padding: 11px 27px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            border: 1.5px solid var(--border);
+            text-decoration: none;
+        }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        nav.scrolled { padding: 12px 0; box-shadow: var(--shadow-sm); }
+        .nav-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-cube {
+            width: 36px; height: 36px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px;
+            transform: rotate(-6deg);
+        }
+        .logo-cube span { border-radius: 4px; }
+        .logo-cube span:nth-child(1) { background: var(--primary); }
+        .logo-cube span:nth-child(2) { background: var(--accent); }
+        .logo-cube span:nth-child(3) { background: var(--primary-light); }
+        .logo-cube span:nth-child(4) { background: var(--accent-light); }
+        .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
+        .logo-text em { color: var(--accent); font-style: normal; }
+        .nav-links { display: flex; gap: 28px; flex-wrap: wrap; }
+        .nav-links a { text-decoration: none; color: var(--text-secondary); font-weight: 500; font-size: 13px; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            padding: 120px 0 80px;
+            color: white;
+            margin-top: 76px;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,215,120,0.2);
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 11px;
+            margin-bottom: 20px;
+        }
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(38px, 5vw, 52px);
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+        .hero h1 span { color: var(--accent-light); }
+        .hero p { font-size: 16px; opacity: 0.9; max-width: 600px; margin-bottom: 32px; }
+
+        /* Sections */
+        .section { padding: 60px 0; border-bottom: 1px solid var(--border); }
+        .section:last-child { border-bottom: none; }
+        .section-header { margin-bottom: 40px; }
+        .section-tag {
+            display: inline-block;
+            background: var(--border);
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(30px, 4vw, 42px);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .section-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 700px;
+        }
+
+        /* Visual Card */
+        .visual-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 48px;
+            transition: all 0.3s;
+        }
+        .visual-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+        .visual-image {
+            width: 100%;
+            background: #f0f2f5;
+            text-align: center;
+            padding: 40px;
+            border-bottom: 1px solid var(--border);
+        }
+        .visual-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-md);
+        }
+        .visual-content { padding: 32px; }
+        .visual-title { font-size: 28px; font-weight: 700; margin-bottom: 16px; color: var(--primary); }
+        .visual-subtitle { font-size: 13px; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+        .visual-description { font-size: 15px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 24px; }
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 24px;
+        }
+        .grid-item {
+            background: var(--bg);
+            padding: 20px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+        .grid-item-title { font-weight: 700; margin-bottom: 8px; color: var(--primary); }
+        .grid-item-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+        /* Table for Layers */
+        .layers-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+            font-size: 13px;
+        }
+        .layers-table th {
+            background: var(--primary);
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .layers-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .layers-table td:first-child { font-weight: 700; width: 120px; }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-dark);
+            padding: 48px 0 32px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 40px;
+        }
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        .footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; color: white; }
+        .footer-brand span { color: var(--accent-light); }
+        .footer-links { display: flex; gap: 24px; flex-wrap: wrap; list-style: none; }
+        .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 12px; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent-light); }
+        .footer-copy { font-size: 11px; margin-top: 24px; text-align: center; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); }
+
+        @media (max-width: 900px) {
+            .container { padding: 0 20px; }
+            .nav-links { display: none; }
+            .visual-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<nav id="nav">
+    <div class="nav-inner">
+        <a href="../../index.html" class="logo">
+            <div class="logo-cube"><span></span><span></span><span></span><span></span></div>
+            <div class="logo-text">Rubik<span>Care</span></div>
+        </a>
+        <div class="nav-links">
+            <a href="../../index.html">Home</a>
+            <a href="../methodology/rubik-methodology.html">Methodology</a>
+            <a href="../periodic-table/rubik-periodic-table-final.html">Periodic Table</a>
+            <a href="../strategy/competitor-analysis.html">Competitor Analysis</a>
+            <a href="../strategy/roadmap.html">Roadmap</a>
+            <a href="../tools/self-assessment.html">Self-Assessment</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-badge">VISUAL GUIDE · METHODOLOGY AT A GLANCE</div>
+        <h1>Rubik Methodology<br><span>Visual Guide</span></h1>
+        <p>Three foundational diagrams that explain the entire Rubik ecosystem — from theoretical framework to execution platform.</p>
+    </div>
+</section>
+
+<div class="container">
+
+    <!-- Visual 1: RIMS (Rubik Integrated Market System) -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">📐 VISUAL 1</div>
+            <h2 class="section-title">RIMS — Rubik Integrated Market System</h2>
+            <div class="section-desc">The four-layer architecture that transforms knowledge into measurable market impact</div>
+        </div>
+        <div class="visual-card">
+            <div class="visual-image">
+                <img src="../../assets/images/rims.png" alt="RIMS — Rubik Integrated Market System" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'padding:60px;background:#f0f2f5;border-radius:12px;\'><i class=\'bi bi-image\' style=\'font-size:48px;color:#8A9BA8;\'></i><p style=\'margin-top:12px;\'>RIMS Diagram — Place image at: assets/images/rims.png</p></div>'">
+            </div>
+            <div class="visual-content">
+                <div class="visual-subtitle">From Knowledge to Impact</div>
+                <div class="visual-title">The Four Layers of Market Transformation</div>
+                <div class="visual-description">
+                    RIMS represents the complete journey from abstract theory to tangible market results. Each layer feeds into the next — creating a continuous cycle of learning, execution, and value creation.
+                </div>
+                <div class="visual-grid">
+                    <div class="grid-item"><div class="grid-item-title">📚 Knowledge Layer (Theory)</div><div class="grid-item-desc">Rubik Methodology — The scientific encyclopedia of market control elements, frameworks, and models.</div></div>
+                    <div class="grid-item"><div class="grid-item-title">🎓 Education Layer (Academy)</div><div class="grid-item-desc">Rubik Academy — Learn, practice, certify. Structured learning paths for market professionals.</div></div>
+                    <div class="grid-item"><div class="grid-item-title">⚙️ Application Layer (Execution)</div><div class="grid-item-desc">RubikCare Platform — AI-powered execution system. CRM, B2B, PSP, CME, analytics.</div></div>
+                    <div class="grid-item"><div class="grid-item-title">📊 Market Layer (Impact)</div><div class="grid-item-desc">Pharmaceutical Market Reengineering — Market efficiency, stakeholder alignment, behavior change, value creation.</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visual 2: Rubik Methodology Layers (10-Layer Architecture) -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">🏗️ VISUAL 2</div>
+            <h2 class="section-title">Rubik Methodology — 10-Layer Architecture</h2>
+            <div class="section-desc">The complete system architecture of pharmaceutical market control</div>
+        </div>
+        <div class="visual-card">
+            <div class="visual-image">
+                <img src="../../assets/images/rubik-methodology-layers.png" alt="Rubik Methodology 10-Layer Architecture" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'padding:60px;background:#f0f2f5;border-radius:12px;\'><i class=\'bi bi-image\' style=\'font-size:48px;color:#8A9BA8;\'></i><p style=\'margin-top:12px;\'>Methodology Layers Diagram — Place image at: assets/images/rubik-methodology-layers.png</p></div>'">
+            </div>
+            <div class="visual-content">
+                <div class="visual-subtitle">The Operating System of Market Control</div>
+                <div class="visual-title">From Foundational Mindset to Market Elements</div>
+                <div class="visual-description">
+                    The Rubik Methodology is organized into 10 progressive layers — each layer builds on the previous, creating a complete system for understanding, analyzing, and controlling the pharmaceutical market.
+                </div>
+                <table class="layers-table">
+                    <thead><tr><th>Layer</th><th>Title</th><th>Focus</th></tr></thead>
+                    <tbody>
+                        <tr><td>0</td><td>Preface Layer</td><td>Market illusion, why traditional models fail, need for a market OS</td></tr>
+                        <tr><td>1</td><td>System Architecture (Rubik OS)</td><td>4-core market nodes, data flow, control vs influence, 20+ management models</td></tr>
+                        <tr><td>2</td><td>Commercial Intelligence Engine</td><td>HRI, KPI engineering, forecasting, sales density, pricing elasticity</td></tr>
+                        <tr><td>3</td><td>Distribution Reengineering</td><td>Collapse of traditional wholesalers, direct flow redistribution, smart order structuring</td></tr>
+                        <tr><td>4</td><td>Behavioral Market Engineering</td><td>Pharmacy behavioral loops, physician influence, rep conversion, loyalty gravity</td></tr>
+                        <tr><td>5</td><td>Market Elemental System</td><td>54 elements classification, interactions, distribution, governance, impact</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visual 3: Rubik Periodic Table Elements (54 Elements) -->
+    <div class="section">
+        <div class="section-header">
+            <div class="section-tag">⚛️ VISUAL 3</div>
+            <h2 class="section-title">Rubik Periodic Table — 54 Control Elements</h2>
+            <div class="section-desc">The complete classification of pharmaceutical market control elements</div>
+        </div>
+        <div class="visual-card">
+            <div class="visual-image">
+                <img src="../../assets/images/rubik-periodic-table-elements.jpg" alt="Rubik Periodic Table — 54 Elements" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'padding:60px;background:#f0f2f5;border-radius:12px;\'><i class=\'bi bi-image\' style=\'font-size:48px;color:#8A9BA8;\'></i><p style=\'margin-top:12px;\'>Periodic Table Diagram — Place image at: assets/images/rubik-periodic-table-elements.jpg</p></div>'">
+            </div>
+            <div class="visual-content">
+                <div class="visual-subtitle">The Atomic Structure of Market Control</div>
+                <div class="visual-title">54 Elements · 7 Blocks · 6 Rows</div>
+                <div class="visual-description">
+                    Like the chemical periodic table, Rubikalogics 54 organizes market control elements by their function, interaction potential, and position in the value chain. Each element has a specific role, valence, and predictable behavior.
+                </div>
+                <div class="visual-grid">
+                    <div class="grid-item"><div class="grid-item-title">🔵 Human Force (s-Block)</div><div class="grid-item-desc">Field force, sales reps, KAMs — the most reactive elements that directly touch the market.</div></div>
+                    <div class="grid-item"><div class="grid-item-title">🔴 Demand Engine (p-Block)</div><div class="grid-item-desc">RX, OTC, digital commerce, social media — where demand is generated.</div></div>
+                    <div class="grid-item"><div class="grid-item-title">🟣 Influence System (p-Block)</div><div class="grid-item-desc">Physicians, pharmacists, KOLs, content — how decisions are shaped.</div></div>
+                    <div class="grid-item"><div class="grid-item-title">🟢 Commercial Flow (p-Block)</div><div class="grid-item-desc">B2B, distribution, pricing, margin — how value moves through the market.</div></div>
+                    <div class="grid-item"><div class="grid-item-title">🔷 Digital Operations (d-Block)</div><div class="grid-item-desc">CRM, B2B, PSP, CME, analytics — multi-valence transition elements.</div></div>
+                    <div class="grid-item"><div class="grid-item-title">🟠 Governance & KPI (d-Block)</div><div class="grid-item-desc">Strategic decomposition, KPI engineering, incentives — the noble gases of market control.</div></div>
+                    <div class="grid-item"><div class="grid-item-title">🟡 Product Intelligence (p-Block)</div><div class="grid-item-desc">Lifecycle management, portfolio balancing, RWE — closing the feedback loop.</div></div>
+                    <div class="grid-item"><div class="grid-item-title">⚠️ f-Block (Distortion)</div><div class="grid-item-desc">Arbitrage, price hacking, hidden discounts, misdiagnosis — market entropy elements.</div></div>
+                </div>
+                <div style="margin-top: 24px; text-align: center;">
+                    <a href="../periodic-table/rubik-periodic-table-final.html" class="btn-primary">Explore Interactive Periodic Table →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="section">
+        <div class="quick-links" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 24px;">
+            <a href="../methodology/rubik-methodology.html" class="btn-outline" style="font-size: 12px;">📘 Full Methodology</a>
+            <a href="../periodic-table/rubik-periodic-table-final.html" class="btn-outline" style="font-size: 12px;">⚛️ Interactive Periodic Table</a>
+            <a href="../strategy/competitor-analysis.html" class="btn-outline" style="font-size: 12px;">🏆 Competitor Analysis</a>
+            <a href="../strategy/roadmap.html" class="btn-outline" style="font-size: 12px;">🗺️ Roadmap</a>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-inner">
+            <div class="footer-brand">Rubik<span>Care</span></div>
+           <ul class="footer-links">
+    <li><a href="pages/methodology/rubik-methodology.html">Methodology</a></li>
+    <li><a href="pages/periodic-table/rubik-periodic-table-final.html">Periodic Table</a></li>
+    <li><a href="pages/strategy/competitor-analysis.html">Competitor Analysis</a></li>
+    <li><a href="pages/strategy/roadmap.html">Roadmap</a></li>
+    <li><a href="pages/tools/self-assessment.html">Self-Assessment</a></li>
+    <li><a href="pages/resources/presentation-hub.html">Presentations</a></li>
+    <li><a href="pages/resources/methodology-visual-guide.html">Visual Guide</a></li>  <!-- جديد -->
+    <li><a href="pages/resources/sitemap.html">Sitemap</a></li>
+</ul>
+        </div>
+        <div class="footer-copy">
+            <p>© 2025 RubikCare — All Rights Reserved. Made in Egypt 🇪🇬</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 20) nav.classList.add('scrolled');
+        else nav.classList.remove('scrolled');
+    });
+</script>
+</body>
+</html>
