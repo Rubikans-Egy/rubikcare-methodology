@@ -76,14 +76,6 @@
   }
   .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
 
-    .logo { display: flex; align-items: center; gap: 10px; }
-  .logo-cube {
-    width: 36px; height: 36px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3px;
-    transform: rotate(-8deg);
-  }
   .logo-cube span { border-radius: 4px; }
   .logo-cube span:nth-child(1) { background: var(--primary); }
   .logo-cube span:nth-child(2) { background: var(--accent); }
@@ -91,6 +83,7 @@
   .logo-cube span:nth-child(4) { background: var(--accent-light); }
   .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
   .logo-text em { color: var(--accent); font-style: normal; }
+ 
   /* Hero Slider */
   .hero {
     min-height: 100vh;
@@ -263,15 +256,11 @@
   .roadmap-preview p { opacity: 0.8; margin-bottom: 24px; max-width: 600px; }
 
  
-    text-align: center;
-    padding-top: 30px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    font-size: 12px;
-  }
-
   @media (max-width: 900px) {
     .container { padding: 0 20px; }
+    .nav-links { display: none; }
     .values-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
     .services-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 600px) {
@@ -281,8 +270,8 @@
 </style>
 </head>
 <body>
-<!-- ========== سطر واحد لتحميل الـ Layout ========== -->
-<script src="assets/js/layout.js"></script>
+  <!-- ========== سطر واحد لتحميل الـ Layout ========== -->
+<script src="../../assets/js/layout.js"></script>
 <!-- Hero Slider with Changing Content -->
 <section class="hero">
   <div class="hero-slider">
@@ -427,8 +416,15 @@
   </div>
 </div>
 
+
 <script>
-  
+  // Navbar scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  });
+
   // Hero Slider with Changing Content
   const slides = [
     {
