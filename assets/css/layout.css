@@ -254,3 +254,74 @@ body {
     .rubik-nav-menu { position: fixed; top: auto; right: 8px; left: 8px; max-height: 50vh; }
     .rubik-breadcrumb { display: none; }
 }
+/* ========== إصلاح تعارض z-index مع محتوى الصفحات ========== */
+
+/* ضمان أن الـ rubik-navbar والـ dropdown فوق أي محتوى */
+.rubik-header,
+.rubik-breadcrumb,
+.rubik-navbar {
+    position: relative;
+    z-index: 1000;
+}
+
+.rubik-navbar {
+    z-index: 1001;
+}
+
+.rubik-nav-dropdown {
+    z-index: 1002;
+}
+
+.rubik-nav-menu {
+    z-index: 1003;
+}
+
+/* خفض z-index لأي عنصر في الصفحة قد يتعارض */
+.hero,
+.container,
+.section,
+.layer-card,
+.info-box,
+.quote-box {
+    position: relative;
+    z-index: 1;
+}
+/* تحسين شكل القائمة المنسدلة */
+.rubik-nav-menu {
+    background: var(--card-bg, #FFFFFF);
+    border-radius: 16px;
+    box-shadow: 0 16px 40px rgba(15, 44, 61, 0.15);
+    border: 1px solid var(--border, #E9EDF2);
+    padding: 12px 8px;
+    min-width: 260px;
+}
+
+.rubik-nav-menu a {
+    padding: 10px 16px;
+    border-radius: 10px;
+    margin: 2px 4px;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.rubik-nav-menu a:hover {
+    background: rgba(184, 139, 74, 0.08);
+    color: var(--primary, #0F2C3D);
+}
+
+/* تحسين شكل الـ Navbar نفسه */
+.rubik-nav-btn {
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+
+.rubik-nav-btn:hover {
+    background: rgba(15, 44, 61, 0.04);
+}
+
+.rubik-nav-btn.active {
+    background: rgba(184, 139, 74, 0.1);
+    color: var(--accent, #B88B4A);
+}
