@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rubik Methodology — Market Intelligence Framework</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         :root {
             --primary: #0F2C3D;
@@ -21,6 +20,7 @@
             --border: #E9EDF2;
             --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
             --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+            --sidebar-width: 280px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -30,30 +30,23 @@
             background: var(--bg);
             color: var(--text-primary);
             line-height: 1.5;
-            overflow: hidden;
             height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
-        nav {
-            position: relative;
-            z-index: 1001;
+        /* ========== TOP BAR ========== */
+        .topbar {
             background: rgba(255,255,255,0.96);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
-            padding: 12px 0;
-            flex-shrink: 0;
-        }
-        .nav-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
+            padding: 12px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 16px;
+            z-index: 100;
+            flex-shrink: 0;
         }
         .logo {
             display: flex;
@@ -62,8 +55,7 @@
             text-decoration: none;
         }
         .logo-cube {
-            width: 36px;
-            height: 36px;
+            width: 36px; height: 36px;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 3px;
@@ -75,132 +67,115 @@
         .logo-cube span:nth-child(3) { background: var(--primary-light); }
         .logo-cube span:nth-child(4) { background: var(--accent-light); }
         .logo-text {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--primary);
         }
         .logo-text em { color: var(--accent); font-style: normal; }
 
-        .nav-menu {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        .dropdown-btn {
-            background: transparent;
+        .hamburger {
+            display: none;
+            background: none;
             border: none;
-            padding: 10px 16px;
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-secondary);
+            font-size: 1.5rem;
             cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s;
-            font-family: 'DM Sans', sans-serif;
+            color: var(--text-primary);
+            padding: 8px;
         }
-        .dropdown-btn:hover {
-            color: var(--primary);
-            background: rgba(15,44,61,0.05);
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: var(--card-bg);
-            min-width: 240px;
-            box-shadow: var(--shadow-md);
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            z-index: 1002;
-            padding: 8px 0;
-        }
-        .dropdown-content a {
-            display: block;
-            padding: 10px 20px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            transition: all 0.2s;
-        }
-        .dropdown-content a:hover {
-            background: var(--bg);
-            color: var(--primary);
-        }
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        .dropdown-content.wide {
-            width: 460px;
-            display: none;
-            grid-template-columns: 1fr 1fr;
-        }
-        .dropdown:hover .dropdown-content.wide {
-            display: grid;
-        }
-
-        .nav-menu > a {
-            text-decoration: none;
-            padding: 10px 16px;
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            border-radius: 8px;
-            transition: all 0.2s;
-        }
-        .nav-menu > a:hover {
-            color: var(--primary);
-            background: rgba(15,44,61,0.05);
-        }
-
         .company-link {
             background: var(--accent);
             color: white;
-            padding: 6px 14px;
+            padding: 8px 16px;
             border-radius: 40px;
             text-decoration: none;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
-            transition: all 0.2s;
             white-space: nowrap;
         }
-        .company-link:hover {
-            background: var(--accent-light);
-            transform: translateY(-1px);
-        }
-/* تحسين iframe للموبايل */
-.iframe-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-}
+        .company-link:hover { background: var(--accent-light); }
 
-iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    display: block;
-}
-        .iframe-container {
+        /* ========== LAYOUT ========== */
+        .app-container {
+            display: flex;
             flex: 1;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-        }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: var(--bg);
+            overflow: hidden;
         }
 
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--card-bg);
+            border-left: 1px solid var(--border);
+            overflow-y: auto;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+            z-index: 99;
+        }
+        .sidebar-nav { padding: 16px 0; }
+        
+        .sidebar-section {
+            padding: 0 16px;
+            margin-bottom: 8px;
+        }
+        .sidebar-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            padding: 12px 8px 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .sidebar-section-title:hover { color: var(--primary); }
+        
+        .sidebar-links {
+            list-style: none;
+            display: none;
+        }
+        .sidebar-links.open { display: block; }
+        
+        .sidebar-links li a {
+            display: block;
+            padding: 8px 12px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-radius: 6px;
+            transition: all 0.2s;
+            margin-bottom: 2px;
+        }
+        .sidebar-links li a:hover,
+        .sidebar-links li a.active {
+            background: var(--bg);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 24px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .main-content :first-child { margin-top: 0; }
+
+        /* ========== OVERLAY FOR MOBILE ========== */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 98;
+        }
+        .sidebar-overlay.active { display: block; }
+
+        /* ========== FOOTER ========== */
         footer {
             background: var(--primary-dark);
             padding: 12px 0;
@@ -218,139 +193,242 @@ iframe {
             flex-wrap: wrap;
             gap: 16px;
         }
-        .footer-brand {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 16px;
-            color: white;
-        }
+        .footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: white; }
         .footer-brand span { color: var(--accent-light); }
-        .footer-links {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            list-style: none;
-        }
-        .footer-links a {
-            color: rgba(255,255,255,0.5);
-            text-decoration: none;
-            font-size: 10px;
-        }
-        .footer-links a:hover { color: var(--accent-light); }
 
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 900px) {
-            .nav-menu { display: none; }
-            .nav-inner { justify-content: space-between; }
-            .company-link { margin-right: auto; }
+            .hamburger { display: block; }
+            .sidebar {
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: 100vh;
+                transform: translateX(100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                padding: 16px;
+            }
+            .company-link { font-size: 11px; padding: 6px 12px; }
         }
     </style>
 </head>
 <body>
 
-<nav>
-    <div class="nav-inner">
-        <a href="index.html" class="logo">
-            <div class="logo-cube"><span></span><span></span><span></span><span></span></div>
-            <div class="logo-text">Rubik<span>Methodology</span></div>
-        </a>
-        <div class="nav-menu">
-            <!-- Home -->
-            <a href="#" onclick="loadPage('index-home.html'); return false;">🏠 Home</a>
-
-            <!-- Methodology Dropdown (with Visual Guide added) -->
-            <div class="dropdown">
-                <button class="dropdown-btn">📘 Methodology</button>
-                <div class="dropdown-content">
-                    <a href="#" onclick="loadPage('pages/methodology/rubik-methodology.html'); return false;">🔄 rubik-methodology</a>
-                    <a href="#" onclick="loadPage('pages/methodology/closed-loops.html'); return false;">🔄 Closed Loops</a>
-                    <a href="#" onclick="loadPage('pages/methodology/kpis.html'); return false;">📊 KPIs</a>
-                    <a href="#" onclick="loadPage('pages/tools/self-assessment.html'); return false;">📋 Self-Assessment</a>
-                    <a href="#" onclick="loadPage('pages/resources/methodology-visual-guide.html'); return false;">📐 Visual Guide</a>
-                </div>
-            </div>
-
-            <!-- Periodic Table Dropdown -->
-            <div class="dropdown">
-                <button class="dropdown-btn">⚛️ Periodic Table</button>
-                <div class="dropdown-content wide">
-                    <a href="#" onclick="loadPage('pages/periodic-table/rubik-periodic-table-final.html'); return false;">⚛️ Interactive Periodic Table</a>
-                    <a href="#" onclick="loadPage('pages/methodology/d-block-final.html'); return false;">🔷 d-Block (21 elements)</a>
-                    <a href="#" onclick="loadPage('pages/methodology/f-block.html'); return false;">💀 f-Block (Distortion)</a>
-                    <a href="#" onclick="loadPage('pages/methodology/zone-a.html'); return false;">✅ Zone A — Complete Digital</a>
-                    <a href="#" onclick="loadPage('pages/methodology/zone-b.html'); return false;">⚡ Zone B — Mixed</a>
-                    <a href="#" onclick="loadPage('pages/methodology/zone-c.html'); return false;">⚠️ Zone C — Collapse</a>
-                    <a href="#" onclick="loadPage('pages/methodology/u-shape.html'); return false;">📐 U-Shape (Collapse Pathway)</a>
-                    <a href="#" onclick="loadPage('pages/methodology/sovereignty.html'); return false;">⚖️ Sovereignty Layer</a>
-                </div>
-            </div>
-
-            <!-- Products & Future Verticals Dropdown -->
-            <div class="dropdown">
-                <button class="dropdown-btn">💼 Products & Future</button>
-                <div class="dropdown-content wide">
-                    <a href="#" onclick="loadPage('pages/products/psp/psp-pharma-partners.html'); return false;">💊 PSP for Pharma</a>
-                    <a href="#" onclick="loadPage('pages/products/psp/psp-detailed-specs.html'); return false;">📋 PSP Detailed Specs</a>
-                    <a href="#" onclick="loadPage('pages/products/clinic-os.html'); return false;">🏥 Clinic OS</a>
-                    <a href="#" onclick="loadPage('pages/products/pharmacy-network.html'); return false;">💊 Pharmacy Network</a>
-                    <a href="#" onclick="loadPage('pages/products/cme-platform.html'); return false;">🎓 CME Platform</a>
-                    <a href="#" onclick="loadPage('pages/products/crm-rep-management.html'); return false;">📊 Medical Rep CRM</a>
-                    <a href="#" onclick="loadPage('pages/strategy/future-vision.html'); return false;">🚀 Future Vision (All-in-One)</a>
-                </div>
-            </div>
-
-            <!-- Strategy Dropdown -->
-            <div class="dropdown">
-                <button class="dropdown-btn">📈 Strategy</button>
-                <div class="dropdown-content">
-                    <a href="#" onclick="loadPage('pages/strategy/competitor-analysis.html'); return false;">🏆 Competitor Analysis</a>
-                    <a href="#" onclick="loadPage('pages/strategy/roadmap.html'); return false;">🗺️ Roadmap</a>
-                    <a href="#" onclick="loadPage('pages/strategy/product-specification.html'); return false;">📄 Product Specification</a>
-                </div>
-            </div>
-        </div>
-        <a href="https://rubikans.com" class="company-link" target="_blank">← Rubikans.com</a>
-    </div>
-</nav>
-
-<div class="iframe-container">
-    <iframe id="contentFrame" src="index-home.html" title="Rubik Methodology Content"></iframe>
+<!-- TOP BAR -->
+<div class="topbar">
+    <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+    <a href="#" onclick="loadContent('index-home.html'); return false;" class="logo">
+        <div class="logo-cube"><span></span><span></span><span></span><span></span></div>
+        <div class="logo-text">Rubik<em>Methodology</em></div>
+    </a>
+    <a href="https://rubikans.com" class="company-link" target="_blank">← Rubikans.com</a>
 </div>
 
+<!-- SIDEBAR OVERLAY (Mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- APP CONTAINER -->
+<div class="app-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <nav class="sidebar-nav">
+            <!-- Home -->
+            <div class="sidebar-section">
+                <a href="#" onclick="loadContent('index-home.html'); return false;" 
+                   style="display:block;padding:8px 12px;text-decoration:none;color:var(--text-secondary);font-weight:600;font-size:14px;border-radius:6px;">
+                   🏠 Home
+                </a>
+            </div>
+
+            <!-- Methodology -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title" onclick="toggleSection(this)">
+                    📘 Methodology ▾
+                </div>
+                <ul class="sidebar-links">
+                    <li><a href="#" onclick="loadContent('pages/methodology/rubik-methodology.html'); return false;">🔄 rubik-methodology</a></li>
+                    <li><a href="#" onclick="loadContent('pages/methodology/closed-loops.html'); return false;">🔄 Closed Loops</a></li>
+                    <li><a href="#" onclick="loadContent('pages/methodology/kpis.html'); return false;">📊 KPIs</a></li>
+                    <li><a href="#" onclick="loadContent('pages/tools/self-assessment.html'); return false;">📋 Self-Assessment</a></li>
+                    <li><a href="#" onclick="loadContent('pages/resources/methodology-visual-guide.html'); return false;">📐 Visual Guide</a></li>
+                </ul>
+            </div>
+
+            <!-- Periodic Table -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title" onclick="toggleSection(this)">
+                    ⚛️ Periodic Table ▾
+                </div>
+                <ul class="sidebar-links">
+                    <li><a href="#" onclick="loadContent('pages/periodic-table/rubik-periodic-table-final.html'); return false;">⚛️ Interactive Periodic Table</a></li>
+                    <li><a href="#" onclick="loadContent('pages/methodology/d-block-final.html'); return false;">🔷 d-Block (21 elements)</a></li>
+                    <li><a href="#" onclick="loadContent('pages/methodology/f-block.html'); return false;">💀 f-Block (Distortion)</a></li>
+                    <li><a href="#" onclick="loadContent('pages/methodology/zone-a.html'); return false;">✅ Zone A — Complete Digital</a></li>
+                    <li><a href="#" onclick="loadContent('pages/methodology/zone-b.html'); return false;">⚡ Zone B — Mixed</a></li>
+                    <li><a href="#" onclick="loadContent('pages/methodology/zone-c.html'); return false;">⚠️ Zone C — Collapse</a></li>
+                    <li><a href="#" onclick="loadContent('pages/methodology/u-shape.html'); return false;">📐 U-Shape (Collapse Pathway)</a></li>
+                    <li><a href="#" onclick="loadContent('pages/methodology/sovereignty.html'); return false;">⚖️ Sovereignty Layer</a></li>
+                </ul>
+            </div>
+
+            <!-- Products & Future -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title" onclick="toggleSection(this)">
+                    💼 Products & Future ▾
+                </div>
+                <ul class="sidebar-links">
+                    <li><a href="#" onclick="loadContent('pages/products/psp/psp-pharma-partners.html'); return false;">💊 PSP for Pharma</a></li>
+                    <li><a href="#" onclick="loadContent('pages/products/psp/psp-detailed-specs.html'); return false;">📋 PSP Detailed Specs</a></li>
+                    <li><a href="#" onclick="loadContent('pages/products/clinic-os.html'); return false;">🏥 Clinic OS</a></li>
+                    <li><a href="#" onclick="loadContent('pages/products/pharmacy-network.html'); return false;">💊 Pharmacy Network</a></li>
+                    <li><a href="#" onclick="loadContent('pages/products/cme-platform.html'); return false;">🎓 CME Platform</a></li>
+                    <li><a href="#" onclick="loadContent('pages/products/crm-rep-management.html'); return false;">📊 Medical Rep CRM</a></li>
+                    <li><a href="#" onclick="loadContent('pages/strategy/future-vision.html'); return false;">🚀 Future Vision (All-in-One)</a></li>
+                </ul>
+            </div>
+
+            <!-- Strategy -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title" onclick="toggleSection(this)">
+                    📈 Strategy ▾
+                </div>
+                <ul class="sidebar-links">
+                    <li><a href="#" onclick="loadContent('pages/strategy/competitor-analysis.html'); return false;">🏆 Competitor Analysis</a></li>
+                    <li><a href="#" onclick="loadContent('pages/strategy/roadmap.html'); return false;">🗺️ Roadmap</a></li>
+                    <li><a href="#" onclick="loadContent('pages/strategy/product-specification.html'); return false;">📄 Product Specification</a></li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content" id="mainContent">
+        <!-- يتم تحميل المحتوى هنا -->
+    </main>
+</div>
+
+<!-- FOOTER -->
 <footer>
     <div class="footer-inner">
         <div class="footer-brand">Rubik<span>Methodology</span></div>
-        <ul class="footer-links">
-            <li><a href="#" onclick="loadPage('pages/methodology/rubik-methodology.html'); return false;">Methodology</a></li>
-            <li><a href="#" onclick="loadPage('pages/periodic-table/rubik-periodic-table-final.html'); return false;">Periodic Table</a></li>
-            <li><a href="#" onclick="loadPage('pages/strategy/competitor-analysis.html'); return false;">Competitor Analysis</a></li>
-            <li><a href="#" onclick="loadPage('pages/strategy/roadmap.html'); return false;">Roadmap</a></li>
-            <li><a href="#" onclick="loadPage('pages/tools/self-assessment.html'); return false;">Self-Assessment</a></li>
-        </ul>
     </div>
 </footer>
 
 <script>
-    function loadPage(url) {
-        document.getElementById('contentFrame').src = url;
-        return false;
-    }
-</script>
-<script>
-    // إصلاح مشكلة iframe على iOS
-    function resizeIframe() {
-        const iframe = document.getElementById('contentFrame');
-        if (iframe && iframe.contentWindow) {
-            const height = iframe.contentWindow.document.body.scrollHeight;
-            iframe.style.height = height + 'px';
+    // ========== LOAD CONTENT (بدون iframe) ==========
+    async function loadContent(url) {
+        const mainContent = document.getElementById('mainContent');
+        
+        // عرض مؤشر تحميل
+        mainContent.innerHTML = '<p style="text-align:center;padding:40px;color:var(--text-muted);">⏳ تحميل...</p>';
+        
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Page not found');
+            
+            const html = await response.text();
+            
+            // استخراج محتوى body من الصفحة المحملة
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            
+            // أخذ المحتوى الداخلي لـ body
+            const bodyContent = doc.body.innerHTML;
+            
+            // وضعه في منطقة المحتوى الرئيسية
+            mainContent.innerHTML = bodyContent;
+            
+            // تنفيذ أي سكريبتات داخل المحتوى المحمل
+            const scripts = mainContent.querySelectorAll('script');
+            scripts.forEach(oldScript => {
+                const newScript = document.createElement('script');
+                Array.from(oldScript.attributes).forEach(attr => {
+                    newScript.setAttribute(attr.name, attr.value);
+                });
+                newScript.textContent = oldScript.textContent;
+                oldScript.replaceWith(newScript);
+            });
+            
+            // تحديث الرابط النشط في السايدبار
+            updateActiveLink(url);
+            
+            // إغلاق السايدبار على الموبايل
+            if (window.innerWidth <= 900) {
+                toggleSidebar();
+            }
+            
+            // تمرير المحتوى للأعلى
+            mainContent.scrollTop = 0;
+            
+        } catch (error) {
+            mainContent.innerHTML = `
+                <div style="text-align:center;padding:60px 20px;">
+                    <h2 style="color:var(--primary);">⚠️ تعذر تحميل الصفحة</h2>
+                    <p style="color:var(--text-muted);">الملف: ${url}</p>
+                    <p style="color:var(--text-muted);">تأكد من وجود الملف في المسار الصحيح.</p>
+                </div>
+            `;
         }
     }
-    
-    window.addEventListener('load', function() {
-        const iframe = document.getElementById('contentFrame');
-        if (iframe) {
-            iframe.addEventListener('load', resizeIframe);
-            setTimeout(resizeIframe, 500);
+
+    // ========== UPDATE ACTIVE LINK ==========
+    function updateActiveLink(url) {
+        // إزالة active من جميع الروابط
+        document.querySelectorAll('.sidebar-links a, .sidebar-section > a').forEach(a => {
+            a.classList.remove('active');
+        });
+        
+        // إضافة active للرابط الحالي
+        document.querySelectorAll(`a[onclick*="${url}"]`).forEach(a => {
+            a.classList.add('active');
+        });
+    }
+
+    // ========== TOGGLE SIDEBAR (Mobile) ==========
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+    }
+
+    // ========== TOGGLE SECTIONS ==========
+    function toggleSection(element) {
+        const linksList = element.nextElementSibling;
+        if (linksList) {
+            linksList.classList.toggle('open');
+            // تغيير السهم
+            const arrow = element.textContent.includes('▾') ? '▸' : '▾';
+            element.textContent = element.textContent.replace(/[▾▸]/, arrow);
+        }
+    }
+
+    // ========== INITIALIZATION ==========
+    document.addEventListener('DOMContentLoaded', function() {
+        // فتح القسم الذي يحتوي على Methodology افتراضيًا
+        const firstSection = document.querySelector('.sidebar-section-title');
+        if (firstSection) {
+            toggleSection(firstSection);
+        }
+        
+        // تحميل الصفحة الرئيسية افتراضيًا
+        loadContent('index-home.html');
+    });
+
+    // ========== CLOSE SIDEBAR ON ESC ==========
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.classList.contains('open')) {
+                toggleSidebar();
+            }
         }
     });
 </script>
+
 </body>
 </html>
