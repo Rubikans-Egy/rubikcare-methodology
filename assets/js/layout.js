@@ -115,7 +115,7 @@
       items: [
         'pages/strategy/competitor-analysis.html',
         'pages/strategy/roadmap.html',
-        'pages/strategy/product-specification.html',
+        'pages/strategy/Product-Specification.html',
       ],
     },
   ];
