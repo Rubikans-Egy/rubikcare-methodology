@@ -76,21 +76,7 @@
   }
   .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
 
-  /* Navbar */
-  nav {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    padding: 20px 0;
-    background: rgba(255,255,255,0.96);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    transition: all 0.3s;
-  }
-  nav.scrolled { padding: 12px 0; box-shadow: var(--shadow); }
-  .nav-inner { display: flex; align-items: center; justify-content: space-between; }
-  .logo { display: flex; align-items: center; gap: 10px; }
+    .logo { display: flex; align-items: center; gap: 10px; }
   .logo-cube {
     width: 36px; height: 36px;
     display: grid;
@@ -105,10 +91,6 @@
   .logo-cube span:nth-child(4) { background: var(--accent-light); }
   .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
   .logo-text em { color: var(--accent); font-style: normal; }
-  .nav-links { display: flex; gap: 32px; }
-  .nav-links a { text-decoration: none; color: var(--text-secondary); font-weight: 500; font-size: 14px; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--primary); }
-
   /* Hero Slider */
   .hero {
     min-height: 100vh;
@@ -280,26 +262,7 @@
   .roadmap-preview h3 { font-family: 'Cormorant Garamond', serif; font-size: 28px; margin-bottom: 16px; }
   .roadmap-preview p { opacity: 0.8; margin-bottom: 24px; max-width: 600px; }
 
-  /* Footer */
-  .footer {
-    background: var(--primary-dark);
-    padding: 60px 0 30px;
-    color: rgba(255,255,255,0.6);
-  }
-  .footer-inner {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 40px;
-    margin-bottom: 40px;
-  }
-  .footer-logo .logo-text { color: white; margin-bottom: 16px; display: block; }
-  .footer-logo p { font-size: 13px; line-height: 1.6; max-width: 280px; }
-  .footer-col h4 { color: white; font-size: 14px; font-weight: 600; margin-bottom: 20px; letter-spacing: 1px; }
-  .footer-col ul { list-style: none; }
-  .footer-col ul li { margin-bottom: 12px; }
-  .footer-col ul li a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 13px; transition: color 0.2s; }
-  .footer-col ul li a:hover { color: var(--accent-light); }
-  .footer-bottom {
+ 
     text-align: center;
     padding-top: 30px;
     border-top: 1px solid rgba(255,255,255,0.1);
@@ -308,9 +271,7 @@
 
   @media (max-width: 900px) {
     .container { padding: 0 20px; }
-    .nav-links { display: none; }
     .values-grid { grid-template-columns: repeat(2, 1fr); }
-    .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
     .services-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 600px) {
@@ -320,7 +281,8 @@
 </style>
 </head>
 <body>
-
+<!-- ========== سطر واحد لتحميل الـ Layout ========== -->
+<script src="../../assets/js/layout.js"></script>
 <!-- Hero Slider with Changing Content -->
 <section class="hero">
   <div class="hero-slider">
@@ -465,57 +427,8 @@
   </div>
 </div>
 
-<!-- Footer -->
-<footer class="footer" id="contact">
-  <div class="container">
-    <div class="footer-inner">
-      <div class="footer-logo">
-        <div class="logo-text" style="color: white;">Rubik<em style="color: var(--accent-light);">Care</em></div>
-        <p>Building Egypt's Healthcare Operating System — connecting the entire healthcare ecosystem through a unified digital platform.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Solutions</h4>
-        <ul>
-          <li><a href="psp-pharma-partners.html">Patient Support Programs</a></li>
-          <li><a href="clinic-os.html">Clinic OS</a></li>
-          <li><a href="pharmacy-network.html">Pharmacy Network</a></li>
-          <li><a href="cme-platform.html">CME Platform</a></li>
-          <li><a href="crm-rep-management.html">Medical Rep CRM</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Company</h4>
-        <ul>
-          <li><a href="roadmap.html">Roadmap</a></li>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Compliance Framework</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Connect</h4>
-        <ul>
-          <li><a href="#">pharma@rubikcare.com</a></li>
-          <li><a href="#">Investor Relations</a></li>
-          <li><a href="#">Partner Program</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2025 RubikCare — Confidential. For internal and investor use only. All rights reserved.</p>
-      <p style="margin-top: 8px; font-size: 11px;">Built with care in Egypt 🇪🇬</p>
-    </div>
-  </div>
-</footer>
-
 <script>
-  // Navbar scroll effect
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 20) nav.classList.add('scrolled');
-    else nav.classList.remove('scrolled');
-  });
-
+  
   // Hero Slider with Changing Content
   const slides = [
     {
