@@ -75,20 +75,6 @@
   }
   .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* Navbar */
-  nav {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    padding: 20px 0;
-    background: rgba(255,255,255,0.96);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    transition: all 0.3s;
-  }
-  nav.scrolled { padding: 12px 0; box-shadow: var(--shadow); }
-  .nav-inner { display: flex; align-items: center; justify-content: space-between; }
   .logo { display: flex; align-items: center; gap: 10px; }
   .logo-cube {
     width: 36px; height: 36px;
@@ -104,10 +90,7 @@
   .logo-cube span:nth-child(4) { background: var(--accent-light); }
   .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
   .logo-text em { color: var(--accent); font-style: normal; }
-  .nav-links { display: flex; gap: 32px; }
-  .nav-links a { text-decoration: none; color: var(--text-secondary); font-weight: 500; font-size: 14px; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--primary); }
-
+ 
   /* Hero */
   .hero {
     background: linear-gradient(135deg, var(--primary-dark), var(--primary));
@@ -549,38 +532,6 @@
   </div>
 </div>
 
-<!-- Footer -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-inner">
-      <div>
-        <div class="footer-brand-name">Rubik<em>Care</em></div>
-        <p class="footer-tagline">Building Egypt's Healthcare Operating System — connecting the entire healthcare ecosystem through a unified digital platform.</p>
-      </div>
-      <div>
-        <div class="footer-col-title">Solutions</div>
-        <ul class="footer-links">
-          <li><a href="psp-pharma-partners.html">PSP for Pharma</a></li>
-          <li><a href="clinic-os.html">Clinic OS</a></li>
-          <li><a href="pharmacy-network.html">Pharmacy Network</a></li>
-          <li><a href="cme-platform.html">CME Platform</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-col-title">Company</div>
-        <ul class="footer-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="roadmap.html">Roadmap</a></li>
-          <li><a href="#">Contact Us</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2025 RubikCare — Confidential. For pharmaceutical partners only.</p>
-      <p style="margin-top: 8px; font-size: 11px;">Built with care in Egypt 🇪🇬</p>
-    </div>
-  </div>
-</footer>
 
 <script>
   // Navbar scroll effect
