@@ -1,207 +1,278 @@
-// ========== AUTO-DETECT BASE PATH ==========
-(function() {
-    const path = window.location.pathname;
-    // نحسب العمق بالنسبة للمجلد الجذر rubikcare-methodology
-    const baseIndex = path.indexOf('/rubikcare-methodology/');
-    let relativePath = '';
-    if (baseIndex !== -1) {
-        const afterBase = path.substring(baseIndex + '/rubikcare-methodology/'.length);
-        const depth = (afterBase.match(/\//g) || []).length;
-        relativePath = depth === 0 ? './' : '../'.repeat(depth);
-    }
-    
- // تحميل CSS تلقائياً - في نهاية head لضمان أولويته
-if (!document.querySelector('link[data-layout-css]')) {
+/* ==========================================================
+   Rubik Methodology — Unified Layout JS
+   Version: 2.0
+   - Auto-injects header, breadcrumb, navbar and footer
+   - Fixes dropdown clipping (uses event delegation)
+   - Removes duplicate breadcrumbs from legacy pages
+   ========================================================== */
+
+(function () {
+  'use strict';
+
+  // ========== AUTO-DETECT BASE PATH ==========
+  const PATH = window.location.pathname;
+  const BASE_FOLDER = '/rubikcare-methodology/';
+  let relativePath = './';
+  const baseIndex = PATH.indexOf(BASE_FOLDER);
+  if (baseIndex !== -1) {
+    const afterBase = PATH.substring(baseIndex + BASE_FOLDER.length);
+    const depth = (afterBase.match(/\//g) || []).length;
+    relativePath = depth === 0 ? './' : '../'.repeat(depth);
+  }
+  window.__rubikBasePath = relativePath;
+
+  // ========== AUTO-LOAD CSS ==========
+  if (!document.querySelector('link[data-layout-css]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = relativePath + 'assets/css/layout.css';
     link.setAttribute('data-layout-css', 'true');
-    // نضعه بعد كل الـ stylesheets الموجودة ليأخذ أولوية أعلى
     document.head.appendChild(link);
-}
-    
-    // تخزين المسار النسبي للاستخدام لاحقاً
-    window.__rubikBasePath = relativePath;
-})();
+  }
 
-// ========== PAGE MAPPING ==========
-const pageMap = {
+  // Load brand fonts (Cormorant Garamond + DM Sans)
+  if (!document.querySelector('link[data-layout-fonts]')) {
+    const pre1 = document.createElement('link');
+    pre1.rel = 'preconnect'; pre1.href = 'https://fonts.googleapis.com';
+    const pre2 = document.createElement('link');
+    pre2.rel = 'preconnect'; pre2.href = 'https://fonts.gstatic.com'; pre2.crossOrigin = '';
+    const fonts = document.createElement('link');
+    fonts.rel = 'stylesheet';
+    fonts.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap';
+    fonts.setAttribute('data-layout-fonts', 'true');
+    document.head.appendChild(pre1);
+    document.head.appendChild(pre2);
+    document.head.appendChild(fonts);
+  }
+
+  // ========== PAGE MAP ==========
+  const pageMap = {
     'index-home.html': { title: 'Home', icon: '🏠', parent: null },
-    'pages/methodology/rubik-methodology.html': { title: 'rubik-methodology', icon: '🔄', parent: '📘 Methodology' },
-    'pages/methodology/closed-loops.html': { title: 'Closed Loops', icon: '🔄', parent: '📘 Methodology' },
-    'pages/methodology/kpis.html': { title: 'KPIs', icon: '📊', parent: '📘 Methodology' },
-    'pages/tools/self-assessment.html': { title: 'Self-Assessment', icon: '📋', parent: '📘 Methodology' },
+    'pages/methodology/rubik-methodology.html': { title: 'Rubik Methodology', icon: '🔄', parent: '📘 Methodology' },
+    'pages/methodology/closed-loops.html':      { title: 'Closed Loops', icon: '🔄', parent: '📘 Methodology' },
+    'pages/methodology/kpis.html':              { title: 'KPIs', icon: '📊', parent: '📘 Methodology' },
+    'pages/tools/self-assessment.html':         { title: 'Self-Assessment', icon: '📋', parent: '📘 Methodology' },
     'pages/resources/methodology-visual-guide.html': { title: 'Visual Guide', icon: '📐', parent: '📘 Methodology' },
     'pages/periodic-table/rubik-periodic-table-final.html': { title: 'Interactive Periodic Table', icon: '⚛️', parent: '⚛️ Periodic Table' },
     'pages/methodology/d-block-final.html': { title: 'd-Block (21 elements)', icon: '🔷', parent: '⚛️ Periodic Table' },
-    'pages/methodology/f-block.html': { title: 'f-Block (Distortion)', icon: '💀', parent: '⚛️ Periodic Table' },
-    'pages/methodology/zone-a.html': { title: 'Zone A — Complete Digital', icon: '✅', parent: '⚛️ Periodic Table' },
-    'pages/methodology/zone-b.html': { title: 'Zone B — Mixed', icon: '⚡', parent: '⚛️ Periodic Table' },
-    'pages/methodology/zone-c.html': { title: 'Zone C — Collapse', icon: '⚠️', parent: '⚛️ Periodic Table' },
-    'pages/methodology/u-shape.html': { title: 'U-Shape (Collapse Pathway)', icon: '📐', parent: '⚛️ Periodic Table' },
-    'pages/methodology/sovereignty.html': { title: 'Sovereignty Layer', icon: '⚖️', parent: '⚛️ Periodic Table' },
+    'pages/methodology/f-block.html':       { title: 'f-Block (Distortion)', icon: '💀', parent: '⚛️ Periodic Table' },
+    'pages/methodology/zone-a.html':        { title: 'Zone A — Complete Digital', icon: '✅', parent: '⚛️ Periodic Table' },
+    'pages/methodology/zone-b.html':        { title: 'Zone B — Mixed', icon: '⚡', parent: '⚛️ Periodic Table' },
+    'pages/methodology/zone-c.html':        { title: 'Zone C — Collapse', icon: '⚠️', parent: '⚛️ Periodic Table' },
+    'pages/methodology/u-shape.html':       { title: 'U-Shape (Collapse Pathway)', icon: '📐', parent: '⚛️ Periodic Table' },
+    'pages/methodology/sovereignty.html':   { title: 'Sovereignty Layer', icon: '⚖️', parent: '⚛️ Periodic Table' },
     'pages/products/psp/psp-pharma-partners.html': { title: 'PSP for Pharma', icon: '💊', parent: '💼 Products & Future' },
-    'pages/products/psp/psp-detailed-specs.html': { title: 'PSP Detailed Specs', icon: '📋', parent: '💼 Products & Future' },
-    'pages/products/clinic-os.html': { title: 'Clinic OS', icon: '🏥', parent: '💼 Products & Future' },
-    'pages/products/pharmacy-network.html': { title: 'Pharmacy Network', icon: '💊', parent: '💼 Products & Future' },
-    'pages/products/cme-platform.html': { title: 'CME Platform', icon: '🎓', parent: '💼 Products & Future' },
-    'pages/products/crm-rep-management.html': { title: 'Medical Rep CRM', icon: '📊', parent: '💼 Products & Future' },
-    'pages/strategy/future-vision.html': { title: 'Future Vision (All-in-One)', icon: '🚀', parent: '💼 Products & Future' },
-    'pages/strategy/competitor-analysis.html': { title: 'Competitor Analysis', icon: '🏆', parent: '📈 Strategy' },
-    'pages/strategy/roadmap.html': { title: 'Roadmap', icon: '🗺️', parent: '📈 Strategy' },
+    'pages/products/psp/psp-detailed-specs.html':  { title: 'PSP Detailed Specs', icon: '📋', parent: '💼 Products & Future' },
+    'pages/products/clinic-os.html':         { title: 'Clinic OS', icon: '🏥', parent: '💼 Products & Future' },
+    'pages/products/pharmacy-network.html':  { title: 'Pharmacy Network', icon: '💊', parent: '💼 Products & Future' },
+    'pages/products/cme-platform.html':      { title: 'CME Platform', icon: '🎓', parent: '💼 Products & Future' },
+    'pages/products/crm-rep-management.html':{ title: 'Medical Rep CRM', icon: '📊', parent: '💼 Products & Future' },
+    'pages/strategy/future-vision.html':     { title: 'Future Vision (All-in-One)', icon: '🚀', parent: '💼 Products & Future' },
+    'pages/strategy/competitor-analysis.html':{ title: 'Competitor Analysis', icon: '🏆', parent: '📈 Strategy' },
+    'pages/strategy/roadmap.html':            { title: 'Roadmap', icon: '🗺️', parent: '📈 Strategy' },
     'pages/strategy/product-specification.html': { title: 'Product Specification', icon: '📄', parent: '📈 Strategy' },
-};
+  };
 
-// ========== GET CURRENT PAGE ==========
-function getCurrentPage() {
+  // ========== NAV STRUCTURE ==========
+  const navGroups = [
+    {
+      label: '📘 Methodology',
+      items: [
+        'pages/methodology/rubik-methodology.html',
+        'pages/methodology/closed-loops.html',
+        'pages/methodology/kpis.html',
+        'pages/tools/self-assessment.html',
+        'pages/resources/methodology-visual-guide.html',
+      ],
+    },
+    {
+      label: '⚛️ Periodic Table',
+      items: [
+        'pages/periodic-table/rubik-periodic-table-final.html',
+        'pages/methodology/d-block-final.html',
+        'pages/methodology/f-block.html',
+        'pages/methodology/zone-a.html',
+        'pages/methodology/zone-b.html',
+        'pages/methodology/zone-c.html',
+        'pages/methodology/u-shape.html',
+        'pages/methodology/sovereignty.html',
+      ],
+    },
+    {
+      label: '💼 Products & Future',
+      items: [
+        'pages/products/psp/psp-pharma-partners.html',
+        'pages/products/psp/psp-detailed-specs.html',
+        'pages/products/clinic-os.html',
+        'pages/products/pharmacy-network.html',
+        'pages/products/cme-platform.html',
+        'pages/products/crm-rep-management.html',
+        'pages/strategy/future-vision.html',
+      ],
+    },
+    {
+      label: '📈 Strategy',
+      items: [
+        'pages/strategy/competitor-analysis.html',
+        'pages/strategy/roadmap.html',
+        'pages/strategy/product-specification.html',
+      ],
+    },
+  ];
+
+  // ========== CURRENT PAGE ==========
+  function getCurrentPage() {
     const path = window.location.pathname;
-    const base = '/rubikcare-methodology/';
-    if (path.includes(base)) {
-        let relative = path.substring(path.indexOf(base) + base.length);
-        if (relative === '' || relative === 'index.html') relative = 'index-home.html';
-        return relative;
-    }
-    return 'index-home.html';
-}
+    const idx = path.indexOf(BASE_FOLDER);
+    if (idx === -1) return 'index-home.html';
+    let rel = path.substring(idx + BASE_FOLDER.length);
+    if (rel === '' || rel === 'index.html' || rel === '/') rel = 'index-home.html';
+    return rel;
+  }
 
-// ========== BUILD HEADER ==========
-function buildHeader(currentPage) {
-    const bp = window.__rubikBasePath || './';
-    const pageInfo = pageMap[currentPage] || { title: 'Home', icon: '🏠', parent: null };
-    
-    let breadcrumb = `<a href="${bp}index-home.html">🏠 Home</a>`;
-    if (pageInfo.parent) {
-        breadcrumb += ` <span class="rubik-breadcrumb-sep">›</span> <span>${pageInfo.parent}</span>`;
+  // ========== HELPERS ==========
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+
+  function buildBreadcrumb(currentPage) {
+    const bp = window.__rubikBasePath;
+    const info = pageMap[currentPage] || { title: 'Home', icon: '🏠', parent: null };
+    let html = `<a href="${bp}index-home.html">🏠 Home</a>`;
+    if (info.parent) {
+      html += `<span class="rubik-breadcrumb-sep">›</span><span>${esc(info.parent)}</span>`;
     }
-    breadcrumb += ` <span class="rubik-breadcrumb-sep">›</span> <strong>${pageInfo.icon} ${pageInfo.title}</strong>`;
-    
-    const isActive = (pattern) => currentPage.includes(pattern);
-    
+    html += `<span class="rubik-breadcrumb-sep">›</span><span class="rubik-breadcrumb-current">${esc(info.icon)} ${esc(info.title)}</span>`;
+    return html;
+  }
+
+  function buildNavMenu(group, currentPage) {
+    const bp = window.__rubikBasePath;
+    const links = group.items.map(slug => {
+      const info = pageMap[slug];
+      if (!info) return '';
+      const isActive = slug === currentPage ? ' class="active"' : '';
+      return `<a href="${bp}${slug}"${isActive}>${esc(info.icon)} ${esc(info.title)}</a>`;
+    }).join('');
+    const hasActive = group.items.includes(currentPage);
+    const btnActive = hasActive ? ' active' : '';
     return `
-    <header class="rubik-header">
+      <div class="rubik-nav-dropdown" data-dropdown>
+        <button type="button" class="rubik-nav-btn${btnActive}" data-dropdown-toggle>
+          <span>${esc(group.label)}</span>
+          <span class="rubik-arrow">▼</span>
+        </button>
+        <div class="rubik-nav-menu" role="menu">${links}</div>
+      </div>
+    `;
+  }
+
+  function buildHeader(currentPage) {
+    const bp = window.__rubikBasePath;
+    const homeActive = currentPage === 'index-home.html' ? ' active' : '';
+    const navItems = navGroups.map(g => buildNavMenu(g, currentPage)).join('');
+
+    return `
+      <header class="rubik-header">
         <div class="rubik-header-inner">
-            <a href="${bp}index-home.html" class="rubik-logo">
-                <div class="rubik-logo-cube"><span></span><span></span><span></span><span></span></div>
-                <div>
-                    <div class="rubik-logo-text">Rubik<em>Methodology</em></div>
-                    <div class="rubik-logo-subtitle">Market Intelligence Framework</div>
-                </div>
-            </a>
-            <div class="rubik-header-actions">
-                <a href="https://rubikans.com" class="rubik-company-link" target="_blank">← Rubikans.com</a>
-            </div>
+          <a class="rubik-logo" href="${bp}index-home.html">
+            <span class="rubik-logo-cube" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+            <span class="rubik-logo-text-wrap">
+              <span class="rubik-logo-text">Rubik<em>Methodology</em></span>
+              <span class="rubik-logo-subtitle">Market Intelligence Framework</span>
+            </span>
+          </a>
+          <div class="rubik-header-actions">
+            <a class="rubik-company-link" href="https://rubikans.com" target="_blank" rel="noopener">← Rubikans.com</a>
+          </div>
         </div>
-    </header>
-    
-    <div class="rubik-breadcrumb">
-        <div class="rubik-breadcrumb-inner">${breadcrumb}</div>
-    </div>
-    
-    <nav class="rubik-navbar">
+      </header>
+
+      <nav class="rubik-breadcrumb" aria-label="Breadcrumb">
+        <div class="rubik-breadcrumb-inner">${buildBreadcrumb(currentPage)}</div>
+      </nav>
+
+      <nav class="rubik-navbar" aria-label="Primary">
         <div class="rubik-navbar-inner">
-            <a href="${bp}index-home.html" class="rubik-nav-btn ${currentPage === 'index-home.html' ? 'active' : ''}">🏠 Home</a>
-            
-            <div class="rubik-nav-dropdown" data-dropdown>
-                <button class="rubik-nav-btn ${isActive('methodology/') || isActive('tools/') || isActive('resources/') ? 'active' : ''}" onclick="toggleDropdown(this);">
-                    📘 Methodology <span class="rubik-arrow">▼</span>
-                </button>
-                <div class="rubik-nav-menu">
-                    <a href="${bp}pages/methodology/rubik-methodology.html">🔄 rubik-methodology</a>
-                    <a href="${bp}pages/methodology/closed-loops.html">🔄 Closed Loops</a>
-                    <a href="${bp}pages/methodology/kpis.html">📊 KPIs</a>
-                    <a href="${bp}pages/tools/self-assessment.html">📋 Self-Assessment</a>
-                    <a href="${bp}pages/resources/methodology-visual-guide.html">📐 Visual Guide</a>
-                </div>
-            </div>
-            
-            <div class="rubik-nav-dropdown" data-dropdown>
-                <button class="rubik-nav-btn ${isActive('periodic-table/') || isActive('d-block') || isActive('f-block') || isActive('zone-') || isActive('u-shape') || isActive('sovereignty') ? 'active' : ''}" onclick="toggleDropdown(this);">
-                    ⚛️ Periodic Table <span class="rubik-arrow">▼</span>
-                </button>
-                <div class="rubik-nav-menu">
-                    <a href="${bp}pages/periodic-table/rubik-periodic-table-final.html">⚛️ Interactive Periodic Table</a>
-                    <a href="${bp}pages/methodology/d-block-final.html">🔷 d-Block (21 elements)</a>
-                    <a href="${bp}pages/methodology/f-block.html">💀 f-Block (Distortion)</a>
-                    <a href="${bp}pages/methodology/zone-a.html">✅ Zone A — Complete Digital</a>
-                    <a href="${bp}pages/methodology/zone-b.html">⚡ Zone B — Mixed</a>
-                    <a href="${bp}pages/methodology/zone-c.html">⚠️ Zone C — Collapse</a>
-                    <a href="${bp}pages/methodology/u-shape.html">📐 U-Shape (Collapse Pathway)</a>
-                    <a href="${bp}pages/methodology/sovereignty.html">⚖️ Sovereignty Layer</a>
-                </div>
-            </div>
-            
-            <div class="rubik-nav-dropdown" data-dropdown>
-                <button class="rubik-nav-btn ${isActive('products/') || isActive('future-vision') ? 'active' : ''}" onclick="toggleDropdown(this);">
-                    💼 Products & Future <span class="rubik-arrow">▼</span>
-                </button>
-                <div class="rubik-nav-menu">
-                    <a href="${bp}pages/products/psp/psp-pharma-partners.html">💊 PSP for Pharma</a>
-                    <a href="${bp}pages/products/psp/psp-detailed-specs.html">📋 PSP Detailed Specs</a>
-                    <a href="${bp}pages/products/clinic-os.html">🏥 Clinic OS</a>
-                    <a href="${bp}pages/products/pharmacy-network.html">💊 Pharmacy Network</a>
-                    <a href="${bp}pages/products/cme-platform.html">🎓 CME Platform</a>
-                    <a href="${bp}pages/products/crm-rep-management.html">📊 Medical Rep CRM</a>
-                    <a href="${bp}pages/strategy/future-vision.html">🚀 Future Vision (All-in-One)</a>
-                </div>
-            </div>
-            
-            <div class="rubik-nav-dropdown" data-dropdown>
-                <button class="rubik-nav-btn ${isActive('strategy/') && !isActive('future-vision') ? 'active' : ''}" onclick="toggleDropdown(this);">
-                    📈 Strategy <span class="rubik-arrow">▼</span>
-                </button>
-                <div class="rubik-nav-menu">
-                    <a href="${bp}pages/strategy/competitor-analysis.html">🏆 Competitor Analysis</a>
-                    <a href="${bp}pages/strategy/roadmap.html">🗺️ Roadmap</a>
-                    <a href="${bp}pages/strategy/product-specification.html">📄 Product Specification</a>
-                </div>
-            </div>
+          <a class="rubik-nav-btn${homeActive}" href="${bp}index-home.html">🏠 Home</a>
+          ${navItems}
         </div>
-    </nav>
+      </nav>
     `;
-}
+  }
 
-// ========== BUILD FOOTER ==========
-function buildFooter() {
-    const bp = window.__rubikBasePath || './';
+  function buildFooter() {
+    const year = new Date().getFullYear();
     return `
-    <footer class="rubik-footer">
+      <footer class="rubik-footer">
         <div class="rubik-footer-inner">
-            <div class="rubik-footer-brand">Rubik<span>Methodology</span></div>
-            <ul class="rubik-footer-links">
-                <li><a href="${bp}pages/methodology/rubik-methodology.html">Methodology</a></li>
-                <li><a href="${bp}pages/periodic-table/rubik-periodic-table-final.html">Periodic Table</a></li>
-                <li><a href="${bp}pages/strategy/competitor-analysis.html">Competitor Analysis</a></li>
-                <li><a href="${bp}pages/strategy/roadmap.html">Roadmap</a></li>
-            </ul>
+          <div class="rubik-footer-brand">Rubik<span>Methodology</span></div>
+          <ul class="rubik-footer-links">
+            <li><a href="https://rubikans.com" target="_blank" rel="noopener">Rubikans</a></li>
+            <li><a href="https://github.com/Rubikans-Egy" target="_blank" rel="noopener">GitHub</a></li>
+          </ul>
+          <div>© ${year} Rubikans — Pharmaceutical Market Intelligence</div>
         </div>
-    </footer>
+      </footer>
     `;
-}
+  }
 
-// ========== TOGGLE DROPDOWN ==========
-function toggleDropdown(button) {
-    const dropdown = button.closest('.rubik-nav-dropdown');
-    const isOpen = dropdown.classList.contains('open');
+  // ========== REMOVE LEGACY DUPLICATE BREADCRUMB ==========
+  function removeLegacyBreadcrumbs() {
+    // Common patterns from older pages
+    const selectors = [
+      '.legacy-breadcrumb',
+      '.page-breadcrumb',
+      'body > nav.breadcrumb',
+      'body > .breadcrumb',
+    ];
+    selectors.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => {
+        if (!el.classList.contains('rubik-breadcrumb')) el.remove();
+      });
+    });
+  }
+
+  // ========== DROPDOWN BEHAVIOUR (event delegation) ==========
+  function closeAllDropdowns() {
     document.querySelectorAll('.rubik-nav-dropdown.open').forEach(d => d.classList.remove('open'));
-    if (!isOpen) dropdown.classList.add('open');
-}
+  }
 
-// ========== INITIALIZE ==========
-(function() {
+  function attachInteractions() {
+    document.addEventListener('click', function (e) {
+      const toggle = e.target.closest('[data-dropdown-toggle]');
+      if (toggle) {
+        e.preventDefault();
+        e.stopPropagation();
+        const dd = toggle.closest('[data-dropdown]');
+        const wasOpen = dd.classList.contains('open');
+        closeAllDropdowns();
+        if (!wasOpen) dd.classList.add('open');
+        return;
+      }
+      // Click outside any dropdown closes them
+      if (!e.target.closest('[data-dropdown]')) closeAllDropdowns();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeAllDropdowns();
+    });
+  }
+
+  // ========== INIT ==========
+  function init() {
     const currentPage = getCurrentPage();
-    
+    removeLegacyBreadcrumbs();
     document.body.insertAdjacentHTML('afterbegin', buildHeader(currentPage));
     document.body.insertAdjacentHTML('beforeend', buildFooter());
-    
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.rubik-nav-dropdown')) {
-            document.querySelectorAll('.rubik-nav-dropdown.open').forEach(d => d.classList.remove('open'));
-        }
-    });
-    
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.rubik-nav-dropdown.open').forEach(d => d.classList.remove('open'));
-        }
-    });
+    attachInteractions();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
