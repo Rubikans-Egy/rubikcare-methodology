@@ -10,14 +10,15 @@
         relativePath = depth === 0 ? './' : '../'.repeat(depth);
     }
     
-    // تحميل CSS تلقائياً
-    if (!document.querySelector('link[data-layout-css]')) {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = relativePath + 'assets/css/layout.css';
-        link.setAttribute('data-layout-css', 'true');
-        document.head.appendChild(link);
-    }
+ // تحميل CSS تلقائياً - في نهاية head لضمان أولويته
+if (!document.querySelector('link[data-layout-css]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = relativePath + 'assets/css/layout.css';
+    link.setAttribute('data-layout-css', 'true');
+    // نضعه بعد كل الـ stylesheets الموجودة ليأخذ أولوية أعلى
+    document.head.appendChild(link);
+}
     
     // تخزين المسار النسبي للاستخدام لاحقاً
     window.__rubikBasePath = relativePath;
