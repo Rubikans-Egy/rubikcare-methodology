@@ -44,27 +44,7 @@
             padding: 0 24px;
         }
 
-        /* Navbar */
-        nav {
-            position: sticky;
-            top: 0;
-            width: 100%;
-            z-index: 100;
-            padding: 16px 0;
-            background: rgba(255,255,255,0.96);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-        }
-        .nav-inner {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
+       
         .logo {
             display: flex;
             align-items: center;
@@ -90,20 +70,7 @@
             color: var(--primary);
         }
         .logo-text em { color: var(--accent); font-style: normal; }
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-weight: 500;
-            font-size: 12px;
-            transition: color 0.2s;
-        }
-        .nav-links a:hover { color: var(--primary); }
-
+       
         /* Hero */
         .hero {
             background: linear-gradient(135deg, var(--primary-dark), var(--primary));
@@ -363,52 +330,9 @@
             line-height: 1.5;
         }
 
-        /* Footer */
-        footer {
-            background: var(--primary-dark);
-            padding: 40px 0 24px;
-            color: rgba(255,255,255,0.5);
-            margin-top: 48px;
-        }
-        .footer-inner {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .footer-brand {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 20px;
-            color: white;
-        }
-        .footer-brand span { color: var(--accent-light); }
-        .footer-links {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            list-style: none;
-        }
-        .footer-links a {
-            color: rgba(255,255,255,0.5);
-            text-decoration: none;
-            font-size: 11px;
-        }
-        .footer-links a:hover { color: var(--accent-light); }
-        .footer-copy {
-            text-align: center;
-            font-size: 10px;
-            margin-top: 24px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
+       
         @media (max-width: 700px) {
             .container { padding: 0 16px; }
-            .nav-links { display: none; }
             .hero h1 { font-size: 28px; }
             .section-title { font-size: 24px; }
             .components-grid { grid-template-columns: 1fr; }
@@ -417,7 +341,8 @@
     </style>
 </head>
 <body>
-
+<!-- ========== سطر واحد لتحميل الـ Layout ========== -->
+<script src="../../assets/js/layout.js"></script>
 
 <section class="hero">
     <div class="container">
