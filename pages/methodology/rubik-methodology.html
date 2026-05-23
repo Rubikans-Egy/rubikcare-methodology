@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/layout.css">
+    <script src="/rubikcare-methodology/assets/js/layout.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         :root {
@@ -474,5 +475,16 @@
 </script>
     <!-- ========== سطر واحد لتحميل الـ Layout ========== -->
 <script src="../../assets/js/layout.js"></script>
+
+    <script>
+    console.log('Page loaded. Checking layout...');
+    window.addEventListener('load', function() {
+        console.log('Window loaded.');
+        console.log('rubik-header exists:', !!document.querySelector('.rubik-header'));
+        console.log('rubik-navbar exists:', !!document.querySelector('.rubik-navbar'));
+        console.log('rubik-footer exists:', !!document.querySelector('.rubik-footer'));
+        console.log('layout.css loaded:', !!document.querySelector('link[data-layout-css]'));
+    });
+</script>
 </body>
 </html>
