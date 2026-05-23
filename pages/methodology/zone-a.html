@@ -40,29 +40,7 @@
             max-width: 1000px;
             margin: 0 auto;
             padding: 0 24px;
-        }
-
-        /* Navbar */
-        nav {
-            position: sticky;
-            top: 0;
-            width: 100%;
-            z-index: 100;
-            padding: 16px 0;
-            background: rgba(255,255,255,0.96);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-        }
-        .nav-inner {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
+        }      
         .logo {
             display: flex;
             align-items: center;
@@ -88,20 +66,7 @@
             color: var(--primary);
         }
         .logo-text em { color: var(--accent); font-style: normal; }
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-weight: 500;
-            font-size: 12px;
-            transition: color 0.2s;
-        }
-        .nav-links a:hover { color: var(--primary); }
-
+        
         /* Hero */
         .hero {
             background: linear-gradient(135deg, var(--zone-a), var(--primary-dark));
@@ -323,14 +288,14 @@
 
         @media (max-width: 700px) {
             .container { padding: 0 16px; }
-            .nav-links { display: none; }
             .hero h1 { font-size: 28px; }
             .section-title { font-size: 24px; }
         }
     </style>
 </head>
 <body>
-
+<!-- ========== سطر واحد لتحميل الـ Layout ========== -->
+<script src="../../assets/js/layout.js"></script>
 <section class="hero">
     <div class="container">
         <div class="hero-badge">ZONE A · COMPLETE DIGITAL INTEGRATION</div>
@@ -508,28 +473,6 @@
             <a href="../periodic-table/rubik-periodic-table-final.html" class="internal-link">⚛️ Periodic Table</a>
         </div>
     </div>
-
 </div>
-
-<footer>
-    <div class="footer-inner">
-        <div class="footer-brand">Market<span>Intelligence</span></div>
-        <ul class="footer-links">
-            <li><a href="../../index.html">Home</a></li>
-            <li><a href="rubik-methodology.html">Methodology</a></li>
-            <li><a href="../periodic-table/rubik-periodic-table-final.html">Periodic Table</a></li>
-            <li><a href="closed-loops.html">Closed Loops</a></li>
-            <li><a href="zone-a.html">Zone A</a></li>
-            <li><a href="zone-b.html">Zone B</a></li>
-            <li><a href="zone-c.html">Zone C</a></li>
-            <li><a href="d-block-final.html">d-Block</a></li>
-        </ul>
-    </div>
-    <div class="footer-copy">
-        <p>© 2025 · Market Intelligence Framework · All rights reserved.</p>
-        <p style="margin-top: 6px;">Built in Egypt 🇪🇬</p>
-    </div>
-</footer>
-
 </body>
 </html>
