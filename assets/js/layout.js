@@ -1,3 +1,28 @@
+// ========== AUTO-DETECT BASE PATH ==========
+(function() {
+    const path = window.location.pathname;
+    // نحسب العمق بالنسبة للمجلد الجذر rubikcare-methodology
+    const baseIndex = path.indexOf('/rubikcare-methodology/');
+    let relativePath = '';
+    if (baseIndex !== -1) {
+        const afterBase = path.substring(baseIndex + '/rubikcare-methodology/'.length);
+        const depth = (afterBase.match(/\//g) || []).length;
+        relativePath = depth === 0 ? './' : '../'.repeat(depth);
+    }
+    
+    // تحميل CSS تلقائياً
+    if (!document.querySelector('link[data-layout-css]')) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = relativePath + 'assets/css/layout.css';
+        link.setAttribute('data-layout-css', 'true');
+        document.head.appendChild(link);
+    }
+    
+    // تخزين المسار النسبي للاستخدام لاحقاً
+    window.__rubikBasePath = relativePath;
+})();
+
 // ========== PAGE MAPPING ==========
 const pageMap = {
     'index-home.html': { title: 'Home', icon: '🏠', parent: null },
@@ -26,43 +51,35 @@ const pageMap = {
     'pages/strategy/product-specification.html': { title: 'Product Specification', icon: '📄', parent: '📈 Strategy' },
 };
 
-// ========== GET CURRENT PAGE PATH ==========
-function getCurrentPagePath() {
+// ========== GET CURRENT PAGE ==========
+function getCurrentPage() {
     const path = window.location.pathname;
-    // Remove base path if on GitHub Pages
-    const basePath = '/rubikcare-methodology/';
-    let relativePath = path;
-    if (path.includes(basePath)) {
-        relativePath = path.substring(path.indexOf(basePath) + basePath.length);
+    const base = '/rubikcare-methodology/';
+    if (path.includes(base)) {
+        let relative = path.substring(path.indexOf(base) + base.length);
+        if (relative === '' || relative === 'index.html') relative = 'index-home.html';
+        return relative;
     }
-    // Remove leading slash
-    relativePath = relativePath.replace(/^\//, '');
-    // Default to index-home.html
-    if (relativePath === '' || relativePath === 'index.html') {
-        relativePath = 'index-home.html';
-    }
-    return relativePath;
+    return 'index-home.html';
 }
 
-// ========== BUILD HEADER HTML ==========
+// ========== BUILD HEADER ==========
 function buildHeader(currentPage) {
+    const bp = window.__rubikBasePath || './';
     const pageInfo = pageMap[currentPage] || { title: 'Home', icon: '🏠', parent: null };
     
-    // Breadcrumb
-    let breadcrumb = `<a href="index-home.html">🏠 Home</a>`;
+    let breadcrumb = `<a href="${bp}index-home.html">🏠 Home</a>`;
     if (pageInfo.parent) {
         breadcrumb += ` <span class="rubik-breadcrumb-sep">›</span> <span>${pageInfo.parent}</span>`;
     }
     breadcrumb += ` <span class="rubik-breadcrumb-sep">›</span> <strong>${pageInfo.icon} ${pageInfo.title}</strong>`;
     
-    // Calculate depth for relative paths
-    const depth = (currentPage.match(/\//g) || []).length;
-    const prefix = depth === 0 ? '.' : Array(depth).fill('..').join('/');
+    const isActive = (pattern) => currentPage.includes(pattern);
     
     return `
     <header class="rubik-header">
         <div class="rubik-header-inner">
-            <a href="${prefix}/index-home.html" class="rubik-logo">
+            <a href="${bp}index-home.html" class="rubik-logo">
                 <div class="rubik-logo-cube"><span></span><span></span><span></span><span></span></div>
                 <div>
                     <div class="rubik-logo-text">Rubik<em>Methodology</em></div>
@@ -81,62 +98,60 @@ function buildHeader(currentPage) {
     
     <nav class="rubik-navbar">
         <div class="rubik-navbar-inner">
-            <div class="rubik-nav-dropdown">
-                <a href="${prefix}/index-home.html" class="rubik-nav-btn ${currentPage === 'index-home.html' ? 'active' : ''}">🏠 Home</a>
-            </div>
+            <a href="${bp}index-home.html" class="rubik-nav-btn ${currentPage === 'index-home.html' ? 'active' : ''}">🏠 Home</a>
             
             <div class="rubik-nav-dropdown" data-dropdown>
-                <button class="rubik-nav-btn ${currentPage.includes('methodology/') || currentPage.includes('tools/') || currentPage.includes('resources/') ? 'active' : ''}" onclick="toggleDropdown(this);">
+                <button class="rubik-nav-btn ${isActive('methodology/') || isActive('tools/') || isActive('resources/') ? 'active' : ''}" onclick="toggleDropdown(this);">
                     📘 Methodology <span class="rubik-arrow">▼</span>
                 </button>
                 <div class="rubik-nav-menu">
-                    <a href="${prefix}/pages/methodology/rubik-methodology.html" class="${currentPage === 'pages/methodology/rubik-methodology.html' ? 'active' : ''}">🔄 rubik-methodology</a>
-                    <a href="${prefix}/pages/methodology/closed-loops.html" class="${currentPage === 'pages/methodology/closed-loops.html' ? 'active' : ''}">🔄 Closed Loops</a>
-                    <a href="${prefix}/pages/methodology/kpis.html" class="${currentPage === 'pages/methodology/kpis.html' ? 'active' : ''}">📊 KPIs</a>
-                    <a href="${prefix}/pages/tools/self-assessment.html" class="${currentPage === 'pages/tools/self-assessment.html' ? 'active' : ''}">📋 Self-Assessment</a>
-                    <a href="${prefix}/pages/resources/methodology-visual-guide.html" class="${currentPage === 'pages/resources/methodology-visual-guide.html' ? 'active' : ''}">📐 Visual Guide</a>
+                    <a href="${bp}pages/methodology/rubik-methodology.html">🔄 rubik-methodology</a>
+                    <a href="${bp}pages/methodology/closed-loops.html">🔄 Closed Loops</a>
+                    <a href="${bp}pages/methodology/kpis.html">📊 KPIs</a>
+                    <a href="${bp}pages/tools/self-assessment.html">📋 Self-Assessment</a>
+                    <a href="${bp}pages/resources/methodology-visual-guide.html">📐 Visual Guide</a>
                 </div>
             </div>
             
             <div class="rubik-nav-dropdown" data-dropdown>
-                <button class="rubik-nav-btn ${currentPage.includes('periodic-table/') || currentPage.includes('d-block') || currentPage.includes('f-block') || currentPage.includes('zone-') || currentPage.includes('u-shape') || currentPage.includes('sovereignty') ? 'active' : ''}" onclick="toggleDropdown(this);">
+                <button class="rubik-nav-btn ${isActive('periodic-table/') || isActive('d-block') || isActive('f-block') || isActive('zone-') || isActive('u-shape') || isActive('sovereignty') ? 'active' : ''}" onclick="toggleDropdown(this);">
                     ⚛️ Periodic Table <span class="rubik-arrow">▼</span>
                 </button>
                 <div class="rubik-nav-menu">
-                    <a href="${prefix}/pages/periodic-table/rubik-periodic-table-final.html" class="${currentPage === 'pages/periodic-table/rubik-periodic-table-final.html' ? 'active' : ''}">⚛️ Interactive Periodic Table</a>
-                    <a href="${prefix}/pages/methodology/d-block-final.html" class="${currentPage === 'pages/methodology/d-block-final.html' ? 'active' : ''}">🔷 d-Block (21 elements)</a>
-                    <a href="${prefix}/pages/methodology/f-block.html" class="${currentPage === 'pages/methodology/f-block.html' ? 'active' : ''}">💀 f-Block (Distortion)</a>
-                    <a href="${prefix}/pages/methodology/zone-a.html" class="${currentPage === 'pages/methodology/zone-a.html' ? 'active' : ''}">✅ Zone A — Complete Digital</a>
-                    <a href="${prefix}/pages/methodology/zone-b.html" class="${currentPage === 'pages/methodology/zone-b.html' ? 'active' : ''}">⚡ Zone B — Mixed</a>
-                    <a href="${prefix}/pages/methodology/zone-c.html" class="${currentPage === 'pages/methodology/zone-c.html' ? 'active' : ''}">⚠️ Zone C — Collapse</a>
-                    <a href="${prefix}/pages/methodology/u-shape.html" class="${currentPage === 'pages/methodology/u-shape.html' ? 'active' : ''}">📐 U-Shape (Collapse Pathway)</a>
-                    <a href="${prefix}/pages/methodology/sovereignty.html" class="${currentPage === 'pages/methodology/sovereignty.html' ? 'active' : ''}">⚖️ Sovereignty Layer</a>
+                    <a href="${bp}pages/periodic-table/rubik-periodic-table-final.html">⚛️ Interactive Periodic Table</a>
+                    <a href="${bp}pages/methodology/d-block-final.html">🔷 d-Block (21 elements)</a>
+                    <a href="${bp}pages/methodology/f-block.html">💀 f-Block (Distortion)</a>
+                    <a href="${bp}pages/methodology/zone-a.html">✅ Zone A — Complete Digital</a>
+                    <a href="${bp}pages/methodology/zone-b.html">⚡ Zone B — Mixed</a>
+                    <a href="${bp}pages/methodology/zone-c.html">⚠️ Zone C — Collapse</a>
+                    <a href="${bp}pages/methodology/u-shape.html">📐 U-Shape (Collapse Pathway)</a>
+                    <a href="${bp}pages/methodology/sovereignty.html">⚖️ Sovereignty Layer</a>
                 </div>
             </div>
             
             <div class="rubik-nav-dropdown" data-dropdown>
-                <button class="rubik-nav-btn ${currentPage.includes('products/') || currentPage.includes('future-vision') ? 'active' : ''}" onclick="toggleDropdown(this);">
+                <button class="rubik-nav-btn ${isActive('products/') || isActive('future-vision') ? 'active' : ''}" onclick="toggleDropdown(this);">
                     💼 Products & Future <span class="rubik-arrow">▼</span>
                 </button>
                 <div class="rubik-nav-menu">
-                    <a href="${prefix}/pages/products/psp/psp-pharma-partners.html" class="${currentPage === 'pages/products/psp/psp-pharma-partners.html' ? 'active' : ''}">💊 PSP for Pharma</a>
-                    <a href="${prefix}/pages/products/psp/psp-detailed-specs.html" class="${currentPage === 'pages/products/psp/psp-detailed-specs.html' ? 'active' : ''}">📋 PSP Detailed Specs</a>
-                    <a href="${prefix}/pages/products/clinic-os.html" class="${currentPage === 'pages/products/clinic-os.html' ? 'active' : ''}">🏥 Clinic OS</a>
-                    <a href="${prefix}/pages/products/pharmacy-network.html" class="${currentPage === 'pages/products/pharmacy-network.html' ? 'active' : ''}">💊 Pharmacy Network</a>
-                    <a href="${prefix}/pages/products/cme-platform.html" class="${currentPage === 'pages/products/cme-platform.html' ? 'active' : ''}">🎓 CME Platform</a>
-                    <a href="${prefix}/pages/products/crm-rep-management.html" class="${currentPage === 'pages/products/crm-rep-management.html' ? 'active' : ''}">📊 Medical Rep CRM</a>
-                    <a href="${prefix}/pages/strategy/future-vision.html" class="${currentPage === 'pages/strategy/future-vision.html' ? 'active' : ''}">🚀 Future Vision (All-in-One)</a>
+                    <a href="${bp}pages/products/psp/psp-pharma-partners.html">💊 PSP for Pharma</a>
+                    <a href="${bp}pages/products/psp/psp-detailed-specs.html">📋 PSP Detailed Specs</a>
+                    <a href="${bp}pages/products/clinic-os.html">🏥 Clinic OS</a>
+                    <a href="${bp}pages/products/pharmacy-network.html">💊 Pharmacy Network</a>
+                    <a href="${bp}pages/products/cme-platform.html">🎓 CME Platform</a>
+                    <a href="${bp}pages/products/crm-rep-management.html">📊 Medical Rep CRM</a>
+                    <a href="${bp}pages/strategy/future-vision.html">🚀 Future Vision (All-in-One)</a>
                 </div>
             </div>
             
             <div class="rubik-nav-dropdown" data-dropdown>
-                <button class="rubik-nav-btn ${currentPage.includes('strategy/') && !currentPage.includes('future-vision') ? 'active' : ''}" onclick="toggleDropdown(this);">
+                <button class="rubik-nav-btn ${isActive('strategy/') && !isActive('future-vision') ? 'active' : ''}" onclick="toggleDropdown(this);">
                     📈 Strategy <span class="rubik-arrow">▼</span>
                 </button>
                 <div class="rubik-nav-menu">
-                    <a href="${prefix}/pages/strategy/competitor-analysis.html" class="${currentPage === 'pages/strategy/competitor-analysis.html' ? 'active' : ''}">🏆 Competitor Analysis</a>
-                    <a href="${prefix}/pages/strategy/roadmap.html" class="${currentPage === 'pages/strategy/roadmap.html' ? 'active' : ''}">🗺️ Roadmap</a>
-                    <a href="${prefix}/pages/strategy/product-specification.html" class="${currentPage === 'pages/strategy/product-specification.html' ? 'active' : ''}">📄 Product Specification</a>
+                    <a href="${bp}pages/strategy/competitor-analysis.html">🏆 Competitor Analysis</a>
+                    <a href="${bp}pages/strategy/roadmap.html">🗺️ Roadmap</a>
+                    <a href="${bp}pages/strategy/product-specification.html">📄 Product Specification</a>
                 </div>
             </div>
         </div>
@@ -144,60 +159,45 @@ function buildHeader(currentPage) {
     `;
 }
 
-// ========== BUILD FOOTER HTML ==========
-function buildFooter(currentPage) {
-    const depth = (currentPage.match(/\//g) || []).length;
-    const prefix = depth === 0 ? '.' : Array(depth).fill('..').join('/');
-    
+// ========== BUILD FOOTER ==========
+function buildFooter() {
+    const bp = window.__rubikBasePath || './';
     return `
     <footer class="rubik-footer">
         <div class="rubik-footer-inner">
             <div class="rubik-footer-brand">Rubik<span>Methodology</span></div>
             <ul class="rubik-footer-links">
-                <li><a href="${prefix}/pages/methodology/rubik-methodology.html">Methodology</a></li>
-                <li><a href="${prefix}/pages/periodic-table/rubik-periodic-table-final.html">Periodic Table</a></li>
-                <li><a href="${prefix}/pages/strategy/competitor-analysis.html">Competitor Analysis</a></li>
-                <li><a href="${prefix}/pages/strategy/roadmap.html">Roadmap</a></li>
+                <li><a href="${bp}pages/methodology/rubik-methodology.html">Methodology</a></li>
+                <li><a href="${bp}pages/periodic-table/rubik-periodic-table-final.html">Periodic Table</a></li>
+                <li><a href="${bp}pages/strategy/competitor-analysis.html">Competitor Analysis</a></li>
+                <li><a href="${bp}pages/strategy/roadmap.html">Roadmap</a></li>
             </ul>
         </div>
     </footer>
     `;
 }
 
-// ========== DROPDOWN TOGGLE ==========
+// ========== TOGGLE DROPDOWN ==========
 function toggleDropdown(button) {
     const dropdown = button.closest('.rubik-nav-dropdown');
     const isOpen = dropdown.classList.contains('open');
-    
-    // Close all
     document.querySelectorAll('.rubik-nav-dropdown.open').forEach(d => d.classList.remove('open'));
-    
-    // Open current if was closed
-    if (!isOpen) {
-        dropdown.classList.add('open');
-    }
+    if (!isOpen) dropdown.classList.add('open');
 }
 
-// ========== INITIALIZE LAYOUT ==========
+// ========== INITIALIZE ==========
 (function() {
-    const currentPage = getCurrentPagePath();
+    const currentPage = getCurrentPage();
     
-    // Inject header
-    const headerHTML = buildHeader(currentPage);
-    document.body.insertAdjacentHTML('afterbegin', headerHTML);
+    document.body.insertAdjacentHTML('afterbegin', buildHeader(currentPage));
+    document.body.insertAdjacentHTML('beforeend', buildFooter());
     
-    // Inject footer
-    const footerHTML = buildFooter(currentPage);
-    document.body.insertAdjacentHTML('beforeend', footerHTML);
-    
-    // Close dropdowns on outside click
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.rubik-nav-dropdown')) {
             document.querySelectorAll('.rubik-nav-dropdown.open').forEach(d => d.classList.remove('open'));
         }
     });
     
-    // Close dropdowns on ESC
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             document.querySelectorAll('.rubik-nav-dropdown.open').forEach(d => d.classList.remove('open'));
