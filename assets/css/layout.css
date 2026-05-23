@@ -1,4 +1,3 @@
-
 /* ========== CSS Variables ========== */
 :root {
     --primary: #0F2C3D;
@@ -179,37 +178,38 @@ body {
 .rubik-nav-btn .rubik-arrow { font-size: 9px; transition: transform 0.2s; }
 .rubik-nav-dropdown.open .rubik-nav-btn .rubik-arrow { transform: rotate(180deg); }
 
+/* ========== DROPDOWN MENU ========== */
 .rubik-nav-menu {
     display: none;
     position: absolute;
     top: 100%;
     right: 0;
-    background: var(--card-bg);
-    min-width: 240px;
-    box-shadow: var(--shadow-md);
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    z-index: 99999;  /* أعلى قيمة ممكنة */
-    padding: 6px 0;
-    max-height: 60vh;
+    background: #FFFFFF;
+    min-width: 260px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    border-radius: 16px;
+    border: 1px solid #E9EDF2;
+    padding: 8px 0;
+    max-height: 70vh;
     overflow-y: auto;
+    z-index: 99999;
 }
-.rubik-nav-dropdown.open .rubik-nav-menu { display: block; }
-.rubik-nav-menu a {
+.rubik-nav-dropdown.open .rubik-nav-menu {
     display: block;
+}
+.rubik-nav-menu a {
+    display: flex;
     align-items: center;
     gap: 8px;
-    padding: 9px 16px;
+    padding: 10px 16px;
     text-decoration: none;
     font-size: 13px;
     font-weight: 500;
     color: var(--text-secondary);
     transition: all 0.15s;
     white-space: nowrap;
-    position: fixed;
-    z-index: 9999;
-    max-height: 70vh;
-    overflow-y: auto;
+    border-radius: 10px;
+    margin: 2px 8px;
 }
 .rubik-nav-menu a:hover { background: var(--bg); color: var(--primary); }
 .rubik-nav-menu a.active { color: var(--accent); font-weight: 600; background: rgba(184,139,74,0.06); }
@@ -252,115 +252,24 @@ body {
 .rubik-footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 11px; }
 .rubik-footer-links a:hover { color: var(--accent-light); }
 
+/* ========== خفض z-index لعناصر الصفحات الداخلية ========== */
+.hero, .container, .section, .layer-card, .info-box, .quote-box,
+[class*="hero"], [class*="container"], [class*="section"],
+[class*="layer"], [class*="info"], [class*="quote"] {
+    z-index: auto !important;
+    position: relative;
+}
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
     .rubik-nav-btn { padding: 8px 10px; font-size: 12px; }
-    .rubik-nav-menu { position: fixed; top: auto; right: 8px; left: 8px; max-height: 50vh; }
+    .rubik-nav-menu { 
+        position: fixed; 
+        top: 104px; 
+        right: 8px; 
+        left: 8px; 
+        max-height: 50vh;
+        min-width: auto;
+    }
     .rubik-breadcrumb { display: none; }
-}
-/* ========== إصلاح تعارض z-index مع محتوى الصفحات ========== */
-
-/* ضمان أن الـ rubik-navbar والـ dropdown فوق أي محتوى */
-.rubik-header,
-.rubik-breadcrumb,
-.rubik-navbar {
-    position: relative;
-    z-index: 1000;
-}
-
-.rubik-navbar {
-    z-index: 1001;
-}
-
-.rubik-nav-dropdown {
-    z-index: 1002;
-}
-
-.rubik-nav-menu {
-    z-index: 1003;
-}
-
-/* خفض z-index لأي عنصر في الصفحة قد يتعارض */
-.hero,
-.container,
-.section,
-.layer-card,
-.info-box,
-.quote-box {
-    position: relative;
-    z-index: 1;
-}
-/* تحسين شكل القائمة المنسدلة */
-.rubik-nav-menu {
-    background: var(--card-bg, #FFFFFF);
-    border-radius: 16px;
-    box-shadow: 0 16px 40px rgba(15, 44, 61, 0.15);
-    border: 1px solid var(--border, #E9EDF2);
-    padding: 12px 8px;
-    min-width: 260px;
-}
-
-.rubik-nav-menu a {
-    padding: 10px 16px;
-    border-radius: 10px;
-    margin: 2px 4px;
-    font-size: 13px;
-    transition: all 0.2s ease;
-}
-
-.rubik-nav-menu a:hover {
-    background: rgba(184, 139, 74, 0.08);
-    color: var(--primary, #0F2C3D);
-}
-
-/* تحسين شكل الـ Navbar نفسه */
-.rubik-nav-btn {
-    padding: 10px 18px;
-    border-radius: 12px;
-    font-size: 13px;
-    transition: all 0.2s;
-}
-
-.rubik-nav-btn:hover {
-    background: rgba(15, 44, 61, 0.04);
-}
-
-.rubik-nav-btn.active {
-    background: rgba(184, 139, 74, 0.1);
-    color: var(--accent, #B88B4A);
-}
-/* إصلاح نهائي للـ Dropdown */
-.rubik-nav-menu,
-.rubik-nav-dropdown.open .rubik-nav-menu {
-    position: fixed !important;
-    z-index: 99999 !important;
-    background: #FFFFFF !important;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3) !important;
-}
-/* خفض z-index لجميع عناصر الصفحة */
-body * {
-    z-index: auto;
-}
-
-.rubik-header,
-.rubik-breadcrumb,
-.rubik-navbar,
-.rubik-nav-dropdown,
-.rubik-nav-menu {
-    z-index: 99999 !important;
-    position: relative;
-}
-
-.rubik-nav-menu {
-    position: absolute !important;
-}
-
-.hero,
-.container,
-.section,
-[class*="layer"],
-[class*="info"],
-[class*="quote"] {
-    position: relative;
-    z-index: 0 !important;
 }
