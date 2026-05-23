@@ -70,7 +70,7 @@
     'pages/strategy/future-vision.html':     { title: 'Future Vision (All-in-One)', icon: '🚀', parent: '💼 Products & Future' },
     'pages/strategy/competitor-analysis.html':{ title: 'Competitor Analysis', icon: '🏆', parent: '📈 Strategy' },
     'pages/strategy/roadmap.html':            { title: 'Roadmap', icon: '🗺️', parent: '📈 Strategy' },
-    'pages/strategy/product-specification.html': { title: 'Product Specification', icon: '📄', parent: '📈 Strategy' },
+    'pages/strategy/Product-Specification.html': { title: 'Product Specification', icon: '📄', parent: '📈 Strategy' },
   };
 
   // ========== NAV STRUCTURE ==========
