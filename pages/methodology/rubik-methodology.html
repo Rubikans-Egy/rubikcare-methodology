@@ -90,10 +90,7 @@
         .logo-cube span:nth-child(4) { background: var(--accent-light); }
         .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
         .logo-text em { color: var(--accent); font-style: normal; }
-        .nav-links { display: flex; gap: 28px; flex-wrap: wrap; }
-        .nav-links a { text-decoration: none; color: var(--text-secondary); font-weight: 500; font-size: 13px; transition: color 0.2s; }
-        .nav-links a:hover { color: var(--primary); }
-
+      
         .hero {
             background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             padding: 120px 0 80px;
@@ -420,18 +417,5 @@
     </div>
 </div>
 
-
- 
-
-    <script>
-    console.log('Page loaded. Checking layout...');
-    window.addEventListener('load', function() {
-        console.log('Window loaded.');
-        console.log('rubik-header exists:', !!document.querySelector('.rubik-header'));
-        console.log('rubik-navbar exists:', !!document.querySelector('.rubik-navbar'));
-        console.log('rubik-footer exists:', !!document.querySelector('.rubik-footer'));
-        console.log('layout.css loaded:', !!document.querySelector('link[data-layout-css]'));
-    });
-</script>
 </body>
 </html>
