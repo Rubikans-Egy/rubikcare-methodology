@@ -1,275 +1,393 @@
+/* ==========================================================
+   Rubik Methodology — Unified Layout
+   Version: 2.0 (fixed dropdown + brand alignment)
+   ========================================================== */
+
 /* ========== CSS Variables ========== */
 :root {
-    --primary: #0F2C3D;
-    --primary-light: #1C5A7A;
-    --primary-dark: #0A1F2C;
-    --accent: #B88B4A;
-    --accent-light: #D4A85C;
-    --bg: #F8FAFE;
-    --card-bg: #FFFFFF;
-    --text-primary: #1A2C3E;
-    --text-secondary: #546E7A;
-    --text-muted: #8A9BA8;
-    --border: #E9EDF2;
-    --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-    --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
-    --header-height: 56px;
-    --nav-height: 48px;
+  --primary: #0F2C3D;
+  --primary-light: #1C5A7A;
+  --primary-dark: #0A1F2C;
+  --accent: #B88B4A;
+  --accent-light: #D4A85C;
+  --bg: #F8FAFE;
+  --card-bg: #FFFFFF;
+  --text-primary: #1A2C3E;
+  --text-secondary: #546E7A;
+  --text-muted: #8A9BA8;
+  --border: #E9EDF2;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.18);
+  --header-height: 60px;
+  --nav-height: 48px;
+  --font-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-sans: 'DM Sans', 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 /* ========== Reset ========== */
 *, *::before, *::after { box-sizing: border-box; }
 
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text-primary);
-    line-height: 1.6;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* ========== HEADER ========== */
+/* ==========================================================
+   HEADER — dark navy to match the brand hero
+   ========================================================== */
 .rubik-header {
-    background: var(--card-bg);
-    border-bottom: 1px solid var(--border);
-    height: var(--header-height);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    width: 100%;
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  height: var(--header-height);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  /* CRITICAL: keep overflow visible so dropdowns can escape */
+  overflow: visible;
 }
 .rubik-header-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 .rubik-logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  flex-shrink: 0;
 }
 .rubik-logo-cube {
-    width: 28px; height: 28px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2px;
-    transform: rotate(-6deg);
+  width: 30px; height: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  transform: rotate(-6deg);
+  flex-shrink: 0;
 }
 .rubik-logo-cube span { border-radius: 3px; }
-.rubik-logo-cube span:nth-child(1) { background: var(--primary); }
-.rubik-logo-cube span:nth-child(2) { background: var(--accent); }
-.rubik-logo-cube span:nth-child(3) { background: var(--primary-light); }
-.rubik-logo-cube span:nth-child(4) { background: var(--accent-light); }
+.rubik-logo-cube span:nth-child(1) { background: var(--accent); }
+.rubik-logo-cube span:nth-child(2) { background: var(--accent-light); }
+.rubik-logo-cube span:nth-child(3) { background: rgba(255,255,255,0.85); }
+.rubik-logo-cube span:nth-child(4) { background: var(--primary-light); }
+
 .rubik-logo-text {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--primary);
-    white-space: nowrap;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  white-space: nowrap;
+  letter-spacing: 0.2px;
 }
-.rubik-logo-text em { color: var(--accent); font-style: normal; }
+.rubik-logo-text em { color: var(--accent-light); font-style: normal; font-weight: 700; }
 .rubik-logo-subtitle {
-    font-size: 10px;
-    color: var(--text-muted);
-    font-weight: 400;
-    display: none;
+  font-size: 10px;
+  color: rgba(255,255,255,0.55);
+  font-weight: 400;
+  display: none;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 @media (min-width: 600px) {
-    .rubik-logo-subtitle { display: inline; }
+  .rubik-logo-subtitle { display: block; }
+  .rubik-logo-text-wrap { display: flex; flex-direction: column; line-height: 1.1; }
 }
 
 .rubik-header-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 .rubik-company-link {
-    background: var(--accent);
-    color: white !important;
-    padding: 6px 14px;
-    border-radius: 40px;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: background 0.2s;
+  background: var(--accent);
+  color: #FFFFFF !important;
+  padding: 7px 16px;
+  border-radius: 40px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.2s;
 }
-.rubik-company-link:hover { background: var(--accent-light); }
+.rubik-company-link:hover { background: var(--accent-light); transform: translateY(-1px); }
 
-/* ========== BREADCRUMB ========== */
+/* ==========================================================
+   BREADCRUMB
+   ========================================================== */
 .rubik-breadcrumb {
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    padding: 6px 0;
-    font-size: 12px;
-    color: var(--text-muted);
-    width: 100%;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  width: 100%;
 }
 .rubik-breadcrumb-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    overflow-x: auto;
-    white-space: nowrap;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
 }
+.rubik-breadcrumb-inner::-webkit-scrollbar { display: none; }
 .rubik-breadcrumb-inner a {
-    color: var(--text-muted);
-    text-decoration: none;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s;
 }
 .rubik-breadcrumb-inner a:hover { color: var(--primary); }
 .rubik-breadcrumb-sep { color: var(--border); }
+.rubik-breadcrumb-current { color: var(--primary); font-weight: 600; }
 
-/* ========== NAVIGATION ========== */
+/* ==========================================================
+   NAVIGATION — critical fix for dropdown clipping
+   ==========================================================
+   FIX: the navbar itself must allow vertical overflow.
+   Horizontal scrolling is handled by an INNER scroller that
+   does NOT contain the dropdown menus.
+   ========================================================== */
 .rubik-navbar {
-    background: var(--card-bg);
-    border-bottom: 1px solid var(--border);
-    height: var(--nav-height);
-    position: sticky;
-    top: var(--header-height);
-    z-index: 999;
-    width: 100%;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+  height: var(--nav-height);
+  position: sticky;
+  top: var(--header-height);
+  z-index: 999;
+  width: 100%;
+  overflow: visible;        /* allow dropdown to escape vertically */
+  box-shadow: var(--shadow-sm);
 }
 .rubik-navbar-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 12px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    overflow-x: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 12px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  /* IMPORTANT: do NOT use overflow-x: auto here — it clips dropdowns */
+  overflow: visible;
 }
+
+/* On small screens, allow horizontal scroll WITHOUT clipping dropdowns
+   by detaching the dropdown menu via position: fixed (see below) */
+@media (max-width: 768px) {
+  .rubik-navbar-inner {
+    overflow-x: auto;
+    overflow-y: visible;
+    scrollbar-width: none;
+  }
+  .rubik-navbar-inner::-webkit-scrollbar { display: none; }
+}
+
 .rubik-nav-dropdown {
-    position: relative;
-    flex-shrink: 0;
+  position: relative;
+  flex-shrink: 0;
 }
 .rubik-nav-btn {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 8px 14px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    background: none;
-    border: none;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: all 0.2s;
-    font-family: inherit;
-    white-space: nowrap;
-    text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s;
+  font-family: inherit;
+  white-space: nowrap;
+  text-decoration: none;
 }
-.rubik-nav-btn:hover { color: var(--primary); background: rgba(15,44,61,0.05); }
+.rubik-nav-btn:hover { color: var(--primary); background: rgba(15,44,61,0.06); }
 .rubik-nav-btn.active { color: var(--accent); background: rgba(184,139,74,0.1); }
-.rubik-nav-btn .rubik-arrow { font-size: 9px; transition: transform 0.2s; }
+.rubik-nav-btn .rubik-arrow {
+  font-size: 9px;
+  transition: transform 0.25s;
+  display: inline-block;
+}
 .rubik-nav-dropdown.open .rubik-nav-btn .rubik-arrow { transform: rotate(180deg); }
+.rubik-nav-dropdown.open .rubik-nav-btn { color: var(--primary); background: rgba(15,44,61,0.06); }
 
-/* ========== DROPDOWN MENU ========== */
+/* ==========================================================
+   DROPDOWN MENU
+   ========================================================== */
 .rubik-nav-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: #FFFFFF;
-    min-width: 260px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-    border-radius: 16px;
-    border: 1px solid #E9EDF2;
-    padding: 8px 0;
-    max-height: 70vh;
-    overflow-y: auto;
-    z-index: 99999;
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  background: #FFFFFF;
+  min-width: 280px;
+  box-shadow: var(--shadow-lg);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  padding: 8px 0;
+  max-height: 70vh;
+  overflow-y: auto;
+  z-index: 10000;
+  animation: rubikDropdownIn 0.18s ease-out;
 }
-.rubik-nav-dropdown.open .rubik-nav-menu {
-    display: block;
+@keyframes rubikDropdownIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+.rubik-nav-dropdown.open .rubik-nav-menu { display: block; }
 .rubik-nav-menu a {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-secondary);
-    transition: all 0.15s;
-    white-space: nowrap;
-    border-radius: 10px;
-    margin: 2px 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: all 0.15s;
+  white-space: nowrap;
+  border-radius: 8px;
+  margin: 2px 8px;
 }
 .rubik-nav-menu a:hover { background: var(--bg); color: var(--primary); }
-.rubik-nav-menu a.active { color: var(--accent); font-weight: 600; background: rgba(184,139,74,0.06); }
+.rubik-nav-menu a.active {
+  color: var(--accent);
+  font-weight: 600;
+  background: rgba(184,139,74,0.08);
+}
+.rubik-nav-menu-section-title {
+  padding: 8px 16px 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+}
 
-/* ========== MAIN CONTENT AREA ========== */
+/* On mobile, anchor dropdown to viewport so horizontal scrolling
+   of the navbar doesn't clip it */
+@media (max-width: 768px) {
+  .rubik-nav-btn { padding: 8px 10px; font-size: 12px; }
+  .rubik-nav-menu {
+    position: fixed;
+    top: calc(var(--header-height) + var(--nav-height) + 4px);
+    left: 8px;
+    right: 8px;
+    min-width: auto;
+    max-height: 60vh;
+  }
+}
+
+/* ==========================================================
+   MAIN CONTENT AREA
+   ========================================================== */
 .rubik-main {
-    flex: 1;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 24px 20px 60px;
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
 }
 .rubik-main img { max-width: 100%; height: auto; }
-.rubik-main table { width: 100%; border-collapse: collapse; margin: 16px 0; }
-.rubik-main th, .rubik-main td { padding: 10px 14px; border: 1px solid var(--border); }
-.rubik-main th { background: var(--primary-dark); color: white; }
+.rubik-main table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 14px;
+}
+.rubik-main th,
+.rubik-main td {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  text-align: start;
+}
+.rubik-main th {
+  background: var(--primary-dark);
+  color: #FFFFFF;
+  font-weight: 600;
+}
+.rubik-main h1, .rubik-main h2, .rubik-main h3 {
+  font-family: var(--font-serif);
+  color: var(--primary);
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
 
-/* ========== FOOTER ========== */
+/* ==========================================================
+   FOOTER
+   ========================================================== */
 .rubik-footer {
-    background: var(--primary-dark);
-    padding: 20px 0;
-    color: rgba(255,255,255,0.6);
-    font-size: 12px;
-    margin-top: auto;
-    width: 100%;
+  background: var(--primary-dark);
+  padding: 20px 0;
+  color: rgba(255,255,255,0.6);
+  font-size: 12px;
+  margin-top: auto;
+  width: 100%;
 }
 .rubik-footer-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
 }
-.rubik-footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: white; }
+.rubik-footer-brand {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  color: #FFFFFF;
+}
 .rubik-footer-brand span { color: var(--accent-light); }
-.rubik-footer-links { display: flex; gap: 16px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; }
-.rubik-footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 11px; }
+.rubik-footer-links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.rubik-footer-links a {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  font-size: 11px;
+  transition: color 0.15s;
+}
 .rubik-footer-links a:hover { color: var(--accent-light); }
 
-/* ========== خفض z-index لعناصر الصفحات الداخلية ========== */
+/* ==========================================================
+   Lower z-index of legacy inner-page elements so they never
+   sit above the sticky header / dropdowns
+   ========================================================== */
 .hero, .container, .section, .layer-card, .info-box, .quote-box,
 [class*="hero"], [class*="container"], [class*="section"],
 [class*="layer"], [class*="info"], [class*="quote"] {
-    z-index: auto !important;
-    position: relative;
+  z-index: auto !important;
+  position: relative;
 }
 
-/* ========== RESPONSIVE ========== */
-@media (max-width: 768px) {
-    .rubik-nav-btn { padding: 8px 10px; font-size: 12px; }
-    .rubik-nav-menu { 
-        position: fixed; 
-        top: 104px; 
-        right: 8px; 
-        left: 8px; 
-        max-height: 50vh;
-        min-width: auto;
-    }
-    .rubik-breadcrumb { display: none; }
-}
+/* Hide ANY breadcrumb that the legacy page already renders
+   (we now inject a unified one from layout.js).
+   If your page uses a custom class, add it here. */
+.legacy-breadcrumb,
+body > .breadcrumb:not(.rubik-breadcrumb),
+.page-breadcrumb { display: none !important; }
